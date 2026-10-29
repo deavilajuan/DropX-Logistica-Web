@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DropX- Dashboard</title>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body class="dashboard-body" data-pesos="{{ metricas.pesos | tojson | forceescape }}" 
+    data-recibidos="{{ metricas.recibidos }}"
+    data-transito="{{ metricas.transito }}"
+    data-entregados="{{ metricas.entregados }}"
+    data-pendientes="{{ metricas.pendientes }}">
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <a class="brand-logo" href="{{ url_for('public.index') }}" aria-label="Ir a la página principal de DropX">
+                    <div>
+                        <h2>DropX</h2>
+                        <h5>lOGISTICA QUE AVANZA</h5>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="{{ url_for('suite.dashboard') }}" class="nav-item active">Dashboard</a>
+                <a href="{{ url_for('suite.logisticos') }}" class="nav-item">Logísticos</a>
+                <a href="{{ url_for('suite.paquetes') }}" class="nav-item">Paquetes</a>
+                <a href="{{ url_for('suite.repartidores') }}" class="nav-item">Repartidores</a>
+                {% if session.get('user', {}).get('rol') == 'Superadmin' %}
+                <a href="{{ url_for('suite.reportes') }}" class="nav-item">Reportes</a>
+                {% endif %}
+            </nav>
+            <div>
+                <a href="{{ url_for('suite.logout') }}" class="btn-logout">Cerrar sesión</a>
+            </div>
+        </aside>
+
+        <main class="main-content"> 
+            <header class="topbar">
+                <div class="breadcrumb">Suite / <span>Dashboard</span></div>
+                <div class="user-profile">
+                    <!-- Ícono o avatar con color según el rol -->
+                    <div class="user-avatar {% if usuario.rol == 'Superadmin' %}avatar-admin{% else %}avatar-logistico{% endif %}">
+                        {% if usuario.rol == 'Superadmin' %}👑{% else %}🚚{% endif %}
+                    </div>
+                    <div class="user-info">
+                        <span class="user-role">{{ usuario.rol if usuario else 'Superadmin' }}</span>
+                        <small class="user-subname">{{ usuario.nombre if usuario else 'Usuario' }}</small>
+                    </div>
+                    <span class="chevron">⌄</span>
+                </div>
+            </header>
+
+            <section class="dashboard-header-row">
+                <h1 class="page-title">Dashboard</h1>
+                <div class="date-filter-wrapper">
+                    <select id="filtroMes" class="date-filter-select">
+                        <option value="este_mes" selected>Este mes</option>
+                        <option value="mes_pasado">Mes pasado</option>
+                        <option value="ultimos_3_meses">Últimos 3 meses</option>
+                        <option value="ultimos_6_meses">Últimos 6 meses</option>
+                        <option value="ultimo_ano">Último año</option>
+                    </select>
+                    <span class="select-chevron">⌄</span>
+                </div>
+            </section>
+
+            <section class="kpis-grid">
+                <div class="kpi-card kpi-orange">
+                    <span class="kpi-title">Recibidos</span>
+                    <div class="kpi-value-row">
+                        <h2>{{ metricas.recibidos }}</h2>
+                        <span class="kpi-badge badge-up">+11.01%</span>
+                    </div>
+                </div>
+                <div class="kpi-card kpi-blue">
+                    <span class="kpi-title">En tránsito</span>
+                    <div class="kpi-value-row">
+                        <h2>{{ metricas.transito }}</h2>
+                        <span class="kpi-badge badge-down">-0.03%</span>
+                    </div>
+                </div>
+                <div class="kpi-card kpi-green">
+                    <span class="kpi-title">Entregados</span>
+                    <div class="kpi-value-row">
+                        <h2>{{ metricas.entregados }}</h2>
+                        <span class="kpi-badge badge-up">+15.03%</span>
+                    </div>
+                </div>
+                <div class="kpi-card kpi-red">
+                    <span class="kpi-title">Pendientes</span>
+                    <div class="kpi-value-row">
+                        <h2>{{ metricas.pendientes }}</h2>
+                        <span class="kpi-badge badge-up">+6.08%</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="chart-section card-box">
+                <div class="chart-header">
+                    <div>
+                        <strong>Paquetes</strong> <span class="chart-subtitle"> <small>| Paquetes totales</small></span></h3>
+                    </div>
+                    <div class="chart-legend">
+                        <span class="legend-dot legend-orange"></span> Este mes
+                        <span class="legend-dot legend-blue"></span> Mes pasado
+                    </div>
+                </div>
+                <div class="chart-canvas-wrapper">
+                    <canvas id="lineChartPaquetes"></canvas>
+                </div>
+            </section>
+            <div class="widgets-grid-2">
+            <!-- Paquetes enviados por peso -->
+                <section class="widget-card card-box">
+                    <h3>Paquetes enviados</h3>
+                    <div class="chart-canvas-wrapper-sm">
+                        <canvas id="barChartPesos"></canvas>
+                    </div>
+                </section>
+                <!-- Récord de repartidores (Dona) -->
+                <section class="widget-card card-box">
+                    <h3>Record de repartidores</h3>
+                    <div class="donut-wrapper">
+                        <div class="donut-canvas-container">
+                            <canvas id="donutChartRepartidores"></canvas>
+                            <div class="donut-center-text">
+                                <strong>Top</strong>
+                                <small>REPARTO</small>
+                            </div>
+                        </div>
+                        <ul class="donut-legend-list">
+                            <li><span class="dot-color orange"></span> José Carlos <strong>52.1%</strong></li>
+                            <li><span class="dot-color blue"></span> Alberto Luis <strong>22.8%</strong></li>
+                            <li><span class="dot-color green"></span> César Gaviria <strong>13.9%</strong></li>
+                            <li><span class="dot-color red"></span> Otros <strong>11.2%</strong></li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+
+            <section class="table-section card-box">
+                <h3>Paquetes recibidos</h3>
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>ID de Paquete</th>
+                            <th>Cliente</th>
+                            <th>Destino</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in paquetes_recientes %}
+                        <!-- Aquí se llenan las filas -->
+                        <tr>
+                            <td><strong>{{ p.numero_guia }}</strong></td>
+                            <td>{{ p.destinatario }}</td>
+                            <td>{{ p.ciudad_destino }}</td>
+                            <td>
+                                <span class="badge {% if p.estado == 'Entregado' %}badge-green{% elif p.estado == 'En tránsito' %}badge-blue{% else %}badge-orange{% endif %}">
+                                    {{ p.estado }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="empty-state">No hay paquetes registrados todavía.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+
+        
+        <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    </body>
+</html>

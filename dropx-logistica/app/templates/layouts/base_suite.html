@@ -1,0 +1,37 @@
+<!-- app/templates/layouts/base_public.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DropX - Logística que avanza{% endblock %}</title>
+    <!-- Tu CSS desde la carpeta static -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+    <!-- NAVBAR COMÚN -->
+    <header class="navbar">
+        <a class="logo" href="{{ url_for('public.index') }}"><strong>DropX</strong><span>Logística que avanza</span></a>
+        <nav>
+            <a href="{{ url_for('public.dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('public.logisticos') }}">Logísticos</a>
+            <a href="{{ url_for('public.paquetes') }}">Paquetes</a>
+            <a href="{{ url_for('public.repartidores') }}">Repartidores</a>
+            <a href="{{ url_for('public.reportes') }}">Reportes</a>
+        </nav>
+        <a href="{{ url_for('suite.login') }}" class="btn-orange">Suite logística</a>
+    </header>
+
+    <!-- AQUÍ SE INSERTA CADA PANTALLA -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- FOOTER COMÚN -->
+    <footer>
+        <p>© 2026 DropX. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
