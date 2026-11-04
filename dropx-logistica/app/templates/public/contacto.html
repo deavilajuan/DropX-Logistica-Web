@@ -49,24 +49,30 @@
                 <div class="contacto-card-form">
                     <div class="contacto-card-header">
                         <h2>Envíanos un mensaje</h2>
-                        <p>Te responderemos en un plazo máximo de 2 horas hábiles.</p>
+                        <p>Completa tus datos y te llevaremos a WhatsApp para enviar tu solicitud al asesor.</p>
+                        {% if plan_seleccionado %}
+                        <p>Plan de interés: <strong>{{ plan_seleccionado }}</strong></p>
+                        {% endif %}
                     </div>
 
-                    <form action="#" method="POST" class="contacto-form">
+                    <form action="{{ url_for('public.contacto') }}" method="POST" class="contacto-form">
+                        <input type="hidden" name="plan" value="{{ plan_slug }}">
                         <div class="form-group">
                             <label for="nombre">Nombre completo</label>
-                            <input type="text" id="nombre" name="nombre" placeholder="Ej: Natalia Cardona" required>
+                            <input type="text" id="nombre" name="nombre" placeholder="Ej: Natalia Cardona"
+                                value="{{ form_data.get('nombre', '') }}" required>
                         </div>
 
                         <div class="form-row-2">
                             <div class="form-group">
                                 <label for="email">Email corporativo</label>
                                 <input type="email" id="email" name="email" placeholder="natalia.c@empresa.com"
-                                    required>
+                                    value="{{ form_data.get('email', '') }}" required>
                             </div>
                             <div class="form-group">
                                 <label for="telefono">Teléfono / Celular</label>
-                                <input type="tel" id="telefono" name="telefono" placeholder="Ej: 300 987 6543" required>
+                                <input type="tel" id="telefono" name="telefono" placeholder="Ej: 300 987 6543"
+                                    value="{{ form_data.get('telefono', '') }}" required>
                             </div>
                         </div>
 
@@ -74,11 +80,11 @@
                             <label for="asunto">Asunto</label>
                             <div class="select-wrapper">
                                 <select id="asunto" name="asunto" required>
-                                    <option value="cotizacion" selected>Cotización de servicio corporativo</option>
-                                    <option value="soporte">Soporte y atención al cliente</option>
-                                    <option value="aliados">Información para aliados y conductores</option>
-                                    <option value="integraciones">Integración API / E-commerce</option>
-                                    <option value="otro">Otras consultas generales</option>
+                                    <option value="cotizacion" {% if form_data.get('asunto', 'cotizacion') == 'cotizacion' %}selected{% endif %}>Cotización de servicio corporativo</option>
+                                    <option value="soporte" {% if form_data.get('asunto') == 'soporte' %}selected{% endif %}>Soporte y atención al cliente</option>
+                                    <option value="aliados" {% if form_data.get('asunto') == 'aliados' %}selected{% endif %}>Información para aliados y conductores</option>
+                                    <option value="integraciones" {% if form_data.get('asunto') == 'integraciones' %}selected{% endif %}>Integración API / E-commerce</option>
+                                    <option value="otro" {% if form_data.get('asunto') == 'otro' %}selected{% endif %}>Otras consultas generales</option>
                                 </select>
                                 <span class="select-arrow">⌄</span>
                             </div>
@@ -88,10 +94,11 @@
                             <label for="mensaje">Mensaje</label>
                             <textarea id="mensaje" name="mensaje" rows="4"
                                 placeholder="Cuéntanos un poco sobre las necesidades de despacho o almacenamiento de tu empresa..."
-                                required></textarea>
+                                required>{{ form_data.get('mensaje', mensaje_inicial) }}</textarea>
                         </div>
 
-                        <button type="submit" class="btn-contacto-submit">Enviar Mensaje</button>
+                        <button type="submit" class="btn-contacto-submit">Continuar por WhatsApp</button>
+                        <p>Tu solicitud solo se enviará cuando la confirmes en WhatsApp.</p>
                     </form>
                 </div>
 
@@ -173,14 +180,17 @@
                         <div class="whatsapp-content">
                             <h3>¿Necesitas atención inmediata?</h3>
                             <p>Habla directamente con un asesor comercial o de soporte técnico a través de WhatsApp.</p>
-                            <a href="https://wa.me/573001234567?text=Hola%20DropX,%20quisiera%20más%20información"
-                                target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+                            {% if whatsapp_url %}
+                            <a href="{{ whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                                     <path
                                         d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-5.705 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
                                 </svg>
                                 Chatear por WhatsApp
                             </a>
+                            {% else %}
+                            <p>El canal de WhatsApp no está configurado todavía.</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -269,8 +279,8 @@
                 <h4 class="col-title">Soporte y Legal</h4>
                 <ul class="footer-links">
                     <ol><a href="{{ url_for('public.contacto') }}">Centro de Ayuda</a></ol>
-                    <ol><a href="#">Términos del Servicio</a></ol>
-                    <ol><a href="#">Privacidad</a></ol>
+                    <ol><a href="{{ url_for('public.terminos') }}">Términos del Servicio</a></ol>
+                    <ol><a href="{{ url_for('public.privacidad') }}">Privacidad</a></ol>
                     <ol><a href="{{ url_for('public.contacto') }}">Contacto</a></ol>
                 </ul>
             </div>
