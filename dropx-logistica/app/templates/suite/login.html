@@ -4,239 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso a Suite Logística | DropX</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-        <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0b1120 0%, #0f172a 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .login-card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 440px;
-            border-radius: 20px;
-            padding: 40px 36px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
-        }
-        .brand-header {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-        .logo-box {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-            text-decoration: none;
-        }
-        .logo-icon {
-            width: 42px;
-            height: 42px;
-            background: #ff5722;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            font-weight: 800;
-            font-size: 20px;
-            box-shadow: 0 4px 14px rgba(255, 87, 34, 0.35);
-        }
-        .logo-text {
-            font-size: 26px;
-            font-weight: 800;
-            color: #0f172a;
-        }
-        .brand-subtitle {
-            font-size: 13px;
-            color: #64748b;
-            font-weight: 500;
-        }
-        .role-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            background: #f1f5f9;
-            padding: 5px;
-            border-radius: 12px;
-            margin-bottom: 24px;
-            gap: 6px;
-        }
-        .role-option {
-            text-align: center;
-            padding: 10px 12px;
-            font-size: 13px;
-            font-weight: 700;
-            color: #64748b;
-            border-radius: 9px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            user-select: none;
-        }
-        .role-option.active {
-            background: #ffffff;
-            color: #ff5722;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        }
-        .form-group {
-            margin-bottom: 18px;
-        }
-        .label-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 8px;
-        }
-        .label-row label {
-            margin-bottom: 0;
-        }
-        .forgot-link {
-            font-size: 12px;
-            color: #ff5722;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
-        .forgot-link:hover {
-            color: #e64a19;
-            text-decoration: underline;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 13px 16px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 14px;
-            color: #0f172a;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        .form-group input:focus {
-            border-color: #ff5722;
-            box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.12);
-        }
-        .flash-msg {
-            padding: 12px 14px;
-            border-radius: 10px;
-            font-size: 13px;
-            margin-bottom: 18px;
-            font-weight: 600;
-        }
-        .flash-danger {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #fecaca;
-        }
-        .btn-submit {
-            width: 100%;
-            background: #ff5722;
-            color: #ffffff;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-            box-shadow: 0 4px 14px rgba(255, 87, 34, 0.3);
-            margin-top: 8px;
-        }
-        .btn-submit:hover {
-            background: #e64a19;
-        }
-        .btn-submit:active {
-            transform: scale(0.99);
-        }
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 22px;
-            font-size: 13px;
-            color: #64748b;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
-        .back-link:hover {
-            color: #0f172a;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
-<body>
+<body class="auth-page">
+    <header class="auth-header">
+        <a class="auth-brand" href="{{ url_for('public.index') }}" aria-label="DropX, volver al sitio">
+            <span class="auth-brand-mark" aria-hidden="true">D</span>
+            <span class="auth-brand-name">DropX<small>LOGÍSTICA QUE AVANZA</small></span>
+        </a>
+        <span class="auth-header-divider" aria-hidden="true"></span>
+        <span class="auth-suite-name">Suite logística</span>
+        <a class="auth-site-link" href="{{ url_for('public.index') }}">←&nbsp; Volver al sitio</a>
+    </header>
 
-    <div class="login-card">
-        <div class="brand-header">
-            <a href="{{ url_for('public.index') }}" class="logo-box">
-                <div class="logo-icon">📦</div>
-                <div class="logo-text">DropX</div>
-            </a>
-            <div class="brand-subtitle">Suite Logística Empresarial</div>
+    <main class="auth-main">
+        <div class="auth-breadcrumb">
+            <span>WEB / ADMINISTRADOR</span>
+            <span>Acceso a la Suite</span>
         </div>
-        <div class="role-selector">
-            <div class="role-option active" id="btnAdmin" onclick="selectRole('admin')">Superadmin</div>
-            <div class="role-option" id="btnLogistico" onclick="selectRole('logistico')">Operador Logístico</div>
-        </div>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="flash-msg flash-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        <form action="{{ url_for('suite.login') }}" method="POST">
-            <input type="hidden" name="rol" id="inputRol" value="admin">
-            <div class="form-group">
-                <label for="email">Correo Corporativo</label>
-                <input type="email" id="email" name="email" placeholder="correo@dropx.com" required>
-            </div>
-            <div class="form-group">
-                <div class="label-row">
-                    <label for="password">Contraseña</label>
-                    <a href="{{ url_for('public.contacto') }}" class="forgot-link">¿Olvidaste tu contraseña?</a>
+        <section class="auth-card" aria-label="Iniciar sesión">
+            <aside class="auth-aside">
+                <div>
+                    <span class="auth-aside-eyebrow"><span aria-hidden="true">♢</span> ACCESO A LA SUITE</span>
+                    <h1>Tu operación, en un solo lugar.</h1>
+                    <p>Accede a la Suite para gestionar y dar seguimiento a tu operación logística.</p>
                 </div>
-                <input type="password" id="password" name="password" placeholder="••••••••" required>
+                <div class="auth-aside-note">
+                    <strong>Una cuenta para tu operación</strong>
+                    <span>Administradores y trabajadores ingresan con su cuenta DropX.</span>
+                </div>
+            </aside>
+
+            <div class="auth-content">
+                <h2>Inicia sesión en la Suite</h2>
+                <p class="auth-description">Ingresa con tu cuenta de DropX.</p>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="auth-alert auth-alert-{{ category }}" role="alert">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form action="{{ url_for('suite.login') }}" method="POST" class="auth-form">
+                    <div class="auth-field">
+                        <label for="email">Email corporativo</label>
+                        <input type="email" id="email" name="email" placeholder="nombre@empresa.com" autocomplete="username" required>
+                    </div>
+                    <div class="auth-field">
+                        <label for="password">Contraseña</label>
+                        <div class="auth-password-wrap">
+                            <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" autocomplete="current-password" required>
+                            <button class="auth-password-toggle" type="button" data-password-toggle="password" aria-label="Mostrar contraseña" aria-pressed="false">Mostrar</button>
+                        </div>
+                    </div>
+                    <label class="auth-checkbox">
+                        <input type="checkbox" name="remember" value="1">
+                        <span>Recordar sesión</span>
+                    </label>
+                    <button type="submit" class="auth-submit">Iniciar sesión <span aria-hidden="true">→</span></button>
+                </form>
+
+                <a class="auth-forgot-link" href="{{ url_for('suite.recuperar') }}">¿Olvidaste tu contraseña?</a>
+                <div class="auth-content-divider"></div>
+                <div class="auth-worker-note">
+                    <strong><span aria-hidden="true">▯</span> ¿Eres trabajador?</strong>
+                    <p>Usa el mismo acceso de DropX para ingresar a la Suite.</p>
+                </div>
             </div>
-            <button type="submit" class="btn-submit" id="submitBtn">Ingresar como Superadmin</button>
-        </form>
-        <a href="/" class="back-link">← Volver al sitio web principal</a>
-    </div>
+        </section>
+    </main>
 
-    <script>
-        function selectRole(role) {
-            const btnAdmin = document.getElementById('btnAdmin');
-            const btnLogistico = document.getElementById('btnLogistico');
-            const inputRol = document.getElementById('inputRol');
-            const submitBtn = document.getElementById('submitBtn');
-
-            if (role === 'admin') {
-                btnAdmin.classList.add('active');
-                btnLogistico.classList.remove('active');
-                inputRol.value = 'admin';
-                submitBtn.textContent = 'Ingresar como Superadmin';
-            } else {
-                btnLogistico.classList.add('active');
-                btnAdmin.classList.remove('active');
-                inputRol.value = 'logistico';
-                submitBtn.textContent = 'Ingresar como Logístico';
-            }
-        }
-    </script>
-
+    <footer class="auth-footer">
+        <span>© 2026 DropX. Todos los derechos reservados.</span>
+        <span>Suite logística · Acceso a la plataforma</span>
+    </footer>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 </body>
 </html>
