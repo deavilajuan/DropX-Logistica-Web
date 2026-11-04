@@ -11,6 +11,7 @@ def create_app():
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dropx_default_secret')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///dropx.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['WHATSAPP_ADVISOR_NUMBER'] = os.getenv('WHATSAPP_ADVISOR_NUMBER', '')
 
     db.init_app(app)
 
