@@ -1,4 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-password-toggle]').forEach((toggle) => {
+        toggle.addEventListener('click', () => {
+            const input = document.getElementById(toggle.dataset.passwordToggle);
+            if (!input) return;
+
+            const showPassword = input.type === 'password';
+            input.type = showPassword ? 'text' : 'password';
+            toggle.textContent = showPassword ? 'Ocultar' : 'Mostrar';
+            toggle.setAttribute('aria-label', showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
+            toggle.setAttribute('aria-pressed', String(showPassword));
+        });
+    });
 
     // 1. Leer datos reales inyectados en los atributos del body desde SQLite
     const body = document.body;
@@ -297,5 +309,119 @@ document.addEventListener('DOMContentLoaded', function () {
         const opciones = { day: 'numeric', month: 'long' };
         const fechaFormateada = 'Hoy, ' + now.toLocaleDateString('es-CO', opciones);
         if (dateSpan) dateSpan.textContent = fechaFormateada;
+    }
+});
+
+/* Paquetes: creación, consulta y edición */
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-delete-driver-form]').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+            const name = form.dataset.driverName || 'este repartidor';
+            if (!window.confirm(`¿Eliminar a ${name}? Esta acción no se puede deshacer.`)) {
+                event.preventDefault();
+            }
+        });
+    });
+
+    const modalTriggers = document.querySelectorAll('[data-open-modal]');
+    const modals = document.querySelectorAll('[data-modal]');
+    let activeTrigger = null;
+
+    const closeModal = (modal) => {
+        if (!modal) return;
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+        if (activeTrigger) activeTrigger.focus();
+    };
+
+    const openModal = (modal, trigger) => {
+        if (!modal) return;
+        activeTrigger = trigger;
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+        const firstInput = modal.querySelector('input, select, button');
+        if (firstInput) firstInput.focus();
+    };
+
+    modalTriggers.forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+            openModal(document.getElementById(trigger.dataset.openModal), trigger);
+        });
+    });
+
+    modals.forEach((modal) => {
+        modal.querySelectorAll('[data-close-modal]').forEach((button) => {
+            button.addEventListener('click', () => closeModal(modal));
+        });
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) closeModal(modal);
+        });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            const openedModal = document.querySelector('[data-modal].open');
+            if (openedModal) closeModal(openedModal);
+        }
+    });
+
+    document.querySelectorAll('[data-view-package]').forEach((button) => {
+        button.addEventListener('click', () => {
+            const fields = {
+                'detail-guide': `Guía ${button.dataset.guide}`,
+                'detail-sender': button.dataset.sender,
+                'detail-recipient': button.dataset.recipient,
+                'detail-city': button.dataset.city,
+                'detail-address': button.dataset.address,
+                'detail-status': button.dataset.status,
+                'detail-weight': `${button.dataset.weight} kg`,
+                'detail-date': button.dataset.date
+            };
+            Object.entries(fields).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = value || '—';
+            });
+            openModal(document.getElementById('view-package-modal'), button);
+        });
+    });
+
+    const editForm = document.getElementById('edit-package-form');
+    const deleteForm = document.getElementById('delete-package-form');
+    const deleteButton = document.getElementById('delete-package-button');
+    document.querySelectorAll('[data-edit-package]').forEach((button) => {
+        button.addEventListener('click', () => {
+            if (!editForm) return;
+            const values = {
+                'edit-sender': button.dataset.sender,
+                'edit-recipient': button.dataset.recipient,
+                'edit-city': button.dataset.city,
+                'edit-address': button.dataset.address,
+                'edit-weight': button.dataset.weight,
+                'edit-status': button.dataset.status
+            };
+            Object.entries(values).forEach(([id, value]) => {
+                const input = document.getElementById(id);
+                if (input) input.value = value || '';
+            });
+            const guide = document.getElementById('edit-package-guide');
+            if (guide) guide.textContent = `Guía ${button.dataset.guide}`;
+            editForm.action = `${editForm.dataset.editUrl.replace(/\/$/, '')}/${button.dataset.id}/editar`;
+            if (deleteForm) {
+                deleteForm.action = `${deleteForm.dataset.deleteUrl.replace(/\/$/, '')}/${button.dataset.id}/eliminar`;
+            }
+            openModal(document.getElementById('edit-package-modal'), button);
+        });
+    });
+
+    if (deleteButton && deleteForm) {
+        deleteButton.addEventListener('click', () => {
+            const guide = document.getElementById('edit-package-guide');
+            const packageGuide = guide ? guide.textContent.replace(/^Guía\s*/, '') : 'este paquete';
+            if (window.confirm(`¿Eliminar el paquete ${packageGuide}? Esta acción no se puede deshacer.`)) {
+                deleteForm.submit();
+            }
+        });
     }
 });
