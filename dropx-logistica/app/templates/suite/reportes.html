@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DropX - Consola de Reportes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+
+<body class="dashboard-body reports-page">
+
+    <aside class="sidebar">
+        <div>
+            <div class="brand-wrapper">
+                <a class="brand-link" href="{{ url_for('public.index') }}" aria-label="Ir al inicio de DropX">
+                    <img src="{{ url_for('static', filename='img/Logo.png') }}" alt="DropX Logística que avanza"
+                        class="brand-logo-img">
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('suite.dashboard') }}" class="nav-link-item">
+                    <span class="nav-icon">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m4.24 1.25v5"></path>
+                        </svg>
+                    </span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="{{ url_for('suite.paquetes') }}" class="nav-link-item">
+                    <span class="nav-icon">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <line x1="15" y1="9" x2="9" y2="15"></line>
+                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                        </svg>
+                    </span>
+                    <span>Paquetes</span>
+                </a>
+
+                <a href="{{ url_for('suite.repartidores') }}" class="nav-link-item">
+                    <span class="nav-icon">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </span>
+                    <span>Repartidores</span>
+                </a>
+
+                <a href="{{ url_for('suite.logisticos') }}" class="nav-link-item">
+                    <span class="nav-icon">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="6" cy="6" r="3"></circle>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="12" r="3"></circle>
+                            <line x1="8.5" y1="7.5" x2="15.5" y2="10.5"></line>
+                            <line x1="8.5" y1="16.5" x2="15.5" y2="13.5"></line>
+                            <line x1="6" y1="9" x2="6" y2="15"></line>
+                        </svg>
+                    </span>
+                    <span>Logísticos</span>
+                </a>
+
+                <a href="{{ url_for('suite.reportes') }}" class="nav-link-item active">
+                    <span class="nav-icon">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="8" y1="18" x2="8" y2="14"></line>
+                            <line x1="12" y1="18" x2="12" y2="11"></line>
+                            <line x1="16" y1="18" x2="16" y2="16"></line>
+                        </svg>
+                    </span>
+                    <span>Reportes</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="sidebar-footer">
+            <a href="{{ url_for('suite.logout') }}" class="btn-sidebar-logout">
+                <span class="logout-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                </span>
+                <span>Finalizar sesión</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-wrapper">
+        <header class="topbar-row">
+            <nav class="breadcrumb-path" aria-label="Ruta de navegación">
+                <a href="{{ url_for('suite.dashboard') }}">Suite</a>
+                <span class="separator">/</span>
+                <span class="current-page">Reportes</span>
+            </nav>
+
+            <div class="user-profile-badge" id="profileBadgeDropdown" title="Perfil Superadmin">
+                <img src="{{ url_for('static', filename='img/avatar_admin.jpg') }}" alt="Avatar Superadmin"
+                    class="user-avatar-img"
+                    onerror="this.src='https://ui-avatars.com/api/?name=Super+Admin&background=0f172a&color=fff'">
+                <span class="user-role-label">{{ usuario.rol if usuario and usuario.rol else 'Superadmin' }}</span>
+                <span class="chevron-icon">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </span>
+            </div>
+        </header>
+
+        <section class="console-header-row">
+            <h1 class="console-title">Consola de Reportes</h1>
+
+            <div class="period-selector-container">
+                <button type="button" class="period-select-btn" id="periodBtn" aria-expanded="false"
+                    aria-haspopup="true">
+                    <span id="currentPeriodText">Este mes (Oct 2026)</span>
+                    <span class="chevron-icon">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </span>
+                </button>
+                <div class="period-dropdown-menu" id="periodDropdownMenu">
+                    <button class="period-dropdown-item active" onclick="seleccionarPeriodo('Este mes (Oct 2026)')">Este
+                        mes (Oct 2026)</button>
+                    <button class="period-dropdown-item" onclick="seleccionarPeriodo('Mes pasado (Sep 2026)')">Mes
+                        pasado (Sep 2026)</button>
+                    <button class="period-dropdown-item"
+                        onclick="seleccionarPeriodo('Tercer Trimestre (Q3 2026)')">Tercer Trimestre (Q3 2026)</button>
+                    <button class="period-dropdown-item"
+                        onclick="seleccionarPeriodo('Segundo Trimestre (Q2 2026)')">Segundo Trimestre (Q2 2026)</button>
+                    <button class="period-dropdown-item" onclick="seleccionarPeriodo('Año completo (2026)')">Año
+                        completo (2026)</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-quick-reports" aria-labelledby="quick-reports-heading">
+            <h2 id="quick-reports-heading" class="section-title">Generación Rápida de Reportes</h2>
+
+            <div class="quick-reports-grid">
+                <article class="quick-report-card">
+                    <div>
+                        <div class="card-header-flex">
+                            <div class="card-icon-badge">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </div>
+                            <div class="card-header-text">
+                                <h3 class="report-card-title">Reporte de Entregas</h3>
+                                <p class="report-card-subtitle">Última emisión: Hoy, 08:30 AM</p>
+                            </div>
+                        </div>
+                        <p class="report-card-description">Análisis detallado de tiempos de entrega, demoras e
+                            incidencias.</p>
+                    </div>
+                    <div class="report-actions-row">
+                        <button class="btn-generate" onclick="accionGenerar('Reporte de Entregas')">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                            Generar
+                        </button>
+                        <button class="btn-download" onclick="accionDescargar('Reporte de Entregas', 'PDF')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Descargar
+                        </button>
+                    </div>
+                </article>
+
+                <article class="quick-report-card">
+                    <div>
+                        <div class="card-header-flex">
+                            <div class="card-icon-badge">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                </svg>
+                            </div>
+                            <div class="card-header-text">
+                                <h3 class="report-card-title">Reporte de Ingresos</h3>
+                                <p class="report-card-subtitle">Última emisión: Ayer, 06:15 PM</p>
+                            </div>
+                        </div>
+                        <p class="report-card-description">Facturación, costos operativos por ruta y margen de ganancia.
+                        </p>
+                    </div>
+                    <div class="report-actions-row">
+                        <button class="btn-generate" onclick="accionGenerar('Reporte de Ingresos')">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                            Generar
+                        </button>
+                        <button class="btn-download" onclick="accionDescargar('Reporte de Ingresos', 'EXCEL')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Descargar
+                        </button>
+                    </div>
+                </article>
+
+                <article class="quick-report-card">
+                    <div>
+                        <div class="card-header-flex">
+                            <div class="card-icon-badge">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </div>
+                            <div class="card-header-text">
+                                <h3 class="report-card-title">Reporte de Repartidores</h3>
+                                <p class="report-card-subtitle">Última emisión: 12 Oct, 10:45 AM</p>
+                            </div>
+                        </div>
+                        <p class="report-card-description">Calificación, eficiencia y total de entregas por operador.
+                        </p>
+                    </div>
+                    <div class="report-actions-row">
+                        <button class="btn-generate" onclick="accionGenerar('Reporte de Repartidores')">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                            Generar
+                        </button>
+                        <button class="btn-download" onclick="accionDescargar('Reporte de Repartidores', 'PDF')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Descargar
+                        </button>
+                    </div>
+                </article>
+
+                <article class="quick-report-card">
+                    <div>
+                        <div class="card-header-flex">
+                            <div class="card-icon-badge">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="card-header-text">
+                                <h3 class="report-card-title">Reporte de Clientes</h3>
+                                <p class="report-card-subtitle">Última emisión: 10 Oct, 04:20 PM</p>
+                            </div>
+                        </div>
+                        <p class="report-card-description">Métricas de satisfacción, clientes más activos y reclamos.
+                        </p>
+                    </div>
+                    <div class="report-actions-row">
+                        <button class="btn-generate" onclick="accionGenerar('Reporte de Clientes')">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                            Generar
+                        </button>
+                        <button class="btn-download" onclick="accionDescargar('Reporte de Clientes', 'PDF')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Descargar
+                        </button>
+                    </div>
+                </article>
+
+                <article class="quick-report-card">
+                    <div>
+                        <div class="card-header-flex">
+                            <div class="card-icon-badge">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                            </div>
+                            <div class="card-header-text">
+                                <h3 class="report-card-title">Reporte de Rutas</h3>
+                                <p class="report-card-subtitle">Última emisión: 08 Oct, 09:00 AM</p>
+                            </div>
+                        </div>
+                        <p class="report-card-description">Kilometraje, optimización de combustible y uso de vehículos.
+                        </p>
+                    </div>
+                    <div class="report-actions-row">
+                        <button class="btn-generate" onclick="accionGenerar('Reporte de Rutas')">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                            Generar
+                        </button>
+                        <button class="btn-download" onclick="accionDescargar('Reporte de Rutas', 'PDF')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Descargar
+                        </button>
+                    </div>
+                </article>
+
+                <article class="quick-report-card">
+                    <div>
+                        <div class="card-header-flex">
+                            <div class="card-icon-badge">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
+                                    <path
+                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                    </path>
+                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                </svg>
+                            </div>
+                            <div class="card-header-text">
+                                <h3 class="report-card-title">Reporte de Inventario</h3>
+                                <p class="report-card-subtitle">Última emisión: 05 Oct, 11:15 AM</p>
+                            </div>
+                        </div>
+                        <p class="report-card-description">Capacidad de almacenes y flujo de mercancía entrante.</p>
+                    </div>
+                    <div class="report-actions-row">
+                        <button class="btn-generate" onclick="accionGenerar('Reporte de Inventario')">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                            Generar
+                        </button>
+                        <button class="btn-download" onclick="accionDescargar('Reporte de Inventario', 'PDF')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Descargar
+                        </button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="history-container-box" aria-labelledby="history-heading">
+            <h2 id="history-heading" class="history-box-title">Historial de Reportes Generados</h2>
+
+            <div class="history-table-responsive">
+                <table class="history-table" id="tablaHistorial">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre del reporte</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Fecha de generación</th>
+                            <th scope="col">Generado por</th>
+                            <th scope="col">Formato</th>
+                            <th scope="col" class="th-actions">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historialTableBody">
+                        <tr id="row-report-1">
+                            <td class="report-name-cell">Reporte Mensual Operaciones</td>
+                            <td>Rendimiento general</td>
+                            <td>01 Oct 2026</td>
+                            <td>Admin Carlos</td>
+                            <td>
+                                <span class="badge-format format-pdf">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                    </svg>
+                                    PDF
+                                </span>
+                            </td>
+                            <td class="table-actions-cell">
+                                <button class="action-icon-btn"
+                                    onclick="verReporte('Reporte Mensual Operaciones', 'Rendimiento general', '01 Oct 2026', 'Admin Carlos', 'PDF')"
+                                    title="Ver detalle">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </button>
+                                <button class="action-icon-btn"
+                                    onclick="accionDescargar('Reporte Mensual Operaciones', 'PDF')"
+                                    title="Descargar archivo">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                </button>
+                                <button class="action-icon-btn btn-delete"
+                                    onclick="eliminarFila('row-report-1', 'Reporte Mensual Operaciones')"
+                                    title="Eliminar reporte">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr id="row-report-2">
+                            <td class="report-name-cell">Consolidado Facturación Q3</td>
+                            <td>Finanzas</td>
+                            <td>28 Sep 2026</td>
+                            <td>Superadmin</td>
+                            <td>
+                                <span class="badge-format format-excel">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="3" y1="9" x2="21" y2="9"></line>
+                                        <line x1="9" y1="21" x2="9" y2="9"></line>
+                                    </svg>
+                                    EXCEL
+                                </span>
+                            </td>
+                            <td class="table-actions-cell">
+                                <button class="action-icon-btn"
+                                    onclick="verReporte('Consolidado Facturación Q3', 'Finanzas', '28 Sep 2026', 'Superadmin', 'EXCEL')"
+                                    title="Ver detalle">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </button>
+                                <button class="action-icon-btn"
+                                    onclick="accionDescargar('Consolidado Facturación Q3', 'EXCEL')"
+                                    title="Descargar archivo">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                </button>
+                                <button class="action-icon-btn btn-delete"
+                                    onclick="eliminarFila('row-report-2', 'Consolidado Facturación Q3')"
+                                    title="Eliminar reporte">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr id="row-report-3">
+                            <td class="report-name-cell">Rendimiento Flota Occidente</td>
+                            <td>Logística</td>
+                            <td>25 Sep 2026</td>
+                            <td>Soporte DropX</td>
+                            <td>
+                                <span class="badge-format format-pdf">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                    </svg>
+                                    PDF
+                                </span>
+                            </td>
+                            <td class="table-actions-cell">
+                                <button class="action-icon-btn"
+                                    onclick="verReporte('Rendimiento Flota Occidente', 'Logística', '25 Sep 2026', 'Soporte DropX', 'PDF')"
+                                    title="Ver detalle">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </button>
+                                <button class="action-icon-btn"
+                                    onclick="accionDescargar('Rendimiento Flota Occidente', 'PDF')"
+                                    title="Descargar archivo">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                </button>
+                                <button class="action-icon-btn btn-delete"
+                                    onclick="eliminarFila('row-report-3', 'Rendimiento Flota Occidente')"
+                                    title="Eliminar reporte">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr id="row-report-4">
+                            <td class="report-name-cell">Auditoría Almacén Bogotá</td>
+                            <td>Inventario</td>
+                            <td>20 Sep 2026</td>
+                            <td>Supervisor Bog</td>
+                            <td>
+                                <span class="badge-format format-pdf">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                    </svg>
+                                    PDF
+                                </span>
+                            </td>
+                            <td class="table-actions-cell">
+                                <button class="action-icon-btn"
+                                    onclick="verReporte('Auditoría Almacén Bogotá', 'Inventario', '20 Sep 2026', 'Supervisor Bog', 'PDF')"
+                                    title="Ver detalle">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </button>
+                                <button class="action-icon-btn"
+                                    onclick="accionDescargar('Auditoría Almacén Bogotá', 'PDF')"
+                                    title="Descargar archivo">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                </button>
+                                <button class="action-icon-btn btn-delete"
+                                    onclick="eliminarFila('row-report-4', 'Auditoría Almacén Bogotá')"
+                                    title="Eliminar reporte">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr id="row-report-5">
+                            <td class="report-name-cell">Eficiencia de Combustible</td>
+                            <td>Mantenimiento</td>
+                            <td>15 Sep 2026</td>
+                            <td>Admin Carlos</td>
+                            <td>
+                                <span class="badge-format format-excel">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="3" y1="9" x2="21" y2="9"></line>
+                                        <line x1="9" y1="21" x2="9" y2="9"></line>
+                                    </svg>
+                                    EXCEL
+                                </span>
+                            </td>
+                            <td class="table-actions-cell">
+                                <button class="action-icon-btn"
+                                    onclick="verReporte('Eficiencia de Combustible', 'Mantenimiento', '15 Sep 2026', 'Admin Carlos', 'EXCEL')"
+                                    title="Ver detalle">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </button>
+                                <button class="action-icon-btn"
+                                    onclick="accionDescargar('Eficiencia de Combustible', 'EXCEL')"
+                                    title="Descargar archivo">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                </button>
+                                <button class="action-icon-btn btn-delete"
+                                    onclick="eliminarFila('row-report-5', 'Eficiencia de Combustible')"
+                                    title="Eliminar reporte">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr id="row-report-6">
+                            <td class="report-name-cell">Tiempos de Entrega Nacional</td>
+                            <td>Rendimiento general</td>
+                            <td>10 Sep 2026</td>
+                            <td>Superadmin</td>
+                            <td>
+                                <span class="badge-format format-pdf">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                    </svg>
+                                    PDF
+                                </span>
+                            </td>
+                            <td class="table-actions-cell">
+                                <button class="action-icon-btn"
+                                    onclick="verReporte('Tiempos de Entrega Nacional', 'Rendimiento general', '10 Sep 2026', 'Superadmin', 'PDF')"
+                                    title="Ver detalle">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </button>
+                                <button class="action-icon-btn"
+                                    onclick="accionDescargar('Tiempos de Entrega Nacional', 'PDF')"
+                                    title="Descargar archivo">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                </button>
+                                <button class="action-icon-btn btn-delete"
+                                    onclick="eliminarFila('row-report-6', 'Tiempos de Entrega Nacional')"
+                                    title="Eliminar reporte">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+
+        <section class="scheduled-section" aria-labelledby="scheduled-heading">
+            <div class="scheduled-header-row">
+                <div class="scheduled-title-wrapper">
+                    <h2 id="scheduled-heading" class="scheduled-section-title">Reportes Programados</h2>
+                    <p class="scheduled-subtitle">Automatizaciones programadas para envío directo a correos de gerencia
+                    </p>
+                </div>
+                <button type="button" class="btn-new-schedule" id="btnOpenScheduleModal">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>Nueva Programación</span>
+                </button>
+            </div>
+
+            <div class="scheduled-cards-grid" id="scheduledCardsContainer">
+                <article class="scheduled-card">
+                    <div class="scheduled-card-left">
+                        <div class="clock-icon-badge">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="scheduled-info">
+                            <h3 class="scheduled-name">Cierre de Caja Diario</h3>
+                            <p class="scheduled-frequency">Diario • 11:59 PM</p>
+                        </div>
+                    </div>
+                    <div class="scheduled-card-right">
+                        <span class="scheduled-tag">Finanzas &amp; Gerencia</span>
+                        <span class="scheduled-next-date">Siguiente: 1 Nov 2026</span>
+                    </div>
+                </article>
+
+                <article class="scheduled-card">
+                    <div class="scheduled-card-left">
+                        <div class="clock-icon-badge">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="scheduled-info">
+                            <h3 class="scheduled-name">Auditoría de Rutas Semanal</h3>
+                            <p class="scheduled-frequency">Semanal • Cada Lunes, 06:00 AM</p>
+                        </div>
+                    </div>
+                    <div class="scheduled-card-right">
+                        <span class="scheduled-tag">Operaciones</span>
+                        <span class="scheduled-next-date">Siguiente: 1 Nov 2026</span>
+                    </div>
+                </article>
+
+
+                <article class="scheduled-card">
+                    <div class="scheduled-card-left">
+                        <div class="clock-icon-badge">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="scheduled-info">
+                            <h3 class="scheduled-name">Métricas de Satisfacción Mensual</h3>
+                            <p class="scheduled-frequency">Mensual • Día 1 de cada mes</p>
+                        </div>
+                    </div>
+                    <div class="scheduled-card-right">
+                        <span class="scheduled-tag">Atención al Cliente</span>
+                        <span class="scheduled-next-date">Siguiente: 1 Nov 2026</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+    </main>
+
+
+    <div class="modal-backdrop" id="modalSchedule" aria-hidden="true">
+        <div class="modal-content-card" role="dialog" aria-modal="true" aria-labelledby="modalScheduleTitle">
+            <div class="modal-header">
+                <h3 id="modalScheduleTitle" class="modal-title">Programar Nuevo Reporte</h3>
+                <button type="button" class="modal-close-btn" id="closeScheduleModal"
+                    aria-label="Cerrar modal">&times;</button>
+            </div>
+            <form id="formNewSchedule" onsubmit="guardarProgramacion(event)">
+                <div class="modal-form-group">
+                    <label for="schedName" class="modal-form-label">Nombre del Reporte</label>
+                    <input type="text" id="schedName" class="modal-form-input"
+                        placeholder="Ej: Rendimiento de Paquetes Express" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="schedCategory" class="modal-form-label">Área o Departamento</label>
+                    <select id="schedCategory" class="modal-form-select" required>
+                        <option value="Operaciones">Operaciones</option>
+                        <option value="Finanzas & Gerencia">Finanzas &amp; Gerencia</option>
+                        <option value="Atención al Cliente">Atención al Cliente</option>
+                        <option value="Logística & Rutas">Logística &amp; Rutas</option>
+                        <option value="Inventario">Inventario</option>
+                    </select>
+                </div>
+                <div class="modal-form-group">
+                    <label for="schedFrequency" class="modal-form-label">Frecuencia y Horario</label>
+                    <select id="schedFrequency" class="modal-form-select" required>
+                        <option value="Diario • 08:00 AM">Diario • 08:00 AM</option>
+                        <option value="Diario • 11:59 PM">Diario • 11:59 PM</option>
+                        <option value="Semanal • Cada Lunes, 06:00 AM">Semanal • Cada Lunes, 06:00 AM</option>
+                        <option value="Semanal • Cada Viernes, 05:00 PM">Semanal • Cada Viernes, 05:00 PM</option>
+                        <option value="Mensual • Día 1 de cada mes">Mensual • Día 1 de cada mes</option>
+                    </select>
+                </div>
+                <div class="modal-form-group">
+                    <label for="schedEmail" class="modal-form-label">Correo electrónico de envío</label>
+                    <input type="email" id="schedEmail" class="modal-form-input" placeholder="gerencia@dropx.com"
+                        required>
+                </div>
+                <div class="modal-footer-btns">
+                    <button type="button" class="btn-download" id="cancelScheduleModal">Cancelar</button>
+                    <button type="submit" class="btn-generate">Guardar Programación</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="modalViewReport" aria-hidden="true">
+        <div class="modal-content-card" role="dialog" aria-modal="true" aria-labelledby="modalViewTitle">
+            <div class="modal-header">
+                <h3 id="modalViewTitle" class="modal-title">Detalles del Reporte</h3>
+                <button type="button" class="modal-close-btn" id="closeViewModal"
+                    aria-label="Cerrar modal">&times;</button>
+            </div>
+            <div id="modalViewBody" style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.6;">
+            </div>
+            <div class="modal-footer-btns">
+                <button type="button" class="btn-download" id="closeViewBtn">Cerrar</button>
+                <button type="button" class="btn-generate" id="btnModalDownload">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Descargar Copia
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <script>
+
+        const periodBtn = document.getElementById('periodBtn');
+        const periodDropdownMenu = document.getElementById('periodDropdownMenu');
+        const currentPeriodText = document.getElementById('currentPeriodText');
+
+        if (periodBtn) {
+            periodBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                periodDropdownMenu.classList.toggle('show');
+            });
+        }
+
+        function seleccionarPeriodo(periodo) {
+            currentPeriodText.textContent = periodo;
+            document.querySelectorAll('.period-dropdown-item').forEach(item => {
+                item.classList.toggle('active', item.textContent === periodo);
+            });
+            periodDropdownMenu.classList.remove('show');
+            showToast('Filtro Aplicado', `Mostrando reportes para: ${periodo}`, 'success');
+        }
+
+        window.addEventListener('click', () => {
+            if (periodDropdownMenu && periodDropdownMenu.classList.contains('show')) {
+                periodDropdownMenu.classList.remove('show');
+            }
+        });
+
+        function showToast(title, desc, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `custom-toast ${type === 'success' ? 'toast-success' : type === 'danger' ? 'toast-danger' : ''}`;
+
+            toast.innerHTML = `
+                <div style="flex: 1;">
+                    <div class="toast-message-title">${title}</div>
+                    <div class="toast-message-desc">${desc}</div>
+                </div>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.transition = 'all 0.3s ease';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(15px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        function accionGenerar(nombreReporte) {
+            showToast('Generando Reporte', `Compilando métricas para "${nombreReporte}"...`, 'info');
+            setTimeout(() => {
+                showToast('Reporte Generado', `El "${nombreReporte}" se ha generado y registrado en el historial.`, 'success');
+                agregarFilaHistorial(nombreReporte, 'Rendimiento general', 'PDF');
+            }, 1200);
+        }
+
+        function accionDescargar(nombreReporte, formato = 'PDF') {
+            showToast('Iniciando Descarga', `Descargando "${nombreReporte}.${formato.toLowerCase()}"...`, 'info');
+            const contenido = `DropX Logística - ${nombreReporte}\nFecha: ${new Date().toLocaleDateString('es-CO')}\nFormato: ${formato}\nEstado: Procesado\nGenerado por: Superadmin DropX`;
+            const blob = new Blob([contenido], { type: formato === 'PDF' ? 'application/pdf' : 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${nombreReporte.replace(/\\s+/g, '_')}.${formato.toLowerCase() === 'excel' ? 'csv' : 'txt'}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function agregarFilaHistorial(nombre, tipo, formato) {
+            const tbody = document.getElementById('historialTableBody');
+            const id = 'row-report-' + Date.now();
+            const tr = document.createElement('tr');
+            tr.id = id;
+            tr.innerHTML = `
+                <td class="report-name-cell">${nombre}</td>
+                <td>${tipo}</td>
+                <td>Hoy, ${new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}</td>
+                <td>Superadmin</td>
+                <td>
+                    <span class="badge-format ${formato === 'PDF' ? 'format-pdf' : 'format-excel'}">
+                        ${formato === 'PDF' ? `
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            PDF
+                        ` : `
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="3" y1="9" x2="21" y2="9"></line>
+                                <line x1="9" y1="21" x2="9" y2="9"></line>
+                            </svg>
+                            EXCEL
+                        `}
+                    </span>
+                </td>
+                <td class="table-actions-cell">
+                    <button class="action-icon-btn" onclick="verReporte('${nombre}', '${tipo}', 'Hoy', 'Superadmin', '${formato}')" title="Ver detalle">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                    <button class="action-icon-btn" onclick="accionDescargar('${nombre}', '${formato}')" title="Descargar archivo">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </button>
+                    <button class="action-icon-btn btn-delete" onclick="eliminarFila('${id}', '${nombre}')" title="Eliminar reporte">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                    </button>
+                </td>
+            `;
+            tbody.insertBefore(tr, tbody.firstChild);
+        }
+
+        function eliminarFila(rowId, nombre) {
+            const row = document.getElementById(rowId);
+            if (row) {
+                row.style.transition = 'all 0.25s ease';
+                row.style.opacity = '0';
+                row.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    row.remove();
+                    showToast('Reporte Eliminado', `"${nombre}" fue removido del historial.`, 'danger');
+                }, 250);
+            }
+        }
+
+        const modalViewReport = document.getElementById('modalViewReport');
+        const modalViewBody = document.getElementById('modalViewBody');
+        const modalViewTitle = document.getElementById('modalViewTitle');
+        const closeViewModal = document.getElementById('closeViewModal');
+        const closeViewBtn = document.getElementById('closeViewBtn');
+        const btnModalDownload = document.getElementById('btnModalDownload');
+        let currentModalReport = null;
+
+        function verReporte(nombre, tipo, fecha, autor, formato) {
+            currentModalReport = { nombre, formato };
+            modalViewTitle.textContent = nombre;
+            modalViewBody.innerHTML = `
+                <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-color);">
+                    <p style="margin-bottom: 6px;"><strong>Categoría:</strong> ${tipo}</p>
+                    <p style="margin-bottom: 6px;"><strong>Fecha de Generación:</strong> ${fecha}</p>
+                    <p style="margin-bottom: 6px;"><strong>Generado por:</strong> ${autor}</p>
+                    <p style="margin-bottom: 0;"><strong>Formato del archivo:</strong> <span style="font-weight: 700; color: ${formato === 'PDF' ? 'var(--pdf-red)' : 'var(--excel-green)'};">${formato}</span></p>
+                </div>
+                <p>Este informe consolida los indicadores operativos y logísticos recopilados en las plataformas DropX durante el período seleccionado. Los datos están certificados y listos para auditoría.</p>
+            `;
+            modalViewReport.classList.add('open');
+        }
+
+        if (btnModalDownload) {
+            btnModalDownload.addEventListener('click', () => {
+                if (currentModalReport) {
+                    accionDescargar(currentModalReport.nombre, currentModalReport.formato);
+                    modalViewReport.classList.remove('open');
+                }
+            });
+        }
+
+        if (closeViewModal) closeViewModal.onclick = () => modalViewReport.classList.remove('open');
+        if (closeViewBtn) closeViewBtn.onclick = () => modalViewReport.classList.remove('open');
+
+        // Modal Nueva Programación
+        const modalSchedule = document.getElementById('modalSchedule');
+        const btnOpenScheduleModal = document.getElementById('btnOpenScheduleModal');
+        const closeScheduleModal = document.getElementById('closeScheduleModal');
+        const cancelScheduleModal = document.getElementById('cancelScheduleModal');
+
+        if (btnOpenScheduleModal) {
+            btnOpenScheduleModal.onclick = () => modalSchedule.classList.add('open');
+        }
+        if (closeScheduleModal) closeScheduleModal.onclick = () => modalSchedule.classList.remove('open');
+        if (cancelScheduleModal) cancelScheduleModal.onclick = () => modalSchedule.classList.remove('open');
+
+        function guardarProgramacion(e) {
+            e.preventDefault();
+            const name = document.getElementById('schedName').value;
+            const category = document.getElementById('schedCategory').value;
+            const freq = document.getElementById('schedFrequency').value;
+            const email = document.getElementById('schedEmail').value;
+
+            const container = document.getElementById('scheduledCardsContainer');
+            const card = document.createElement('article');
+            card.className = 'scheduled-card';
+            card.innerHTML = `
+                <div class="scheduled-card-left">
+                    <div class="clock-icon-badge">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="scheduled-info">
+                        <h3 class="scheduled-name">${name}</h3>
+                        <p class="scheduled-frequency">${freq}</p>
+                    </div>
+                </div>
+                <div class="scheduled-card-right">
+                    <span class="scheduled-tag">${category}</span>
+                    <span class="scheduled-next-date">Siguiente: Mañana</span>
+                </div>
+            `;
+
+            container.appendChild(card);
+            modalSchedule.classList.remove('open');
+            document.getElementById('formNewSchedule').reset();
+            showToast('Programación Guardada', `Se programó el envío automático de "${name}" a ${email}`, 'success');
+        }
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modalViewReport) modalViewReport.classList.remove('open');
+            if (e.target === modalSchedule) modalSchedule.classList.remove('open');
+        });
+    </script>
+</body>
+
+</html>

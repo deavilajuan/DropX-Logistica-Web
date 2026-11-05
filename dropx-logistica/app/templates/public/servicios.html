@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+
+    <header class="navbar-dropx">
+        <a class="logo" href="{{ url_for('public.index') }}" aria-label="Ir a la página principal de DropX">
+            <span class="logo-cube" aria-hidden="true"></span>
+            <div class="logo-copy">
+                <h1>DropX</h1>
+                <h3>Logistica que avanza</h3>
+            </div>
+        </a>
+
+        <nav class="nav-links">
+            <a href="{{ url_for('public.rastreo') }}">Rastreo</a>
+            <a href="{{ url_for('public.servicios') }}" class="active">Servicios</a>
+            <a href="{{ url_for('public.ser_aliado') }}">Ser Aliado</a>
+            <a href="{{ url_for('public.contacto') }}">Contacto</a>
+            <a href="{{ url_for('suite.login') }}" class="btn-suite">Inicia Sesión</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="seccion-hero hero-interno">
+            <div class="hero-container">
+                <span class="hero-tag">SOLUCIONES PARA TU NEGOCIO</span>
+                <h1 class="hero-title">Servicios logísticos a tu medida</h1>
+                <p class="hero-desc">Conecta tu operación con soluciones de distribución, almacenamiento y última milla
+                    en toda Colombia.</p>
+            </div>
+        </section>
+
+        <section class="seccion-cobertura">
+            <div class="section-header-center">
+                <span class="section-tag">MÁXIMA COBERTURA</span>
+                <h2>Portafolio completo de distribución</h2>
+            </div>
+            <div class="services-grid-4">
+                <div class="service-box">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3>Envíos Nacionales</h3>
+                    <p>Llegamos a más de 900 destinos municipales en Colombia con tarifas competitivas
+                        y tiempos de entrega estables.
+                    </p>
+                </div>
+                <div class="service-box">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3>Envíos Express</h3>
+                    <p>Entrega prioritaria de documentos y paquetes pequeños el mismo día o al día"
+                        siguiente en las ciudades principales.
+                    </p>
+                </div>
+                <div class="service-box">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3>Logistica Empresarial</h3>
+                    <p>Soluciones personalizadas y dedicadas para corporaciones, con flotas exclusivas
+                        y soporte técnico premium.
+                    </p>
+                </div>
+                <div class="service-box">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3>Almacenamiento Inteligente</h3>
+                    <p>Espacios de bodegaje en Bogotá, Medellín, Cali y Cartagena con gestión
+                        de stock mediante WMS de última generación.
+                    </p>
+                </div>
+                <div class="service-box">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3>Última Milla Eficiente</h3>
+                    <p>Entrega capilar urbana de geolocalización satelital para brindar la mejor
+                        tasa de efectividad de cara al comprador.
+                    </p>
+                </div>
+                <div class="service-box">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3>Fulfillment Completo</h3>
+                    <p>Desde que tu cliente compra hasta que empacamos y enviamos. Nos
+                        encargamos de todo el proceso de empaque y picking.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="seccion-planes">
+            <div class="section-header-center">
+                <span class="section-tag">PLANES FLEXIBLES</span>
+                <h2>Tarifas adaptadas a tu nivel de despachos</h2>
+            </div>
+
+            <div class="pricing-container">
+
+                <div class="card card-basico">
+                    <div class="card-header">
+                        <h2 class="card-title">Básico</h2>
+                        <p class="card-description">Ideal para emprendedores y tiendas de e-commerce
+                            que inician con menos de 50 despachos mensuales.
+                        </p>
+                    </div>
+
+                    <div class="card-price-box">
+                        <div class="price">Cotizar</div>
+                        <div class="price-sub">Por envio local</div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <ul class="features-list">
+                        <li>
+                            <div class="icono-escudo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span> Hasta 50 envíos al mes</span>
+                        </li>
+
+                        <li>
+                            <div class="icono-escudo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span> Rastreo básico</span>
+                        </li>
+
+                        <li>
+                            <div class="icono-escudo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span> Integración básica con Shopify</span>
+                        </li>
+                        <li>
+                            <div class="icono-escudo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span> Soporte vía correo</span>
+                        </li>
+                    </ul>
+
+                    <a href="{{ url_for('public.contacto', plan='basico') }}" class="btn">Elegir Plan</a>
+                </div>
+
+                <!-- Tarjeta Profesional -->
+                <div class="card card-profesional">
+                    <div class="card-header">
+                        <h2 class="card-title">Profesional</h2>
+                        <p class="card-description">Diseñado para marcas consolidadas que manejan volumen y requieren
+                            reportes diarios y soporte inmediato.</p>
+                    </div>
+
+                    <div class="card-price-box">
+                        <div class="price">Cotizar</div>
+                        <div class="price-sub">Por envio local</div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <ul class="features-list">
+                        <li>
+                            <div class="icono-escudo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span>Desde 150 envíos al mes</span>
+                        </li>
+
+                        <li>
+                            <div class="icono-escudo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span> Rastreo en tiempo real ilimitado </span>
+                        </li>
+
+                        <li>
+                            <div class="icono-escudo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span> Integración con múltiples tiendas</span>
+                        </li>
+
+                        <li>
+                            <div class="icono-escudo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span> Administrador de cuenta dedicado</span>
+                        </li>
+
+                        <li>
+                            <div class="icono-escudo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span> Devoluciones sin costo</span>
+                        </li>
+                    </ul>
+
+                    <a href="{{ url_for('public.contacto', plan='profesional') }}" class="btn">Elegir Plan</a>
+                </div>
+
+                <!-- Tarjeta Empresarial -->
+                <div class="card card-empresarial">
+                    <div class="card-header">
+                        <h2 class="card-title">Empresarial</h2>
+                        <p class="card-description">Para operadores con centros de distribución propios que exigen
+                            integraciones vía API personalizadas.</p>
+                    </div>
+
+                    <div class="card-price-box">
+                        <div class="price">Cotizar</div>
+                        <div class="price-sub">Por envio local</div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <ul class="features-list">
+                        <li>
+                            <div class="icono-escudo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span>Despachos ilimitados </span>
+                        </li>
+
+                        <li>
+                            <div class="icono-escudo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span>API de conexión a la medida</span>
+                        </li>
+
+                        <li>
+                            <div class="icono-escudo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span>SLA garantizado por contrato</span>
+                        </li>
+
+                        <li>
+                            <div class="icono-escudo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span>Fulfillment y almacenamiento</span>
+                        </li>
+
+                        <li>
+                            <div class="icono-escudo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <span>Soporte prioritario 24/7</span>
+                        </li>
+                    </ul>
+
+                    <a href="{{ url_for('public.contacto', plan='empresarial') }}" class="btn">Elegir Plan</a>
+                </div>
+
+        </section>
+
+        <section class="seccion-llamado_a_la_accion">
+            <div class="cta-container">
+                <h2>¿Listo patra optimizar tu logística?</h2>
+                <p>
+                    Regístrate hoy mismo y descubre por qué cientos de e-commerce y empresas en Colombia
+                    confian en DropX.
+                </p>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('public.ser_aliado') }}" class="btn-cta-orange">Crear mi cuenta ya</a>
+                    <a href="{{ url_for('public.contacto') }}" class="btn-cta-outline">Agendar demo</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer-dropx">
+        <div class="footer-top-grid">
+            <!-- Columna 1: Logo e información -->
+            <div class="footer-col brand-col">
+                <a class="footer-logo" href="{{ url_for('public.index') }}"
+                    aria-label="Ir a la página principal de DropX">
+                    <span class="logo-cube" aria-hidden="true"></span>
+                    <span class="logo-name">DropX</span>
+                </a>
+                <p class="brand-desc">
+                    Plataforma tecnológica avanzada de logística y distribución de última milla para empresas y
+                    e-commerce en Colombia.
+                </p>
+            </div>
+
+            <!-- Columna 2: Empresa -->
+            <div class="footer-col">
+                <h4 class="col-title">Empresa</h4>
+                <ul class="footer-links">
+                    <ol><a href="{{ url_for('public.servicios') }}">Servicios</a></ol>
+                    <ol><a href="{{ url_for('public.nosotros') }}">Sobre Nosotros</a></ol>
+                    <ol><a href="{{ url_for('public.ser_aliado') }}">Ser Aliado</a></ol>
+                    <ol><a href="{{ url_for('public.servicios') }}">Tarifas</a></ol>
+                </ul>
+            </div>
+
+            <!-- Columna 3: Soporte y Legal -->
+            <div class="footer-col">
+                <h4 class="col-title">Soporte y Legal</h4>
+                <ul class="footer-links">
+                    <ol><a href="{{ url_for('public.contacto') }}">Centro de Ayuda</a></ol>
+                    <ol><a href="{{ url_for('public.terminos') }}">Términos del Servicio</a></ol>
+                    <ol><a href="{{ url_for('public.privacidad') }}">Privacidad</a></ol>
+                    <ol><a href="{{ url_for('public.contacto') }}">Contacto</a></ol>
+                </ul>
+            </div>
+
+            <!-- Columna 4: Contacto -->
+            <div class="footer-col contact-col">
+                <h4 class="col-title">Contacto</h4>
+                <ul class="footer-links-info">
+                    <ol>Email: <a href="mailto:info@dropxlogistica.com">info@dropxlogistica.com</a></ol>
+                    <ol>Tel: (555) 123-4567</ol>
+                    <ol>Bogotá, Colombia</ol>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Línea divisoria y parte inferior -->
+        <div class="footer-divider"></div>
+
+        <div class="footer-bottom">
+            <p class="copyright">© 2026 DropX. Todos los derechos reservados. www.dropxlogistica.com</p>
+
+            <!-- Los 4 círculos de redes sociales de la foto -->
+            <div class="social-circles">
+                <a href="#" class="social-circle" aria-label="Facebook"></a>
+                <a href="#" class="social-circle" aria-label="Twitter"></a>
+                <a href="#" class="social-circle" aria-label="LinkedIn"></a>
+                <a href="#" class="social-circle" aria-label="Instagram"></a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

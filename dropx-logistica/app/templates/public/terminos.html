@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DropX - Términos del Servicio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+    <!-- 1. NAVBAR OFICIAL -->
+    <header class="navbar-dropx">
+        <a class="logo" href="{{ url_for('public.index') }}" aria-label="Ir a la página principal de DropX">
+            <span class="logo-cube" aria-hidden="true"></span>
+            <div class="logo-copy">
+                <h1>DropX</h1>
+                <h3>Logística que avanza</h3>
+            </div>
+        </a>
+
+        <nav class="nav-links">
+            <a href="{{ url_for('public.rastreo') }}">Rastreo</a>
+            <a href="{{ url_for('public.servicios') }}">Servicios</a>
+            <a href="{{ url_for('public.ser_aliado') }}">Ser Aliado</a>
+            <a href="{{ url_for('public.contacto') }}">Contacto</a>
+            <a href="{{ url_for('suite.login') }}" class="btn-suite">Suite logística</a>
+        </nav>
+    </header>
+
+    <main class="pagina-legal">
+        <section class="seccion-legal-header">
+            <div class="legal-container">
+                <nav class="legal-breadcrumbs" aria-label="Miga de pan">
+                    <a href="{{ url_for('public.index') }}">Inicio</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <a href="{{ url_for('public.contacto') }}">Soporte y Legal</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-current">Términos del Servicio</span>
+                </nav>
+
+                <div class="legal-badge">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <span>Borrador para revisión legal</span>
+                </div>
+
+                <h1 class="legal-title">Términos del Servicio</h1>
+                <p class="legal-description">
+                    Un marco de referencia para comprender el uso de la plataforma, la información de los envíos y la
+                    relación con nuestra operación logística.
+                </p>
+                <p class="legal-disclaimer">
+                    Contenido de ejemplo para diseño. No constituye una política jurídicamente aprobada.
+                </p>
+            </div>
+        </section>
+
+        <section class="seccion-legal-body">
+            <div class="legal-container legal-grid">
+                <aside class="legal-sidebar">
+                    <div class="legal-toc-card">
+                        <h3 class="legal-toc-title">En este documento</h3>
+                        <nav class="legal-toc-nav">
+                            <a href="#seccion-01" class="toc-link">
+                                <span class="toc-num">01</span>
+                                <span class="toc-text">Alcance del servicio</span>
+                            </a>
+                            <a href="#seccion-02" class="toc-link">
+                                <span class="toc-num">02</span>
+                                <span class="toc-text">Uso de la plataforma</span>
+                            </a>
+                            <a href="#seccion-03" class="toc-link">
+                                <span class="toc-num">03</span>
+                                <span class="toc-text">Información de los envíos</span>
+                            </a>
+                            <a href="#seccion-04" class="toc-link">
+                                <span class="toc-num">04</span>
+                                <span class="toc-text">Responsabilidades de las partes</span>
+                            </a>
+                            <a href="#seccion-05" class="toc-link">
+                                <span class="toc-num">05</span>
+                                <span class="toc-text">Tarifas y condiciones comerciales</span>
+                            </a>
+                            <a href="#seccion-06" class="toc-link">
+                                <span class="toc-num">06</span>
+                                <span class="toc-text">Soporte e incidencias</span>
+                            </a>
+                            <a href="#seccion-07" class="toc-link">
+                                <span class="toc-num">07</span>
+                                <span class="toc-text">Cambios y consultas</span>
+                            </a>
+                        </nav>
+                    </div>
+
+                    <div class="legal-help-card">
+                        <h4 class="legal-help-title">¿Necesitas orientación?</h4>
+                        <p class="legal-help-desc">
+                            Consulta el Centro de Ayuda o comunícate con nosotros desde Contacto.
+                        </p>
+                        <a href="{{ url_for('public.contacto') }}" class="legal-help-link">
+                            Ir a Contacto <span aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </aside>
+
+                <article class="legal-content">
+                    <div class="legal-callout">
+                        <h4 class="callout-title">Documento en revisión</h4>
+                        <p class="callout-text">
+                            La versión definitiva debe validar las condiciones aplicables, la identificación del
+                            responsable y los procedimientos antes de su publicación.
+                        </p>
+                    </div>
+
+                    <section id="seccion-01" class="legal-article-section">
+                        <h2 class="legal-section-heading">01. Alcance del servicio</h2>
+                        <p>
+                            Este borrador describe el uso de DropX como plataforma tecnológica de logística y
+                            distribución de última milla para empresas y e-commerce en Colombia. Comprende la gestión de
+                            envíos, el rastreo y las integraciones que acompañan la operación.
+                        </p>
+                        <p>
+                            La disponibilidad de cada solución y las condiciones particulares de una operación deben
+                            revisarse en la información del servicio y en los acuerdos que correspondan. Este documento
+                            de ejemplo no sustituye una cotización ni establece compromisos de entrega o garantías
+                            adicionales.
+                        </p>
+                    </section>
+
+                    <section id="seccion-02" class="legal-article-section">
+                        <h2 class="legal-section-heading">02. Uso de la plataforma</h2>
+                        <p>
+                            La Suite Logística permite registrar y consultar información de la operación. Quien utilice
+                            una cuenta debe mantener sus datos de contacto actualizados, proteger sus credenciales y
+                            limitar el acceso a las personas autorizadas de su organización.
+                        </p>
+                        <p>
+                            El uso debe estar relacionado con la gestión de la operación logística. No deben compartirse
+                            contraseñas, interferirse con el funcionamiento de la plataforma ni consultarse datos de
+                            envíos ajenos sin autorización. Si identificas un acceso que no reconoces, comunícalo desde
+                            Contacto.
+                        </p>
+                    </section>
+
+                    <section id="seccion-03" class="legal-article-section">
+                        <h2 class="legal-section-heading">03. Información de los envíos</h2>
+                        <p>
+                            Antes de generar un envío, revisa la información del remitente y del destinatario, los datos
+                            de contacto, la ciudad, la dirección y la descripción del paquete. Si el pedido llega desde
+                            una tienda integrada, comprueba que los datos sincronizados sean completos y correctos.
+                        </p>
+                        <p>
+                            Conserva la referencia o guía para consultar el rastreo y solicitar orientación. Si detectas
+                            un error, informa cuál es el dato a revisar y el número de guía; cualquier ajuste debe
+                            evaluarse según la etapa en la que se encuentre la operación.
+                        </p>
+                    </section>
+
+                    <section id="seccion-04" class="legal-article-section">
+                        <h2 class="legal-section-heading">04. Responsabilidades de las partes</h2>
+                        <p>
+                            La empresa que genera el envío debe aportar información veraz, preparar adecuadamente el
+                            paquete y facilitar los datos necesarios para la recolección y entrega. También debe revisar
+                            las condiciones del servicio que haya solicitado.
+                        </p>
+                        <p>
+                            La operación de DropX se apoya en su plataforma y su red logística. Los alcances de
+                            responsabilidad, las restricciones de mercancía y las condiciones específicas de atención de
+                            incidencias deben validarse en los acuerdos aplicables. Este borrador no fija
+                            indemnizaciones, exclusiones ni garantías.
+                        </p>
+                    </section>
+
+                    <section id="seccion-05" class="legal-article-section">
+                        <h2 class="legal-section-heading">05. Tarifas y condiciones comerciales</h2>
+                        <p>
+                            Los planes publicados se consultan en Servicios, en la sección «PLANES FLEXIBLES / Tarifas
+                            adaptadas a tu nivel de despachos». Revisa la descripción de cada opción y confirma las
+                            condiciones que correspondan a tu operación antes de contratar.
+                        </p>
+                        <p>
+                            Las necesidades de almacenamiento, integraciones o soluciones empresariales pueden requerir
+                            una revisión particular. Para solicitar una cotización o aclarar conceptos de una propuesta,
+                            utiliza la página de Contacto. Este documento no crea una tarifa distinta de las condiciones
+                            que se acuerden.
+                        </p>
+                        <div class="legal-action-box">
+                            <a href="{{ url_for('public.servicios') }}" class="legal-inline-link">
+                                Ver sección Tarifas dentro de Servicios <span aria-hidden="true">→</span>
+                            </a>
+                        </div>
+                    </section>
+
+                    <section id="seccion-06" class="legal-article-section">
+                        <h2 class="legal-section-heading">06. Soporte e incidencias</h2>
+                        <p>
+                            El Centro de Ayuda ofrece orientación sobre creación de envíos, recolección, rastreo e
+                            integraciones. Para una consulta específica, utiliza Contacto e incluye la guía, una
+                            descripción clara de lo ocurrido y un medio para responderte.
+                        </p>
+                        <p>
+                            Comparte únicamente la información necesaria y evita incluir contraseñas. La revisión de
+                            cada caso dependerá de los datos de la operación y de las condiciones aplicables. Este
+                            borrador no establece plazos de resolución, compensaciones automáticas ni resultados
+                            garantizados.
+                        </p>
+                        <div class="legal-action-box">
+                            <a href="{{ url_for('public.contacto') }}" class="legal-inline-link">
+                                Centro de Ayuda • Contacto
+                            </a>
+                            <span class="legal-inline-separator">•</span>
+                            <a href="mailto:info@dropxlogistica.com" class="legal-inline-link">
+                                info@dropxlogistica.com
+                            </a>
+                        </div>
+                    </section>
+
+                    <section id="seccion-07" class="legal-article-section">
+                        <h2 class="legal-section-heading">07. Cambios y consultas</h2>
+                        <p>
+                            La versión que se publique deberá explicar cómo se comunican las modificaciones de estas
+                            condiciones y desde cuándo se aplican. Cualquier cambio debe revisarse junto con los
+                            acuerdos particulares de servicio que correspondan.
+                        </p>
+                        <p>
+                            Para preguntas sobre este contenido, utiliza Contacto o escribe a info@dropxlogistica.com.
+                            Antes de publicar, la revisión legal debe completar la identificación del prestador, los
+                            mecanismos de aceptación y las demás condiciones exigibles. Este texto continúa siendo un
+                            ejemplo para diseño.
+                        </p>
+                    </section>
+
+                    <div class="legal-related-card">
+                        <div class="related-card-text">
+                            <span class="related-card-label">También puedes consultar:</span>
+                            <h3 class="related-card-title">Privacidad</h3>
+                        </div>
+                        <a href="{{ url_for('public.privacidad') }}" class="related-card-arrow"
+                            aria-label="Ir a Política de Privacidad">
+                            <span aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer-dropx">
+        <div class="footer-top-grid">
+            <div class="footer-col brand-col">
+                <a class="footer-logo" href="{{ url_for('public.index') }}"
+                    aria-label="Ir a la página principal de DropX">
+                    <span class="logo-cube" aria-hidden="true"></span>
+                    <span class="logo-name">DropX</span>
+                </a>
+                <p class="brand-desc">
+                    Plataforma tecnológica avanzada de logística y distribución de última milla para empresas y
+                    e-commerce en Colombia.
+                </p>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="col-title">Empresa</h4>
+                <ul class="footer-links">
+                    <ol><a href="{{ url_for('public.servicios') }}">Servicios</a></ol>
+                    <ol><a href="{{ url_for('public.nosotros') }}">Sobre Nosotros</a></ol>
+                    <ol><a href="{{ url_for('public.ser_aliado') }}">Ser Aliado</a></ol>
+                    <ol><a href="{{ url_for('public.servicios') }}">Tarifas</a></ol>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="col-title">Soporte y Legal</h4>
+                <ul class="footer-links">
+                    <ol><a href="{{ url_for('public.contacto') }}">Centro de Ayuda</a></ol>
+                    <ol><a href="{{ url_for('public.terminos') }}">Términos del Servicio</a></ol>
+                    <ol><a href="{{ url_for('public.privacidad') }}">Privacidad</a></ol>
+                    <ol><a href="{{ url_for('public.contacto') }}">Contacto</a></ol>
+                </ul>
+            </div>
+
+            <div class="footer-col contact-col">
+                <h4 class="col-title">Contacto</h4>
+                <ul class="footer-links-info">
+                    <ol>Email: <a href="mailto:info@dropxlogistica.com">info@dropxlogistica.com</a></ol>
+                    <ol>Tel: (555) 123-4567</ol>
+                    <ol>Bogotá, Colombia</ol>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-divider"></div>
+
+        <div class="footer-bottom">
+            <p class="copyright">© 2026 DropX. Todos los derechos reservados. www.dropxlogistica.com</p>
+
+            <div class="social-circles">
+                <a href="#" class="social-circle" aria-label="Facebook"></a>
+                <a href="#" class="social-circle" aria-label="Twitter"></a>
+                <a href="#" class="social-circle" aria-label="LinkedIn"></a>
+                <a href="#" class="social-circle" aria-label="Instagram"></a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
