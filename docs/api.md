@@ -22,7 +22,7 @@ Responde `200`:
 ```json
 {
   "token": "eyJhbGciOi...",
-  "user": { "id": 3, "name": "Jhon Doe", "email": "courier@dropx.com", "role": "courier" }
+  "user": { "id": 3, "name": "Courier", "email": "courier@dropx.com", "role": "courier" }
 }
 ```
 
@@ -38,7 +38,7 @@ Devuelve el usuario dueño del token. Requiere el header `Authorization: Bearer 
 Responde `200`:
 
 ```json
-{ "user": { "id": 3, "name": "Jhon Doe", "email": "courier@dropx.com", "role": "courier" } }
+{ "user": { "id": 3, "name": "Courier", "email": "courier@dropx.com", "role": "courier" } }
 ```
 
 | Código | Cuándo | Respuesta |

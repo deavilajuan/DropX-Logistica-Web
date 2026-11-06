@@ -2,6 +2,22 @@
 
 Panel web, sitio público y API del proyecto DropX (mensajería y logística en Cartagena de Indias), desarrollados con Flask y MySQL. La API es la que utiliza la app móvil [`dropx_app`](https://github.com/yammadev/dropx_app).
 
+## Capturas
+
+**Suite**
+
+| Dashboard | Paquetes |
+|---|---|
+| ![Dashboard](docs/screenshots/suite-dashboard.png) | ![Paquetes](docs/screenshots/suite-paquetes.png) |
+| **Detalle de un paquete** | **Repartidores** |
+| ![Detalle de paquete](docs/screenshots/suite-detalle.png) | ![Repartidores](docs/screenshots/suite-repartidores.png) |
+
+**Sitio público**
+
+| Inicio | Rastreo | Ser aliado |
+|---|---|---|
+| ![Inicio](docs/screenshots/sitio-inicio.png) | ![Rastreo](docs/screenshots/sitio-rastreo.png) | ![Ser aliado](docs/screenshots/sitio-ser-aliado.png) |
+
 ## Instalación y prueba
 
 **Requisitos:** Python 3.10 o superior y MySQL encendido (en XAMPP, el módulo MySQL) con la base de datos `dropx` creada. No se necesita Node.
@@ -35,7 +51,7 @@ El sitio queda en <http://127.0.0.1:5000> y la Suite en <http://127.0.0.1:5000/s
 |---|---|---|
 | Administrador | `admin@dropx.com` | `admin` |
 | Manager | `manager@dropx.com` | `manager` |
-| Jhon Doe | `courier@dropx.com` | `courier` |
+| Courier | `courier@dropx.com` | `courier` |
 | Repartidores de prueba | `ana@dropx.com`, `carlos@dropx.com`, `luis@dropx.com`, `maria@dropx.com` | `courier` |
 
 **¿Qué revisar?** Como `admin` se ven todas las secciones y se puede eliminar; como `manager` no aparecen Managers ni Reportes y no se puede eliminar; el rastreo público se prueba en <http://127.0.0.1:5000/rastreo> con una guía como `DX-000001`; y la API con Postman, como se explica en [docs/api.md](docs/api.md).

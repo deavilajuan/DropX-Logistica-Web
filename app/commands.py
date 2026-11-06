@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parent.parent
 USERS = [
     ('Administrador', 'admin@dropx.com', 'admin', 'SEED_ADMIN_PASSWORD'),
     ('Manager', 'manager@dropx.com', 'manager', 'SEED_MANAGER_PASSWORD'),
-    ('Jhon Doe', 'courier@dropx.com', 'courier', 'SEED_COURIER_PASSWORD'),
+    ('Courier', 'courier@dropx.com', 'courier', 'SEED_COURIER_PASSWORD'),
 ]
 
 
