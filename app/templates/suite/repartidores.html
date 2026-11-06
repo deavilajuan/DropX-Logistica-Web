@@ -1,0 +1,119 @@
+{% extends "suite/base.html" %}
+
+{% block title %}Repartidores{% endblock %}
+{% block body_class %}drivers-page{% endblock %}
+
+{% block content %}
+        <section class="drivers-heading">
+            <h1 class="console-title">Repartidores</h1>
+            <div class="drivers-heading-actions">
+                <button type="button" class="packages-new-button" data-open-modal="add-driver-modal">
+                    <span aria-hidden="true">⊕</span> Agregar repartidor
+                </button>
+            </div>
+        </section>
+
+        <section class="drivers-kpis" aria-label="Resumen de repartidores">
+            <article class="drivers-kpi drivers-kpi-gray">
+                <span>Total repartidores</span>
+                <strong>{{ '{:,}'.format(couriers|length) }}</strong>
+            </article>
+            <article class="drivers-kpi drivers-kpi-blue">
+                <span>En ruta</span>
+                <strong>{{ '{:,}'.format(on_route|length) }}</strong>
+            </article>
+            <article class="drivers-kpi drivers-kpi-green">
+                <span>Disponibles</span>
+                <strong>{{ '{:,}'.format(couriers|length - on_route|length) }}</strong>
+            </article>
+            <article class="drivers-kpi drivers-kpi-orange">
+                <span>Entregas del mes</span>
+                <strong>{{ '{:,}'.format(month_total) }}</strong>
+            </article>
+        </section>
+
+        <section class="drivers-grid" aria-label="Lista de repartidores">
+            {% for courier in couriers %}
+            {% set words = courier.name.split() %}
+            <article class="driver-card">
+                <header class="driver-card-header">
+                    <div class="driver-initials" aria-hidden="true">{{ words[0][0] }}{{ words[-1][0] if words|length > 1 else '' }}</div>
+                    <div class="driver-identity">
+                        <h2>{{ courier.name }}</h2>
+                        <span class="driver-rating">{{ courier.email }}</span>
+                    </div>
+                    {% if courier.id in on_route %}
+                    <span class="driver-status driver-status-route">En ruta</span>
+                    {% else %}
+                    <span class="driver-status driver-status-active">Disponible</span>
+                    {% endif %}
+                </header>
+                <div class="driver-card-details">
+                    <p>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                        <span>{{ courier.zone or 'Sin zona' }}</span>
+                    </p>
+                    <p>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 11.2 19a19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 3a2 2 0 0 1-.6 1.7L7.1 10.3a16 16 0 0 0 6 6l1.9-1.9a2 2 0 0 1 1.7-.6l3 .5a2 2 0 0 1 1.7 2Z"></path></svg>
+                        <span>{{ courier.phone or 'Sin teléfono' }}</span>
+                    </p>
+                    <p>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"></path><path d="m3 12 9 5 9-5M3 16l9 5 9-5"></path></svg>
+                        <span>Entregas este mes: <strong>{{ deliveries.get(courier.id, 0) }}</strong></span>
+                    </p>
+                </div>
+                <form method="post" action="{{ url_for('suite.eliminar_repartidor', courier_id=courier.id) }}" class="driver-card-actions" data-delete-driver-form data-driver-name="{{ courier.name }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="driver-delete-button" aria-label="Eliminar a {{ courier.name }}" title="Eliminar repartidor">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18m-2 0-.9 14H5.9L5 6m4 0V4h6v2m-5 4v6m4-6v6"></path></svg>
+                        <span>Eliminar</span>
+                    </button>
+                </form>
+            </article>
+            {% else %}
+            <p class="drivers-empty-state">Todavía no hay repartidores registrados.</p>
+            {% endfor %}
+        </section>
+
+        <section class="drivers-performance">
+            <h2>Rendimiento del equipo (Top {{ ranking|length }} del mes)</h2>
+            {% for courier in ranking %}
+            {% set done = deliveries.get(courier.id, 0) %}
+            <div class="driver-performance-row">
+                <span class="driver-performance-name">{{ courier.name }}</span>
+                <div class="driver-progress-track" role="progressbar" aria-label="Entregas de {{ courier.name }}" aria-valuemin="0" aria-valuemax="{{ max_deliveries }}" aria-valuenow="{{ done }}">
+                    <span class="driver-progress-fill driver-progress-{{ loop.index }}" style="width: {{ (done / max_deliveries * 100) if max_deliveries else 0 }}%"></span>
+                </div>
+                <strong>{{ done }} entregas</strong>
+            </div>
+            {% else %}
+            <p class="drivers-performance-empty">El rendimiento aparecerá cuando haya entregas registradas.</p>
+            {% endfor %}
+        </section>
+{% endblock %}
+
+{% block after_main %}
+    <div class="packages-modal-backdrop" id="add-driver-modal" data-modal aria-hidden="true">
+        <section class="packages-modal" role="dialog" aria-modal="true" aria-labelledby="add-driver-title">
+            <header class="packages-modal-header">
+                <div>
+                    <h2 id="add-driver-title">Agregar repartidor</h2>
+                    <p>Crea la cuenta con la que ingresará a la app.</p>
+                </div>
+                <button type="button" class="packages-modal-close" data-close-modal aria-label="Cerrar">×</button>
+            </header>
+            <form method="post" action="{{ url_for('suite.repartidores') }}" class="packages-modal-form"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <label><span>Nombre completo</span><input name="name" autocomplete="off" required></label>
+                <div class="packages-form-grid">
+                    <label><span>Correo</span><input name="email" type="email" autocomplete="off" required></label>
+                    <label><span>Contraseña</span><input name="password" type="password" minlength="8" autocomplete="new-password" required></label>
+                    <label><span>Zona</span><input name="zone" placeholder="Zona Norte - Bogotá" required></label>
+                    <label><span>Teléfono</span><input name="phone" type="tel" autocomplete="off" required></label>
+                </div>
+                <footer class="packages-modal-actions">
+                    <button type="button" class="packages-secondary-button" data-close-modal>Cancelar</button>
+                    <button type="submit" class="packages-search-button">Agregar repartidor</button>
+                </footer>
+            </form>
+        </section>
+    </div>
+{% endblock %}

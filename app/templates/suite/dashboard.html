@@ -1,0 +1,99 @@
+{% extends "suite/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block body_class %}dashboard-page{% endblock %}
+
+{% block content %}
+        <section class="dashboard-header-row">
+            <h1 class="page-title">Dashboard</h1>
+        </section>
+
+        <section class="kpis-grid">
+            <div class="kpi-card kpi-orange">
+                <span class="kpi-title">Pendientes</span>
+                <div class="kpi-value-row"><h2>{{ counts.get('pending', 0) }}</h2></div>
+            </div>
+            <div class="kpi-card kpi-blue">
+                <span class="kpi-title">Recogidos</span>
+                <div class="kpi-value-row"><h2>{{ counts.get('picked_up', 0) }}</h2></div>
+            </div>
+            <div class="kpi-card kpi-green">
+                <span class="kpi-title">Entregados</span>
+                <div class="kpi-value-row"><h2>{{ counts.get('delivered', 0) }}</h2></div>
+            </div>
+            <div class="kpi-card kpi-red">
+                <span class="kpi-title">Con novedad</span>
+                <div class="kpi-value-row"><h2>{{ counts.get('issue', 0) }}</h2></div>
+            </div>
+        </section>
+
+        <section class="chart-section card-box">
+            <div class="chart-header">
+                <h3>Paquetes <span class="chart-subtitle"><small>| Creados en los últimos 6 meses</small></span></h3>
+            </div>
+            <div class="chart-canvas-wrapper">
+                <canvas id="lineChartPaquetes"></canvas>
+            </div>
+        </section>
+
+        <div class="widgets-grid-2">
+            <section class="widget-card card-box">
+                <h3>Paquetes por peso</h3>
+                <div class="chart-canvas-wrapper-sm">
+                    <canvas id="barChartPesos"></canvas>
+                </div>
+            </section>
+            <section class="widget-card card-box">
+                <h3>Entregas del mes por repartidor</h3>
+                <div class="donut-wrapper">
+                    <div class="donut-canvas-container">
+                        <canvas id="donutChartRepartidores"></canvas>
+                        <div class="donut-center-text">
+                            <strong>Top</strong>
+                            <small>REPARTO</small>
+                        </div>
+                    </div>
+                    <ul class="donut-legend-list">
+                        {% for name in chart_data.couriers %}
+                        <li><span class="dot-color {{ ['orange', 'blue', 'green', 'red'][loop.index0] }}"></span> {{ name }} <strong>{{ chart_data.deliveries[loop.index0] }}</strong></li>
+                        {% else %}
+                        <li>Todavía no hay entregas este mes.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <section class="table-section card-box">
+            <h3>Últimos paquetes</h3>
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>ID de Paquete</th>
+                        <th>Destinatario</th>
+                        <th>Destino</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in recent %}
+                    <tr>
+                        <td><strong>{{ p.tracking_number }}</strong></td>
+                        <td>{{ p.recipient }}</td>
+                        <td>{{ p.city }}</td>
+                        <td><span class="packages-status status-{{ p.status|replace('_', '-') }}">{{ p.status_label }}</span></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="empty-state">No hay paquetes registrados todavía.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+{% endblock %}
+
+{% block after_main %}
+    <script id="chart-data" type="application/json">{{ chart_data|tojson }}</script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.js"></script>
+{% endblock %}

@@ -1,0 +1,59 @@
+from flask import Blueprint, jsonify, request
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
+
+from app import db, jwt
+from app.models import User
+
+# Todas las rutas de este archivo empiezan con /api
+bp = Blueprint('api', __name__, url_prefix='/api')
+
+
+# ---------- Autenticación ----------
+@bp.post('/auth/login')
+def login():
+    """Inicia sesión (admin, manager o courier) y devuelve el token JWT."""
+    data = request.get_json(silent=True) or {}
+    email = (data.get('email') or '').strip().lower()
+    password = data.get('password') or ''
+
+    if not email or not password:
+        return jsonify(message='El correo y la contraseña son obligatorios'), 400
+
+    user = User.query.filter_by(email=email).first()
+    if not user or not user.check_password(password):
+        return jsonify(message='Correo o contraseña incorrectos'), 401
+
+    # En el token se guarda el id (como texto) y el rol
+    token = create_access_token(identity=str(user.id), additional_claims={'role': user.role})
+    return jsonify(token=token, user=user.to_dict())
+
+
+@bp.get('/auth/me')
+@jwt_required()
+def me():
+    """Devuelve el usuario dueño del token."""
+    user = db.session.get(User, int(get_jwt_identity()))
+    if not user:
+        return jsonify(message='Usuario no encontrado'), 404
+    return jsonify(user=user.to_dict())
+
+
+# TO DO: Listado de guías del courier (GET /api/packages?status=...) y detalle.
+# TO DO: Cambiar el estado de una guía desde la app.
+# TO DO: Habilitar CORS (flask-cors) si la app Flutter se prueba en Chrome.
+
+
+# ---------- Mensajes de error del token (en español) ----------
+@jwt.unauthorized_loader
+def missing_token(reason):
+    return jsonify(message='Falta el token de acceso'), 401
+
+
+@jwt.invalid_token_loader
+def invalid_token(reason):
+    return jsonify(message='El token no es válido'), 401
+
+
+@jwt.expired_token_loader
+def expired_token(header, payload):
+    return jsonify(message='El token expiró, inicia sesión de nuevo'), 401

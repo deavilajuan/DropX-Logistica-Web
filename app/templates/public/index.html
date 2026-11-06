@@ -1,0 +1,184 @@
+{% extends "public/base.html" %}
+
+{% block title %}DropX | Logística para tu negocio{% endblock %}
+{% block body_attrs %} class="home-page"{% endblock %}
+{% block main_class %}contenido-pagina{% endblock %}
+
+{% block content %}        <section class="seccion-hero home-hero">
+            <div class="hero-container">
+                <span class="hero-tag">TU SOLUCIÓN LOGÍSTICA DE CONFIANZA</span>
+                <h1 class="hero-title">Rastrea tu guía</h1>
+                <form action="{{ url_for('public.rastreo') }}" method="get" class="hero-search-box">
+                    <input type="text" name="guia" placeholder="Ejemplo: DX-9827461" class="hero-input"
+                        aria-label="Número de guía" required>
+                    <button type="submit" class="hero-btn-search">Buscar</button>
+                </form>
+                <a href="{{ url_for('static', filename='img/Video-DropX.mp4') }}" class="hero-video-link">
+                    <span class="play-icon" aria-hidden="true">▶</span>
+                    Mira nuestro video institucional
+                </a>
+                <div class="scroll-down-arrow">
+                    <a href="#seccion-indicadores" aria-label="Ver nuestras cifras">⌄</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="seccion-indicadores" class="seccion-indicadores" aria-label="DropX en cifras">
+            <div class="indicador-card">
+                <h2 class="metric-number">+60</h2>
+                <p class="metric-label">Oficinas disponibles en Colombia</p>
+            </div>
+            <div class="indicador-card">
+                <h2 class="metric-number">+350</h2>
+                <p class="metric-label">Repartidores disponibles a nivel nacional</p>
+            </div>
+            <div class="indicador-card">
+                <h2 class="metric-number">+1,395</h2>
+                <p class="metric-label">Paquetes entregados en tiempo récord éste mes.</p>
+            </div>
+        </section>
+
+        <section class="seccion-servicios">
+            <div class="section-header-center">
+                <span class="section-tag">NUESTRAS SOLUCIONES</span>
+                <h2>Logística diseñada para hacer crecer tu negocio</h2>
+            </div>
+            <div class="services-grid-4">
+                <div class="service-box">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v10H3z"></path><path d="M14 10h4l3 3v4h-7z"></path><circle cx="7.5" cy="18.5" r="1.5"></circle><circle cx="17.5" cy="18.5" r="1.5"></circle><path d="M6 10h5"></path></svg>
+                    </div>
+                    <h3>Envíos Express</h3>
+                    <p>Entregas urgentes a nivel local y nacional en tiempo récord garantizando la seguridad de tu
+                        carga.</p>
+                </div>
+                <div class="service-box">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path></svg>
+                    </div>
+                    <h3>Última Milla</h3>
+                    <p>Llevamos tus paquetes hasta la puerta del cliente final con la mejor experiencia de servicio.</p>
+                </div>
+                <div class="service-box">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 8-4 4 4 4m8-8 4 4-4 4m-3-10-2 12"></path></svg>
+                    </div>
+                    <h3>Integración E-commerce</h3>
+                    <p>Conecta tu tienda Shopify, WooCommerce o Mercado Libre directamente con nuestra plataforma.</p>
+                </div>
+                <div class="service-box">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 7 9-4 9 4-9 4-9-4Z"></path><path d="m3 12 9 4 9-4M3 17l9 4 9-4M12 11v5"></path></svg>
+                    </div>
+                    <h3>Almacenamiento</h3>
+                    <p>Bodegaje inteligente y control de inventario optimizados para potenciar tus despachos.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="funcionamiento-section">
+            <div class="how-container">
+                <div class="how-image-col">
+                    <img class="dashboard-preview" src="{{ url_for('static', filename='img/fotodashboard.png') }}" alt="Vista previa del dashboard DropX con métricas y reportes logísticos">
+                </div>
+                <div class="how-content-col">
+                    <span class="section-tag">PROCESO SIMPLE</span>
+                    <h2 class="section-title">¿Cómo funciona DropX?</h2>
+                    <div class="step-item">
+                        <div class="step-badge">1</div>
+                        <div class="step-text">
+                            <h4>Genera tu envío</h4>
+                            <p>Ingresa los datos del destinatario en nuestra Suite Logística o sincronízalo
+                                automáticamente con tu plataforma de venta.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-badge">2</div>
+                        <div class="step-text">
+                            <h4>Colectamos el paquete</h4>
+                            <p>Nuestra red de repartidores recoge el pedido en tu bodega o punto acordado sin demoras.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-badge">3</div>
+                        <div class="step-text">
+                            <h4>Rastreo en tiempo real</h4>
+                            <p>Tanto tú como tu cliente final monitorean cada estado del envío desde cualquier
+                                dispositivo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="seccion-aliados">
+            <p class="section-title">EMPRESAS QUE CONFÍAN EN NOSOTROS</p>
+            <div class="aliados-logos">
+                <span>Mercado Libre</span>
+                <span>Shopify</span>
+                <span>Rappi</span>
+                <span>Alibaba</span>
+                <span>DHL Express</span>
+                <span>FedEx</span>
+            </div>
+        </section>
+
+        <section class="seccion-testimonios">
+            <div class="section-header-center">
+                <span class="section-tag">HISTORIAS DE ÉXITO</span>
+                <h2>Lo que nuestros clientes dicen sobre nosotros</h2>
+            </div>
+
+            <div class="testimonio-container-grid">
+                <div class="testimonio-card">
+                    <p class="testimonio-text">"DropX transformó nuestra operación de e-commerce. La
+                        integración con Shopify funciona a la perfección y redujo a la mitad las incidencias en
+                        entregas."</p>
+                    <div class="testimonio-author">
+                        <div>
+                            <strong>Juan David Gómez</strong>
+                            <span>CEO, Café Selecto</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonio-card">
+                    <p class="testimonio-text">"La transparencia del rastreo y compromiso de los aliados nos permite
+                        enfocarnos
+                        en producir más ventas, sabiendo que el despacho está resuelto."</p>
+                    <div class="testimonio-author">
+                        <div>
+                            <strong>Camila Restrepo</strong>
+                            <span>Gerente de Operaciones, Trendy Co.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonio-card">
+                    <p class="testimonio-text">"Excelente servicio al cliente. En logistica es vital contar con un
+                        soporte
+                        humano real y DropX siempre está disponible cuando más se necesita."</p>
+                    <div class="testimonio-author">
+                        <div>
+                            <strong>Carlos Mendoza</strong>
+                            <span>Gerente, Distribuidores Unidos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="seccion-llamado_a_la_accion">
+            <div class="cta-container">
+                <h2>Lleva tu logistica al siguiente nivel hoy mismo</h2>
+                <p>
+                    Únete a cientos de empresas que ya optimizan sus despachos,
+                    reducen costos y mejoran la experiencia de entrega para sus clientes.
+                </p>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('public.ser_aliado') }}" class="btn-cta-orange">Crear mi cuenta ya</a>
+                    <a href="{{ url_for('public.contacto') }}" class="btn-cta-outline">Agendar demo</a>
+                </div>
+            </div>
+        </section>
+    
+{% endblock %}

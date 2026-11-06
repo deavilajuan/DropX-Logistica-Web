@@ -1,0 +1,225 @@
+{% extends "public/base.html" %}
+
+{% block title %}DropX - Únete a nuestra red de aliados{% endblock %}
+
+{% block content %}        <section class="seccion-hero hero-aliados">
+            <div class="hero-container">
+                <h1 class="hero-title">Únete a nuestra red de aliados</h1>
+                <p class="hero-desc"> Convierte tu vehiculo en un motor de ingresos estables. Trabaja a tu propio ritmo
+                    con el respaldo de la plataforma tecnológica líder en distribución de última milla.</p>
+            </div>
+        </section>
+
+        <section class="seccion-beneficios">
+            <div class="section-header-center">
+                <span class="section-tag">BENEFICIOS DE SER SOCIO</span>
+                <h2>Ganancias y flexibilidad garantizadas</h2>
+            </div>
+            <div class="services-grid-4">
+                <div class="service-box">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3>Ingresos Competitivos</h3>
+                    <p>Pagos semanales puntuales
+                        directamente a tu cuenta bancaria
+                        o monedero preferido, con tarifas
+                        claras por cada entrega.</p>
+                </div>
+                <div class="service-box">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3>Flexibilidad Horaria</h3>
+                    <p>Decide tus propios turnos y rutas
+                        según tu disponibilidad ideal para
+                        optimizar tu tiempo y compaginar
+                        actividades.</p>
+                </div>
+                <div class="service-box">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3>Capacitación Continua</h3>
+                    <p>te brindamos las mejores práctivas
+                        y entretenimiento en el uso de
+                        nuestra app para que optmiices tus
+                        recorridos.</p>
+                </div>
+                <div class="service-box">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3>Soporte 24/7</h3>
+                    <p>Un equipo humano y técnico
+                        siempre listo para resolver dudas
+                        en ruta y solucionar contratiempos de inmediato.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="seccion-requisitos">
+            <div class="section-header-center">
+                <span class="section-tag">REQUISITOS MÍNIMOS</span>
+                <h2>Lo que necesitas para empezar</h2>
+                <span> Buscamos personas comprometidas, con vocación de servicio y ganas de crecer
+                    económicamente. Cumpliendo con estos simples requisitos, podrás activarte en
+                    menos de 48 horas.
+                </span>
+            </div>
+            <div class="step-item">
+                <div class="step-badge">1</div>
+                <div class="step-text">
+                    <span>Ser mayor de edad (18+ años) con cédula de ciudadanía o extranjería vigente.</span>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-badge">2</div>
+                <div class="step-text">
+                    <span>Contar con vehículo propio en óptimas condiciones mecánicas (Moto, Carro, Van o
+                        Camioneta).</span>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-badge">3</div>
+                <div class="step-text">
+                    <span>Licencia de conducción vigente según la categoría del vehículo registrado.</span>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-badge">4</div>
+                <div class="step-text">
+                    <span>Documentación reglamentaria al día: SOAT y Tecnomecánica.</span>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-badge">5</div>
+                <div class="step-text">
+                    <span>Dispositivo móvil Android (versión 8.0 o superior) con plan de datos activo.</span>
+                </div>
+            </div>
+            <div class="img-requisitos">
+                <img src="{{ url_for('static', filename='img/fotodashboard.png') }}"
+                    alt="Panel de control de la plataforma logística DropX">
+            </div>
+        </section>
+
+        <section class="seccion-solicitud">
+            <div class="section-header-center">
+                <span class="section-tag">REGISTRO EN LÍNEA</span>
+                <h2>Completa tu solicitud en 4 pasos</h2>
+            </div>
+            <div class="wizard-card">
+
+                <!-- 1. Barra de progreso de los 4 pasos -->
+                <div class="wizard-steps-header">
+                    <div class="wizard-step active">
+                        <span class="step-num">1</span>
+                        <span class="step-label">Datos Personales</span>
+                    </div>
+                    <div class="wizard-step">
+                        <span class="step-num">2</span>
+                        <span class="step-label">Vehículo</span>
+                    </div>
+                    <div class="wizard-step">
+                        <span class="step-num">3</span>
+                        <span class="step-label">Documentos</span>
+                    </div>
+                    <div class="wizard-step">
+                        <span class="step-num">4</span>
+                        <span class="step-label">Confirmación</span>
+                    </div>
+                </div>
+                <div class="wizard-divider"></div>
+                <!-- 2. Formulario Paso 1: Datos Personales -->
+                <form action="#" method="get" class="wizard-form">
+                    <div class="form-row-2">
+                        <div class="form-field">
+                            <label for="nombres">Nombres</label>
+                            <input type="text" id="nombres" name="nombres" placeholder="Ej: Juan Carlos" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="apellidos">Apellidos</label>
+                            <input type="text" id="apellidos" name="apellidos" placeholder="Ej: Gómez Pérez" required>
+                        </div>
+                    </div>
+                    <div class="form-row-2">
+                        <div class="form-field">
+                            <label for="correo">Correo electrónico</label>
+                            <input type="email" id="correo" name="correo" placeholder="juan.gomez@example.com" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="celular">Celular</label>
+                            <input type="tel" id="celular" name="celular" placeholder="Ej: 300 123 4567" required>
+                        </div>
+                    </div>
+                    <div class="form-field full-width">
+                        <label for="ciudad">Ciudad donde deseas operar</label>
+                        <div class="select-wrapper">
+                            <select id="ciudad" name="ciudad" required>
+                                <option value="" disabled selected>Selecciona una opción (Ej: Bogotá)</option>
+                                <option value="bogota">Bogotá D.C.</option>
+                                <option value="medellin">Medellín</option>
+                                <option value="cali">Cali</option>
+                                <option value="barranquilla">Barranquilla</option>
+                                <option value="bucaramanga">Bucaramanga</option>
+                                <option value="bucaramanga">Cartagena</option>
+                                <option value="bucaramanga">Santa Marta</option>
+                                <option value="bucaramanga">Cúcuta</option>
+                                <option value="bucaramanga">Monteria</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-wizard-next">Siguiente Paso</button>
+                </form>
+        </section>
+
+        <section class="seccion-testimonios">
+            <div class="section-header-center">
+                <span class="section-tag">TESMONIAL DE ALIADO</span>
+                <h2>Ellos ya transformaron sus ingresos</h2>
+            </div>
+            <div class="testimonio-card">
+                <div class="section-header-center">
+                    <div class="icono-escudo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <p class="testimonio-text">"LLevo más de un año conduciendo con DropX en Medellín. Empecé entregando
+                        paquetes en moto para
+                        complementar mis ingresos de medio tiempo, y hoy en día, gracias a la estabilidad de rutas
+                        fijas, he
+                        podido cambiar a un vehículo más grande. Los pagos son puntuales y el soporte siempre está
+                        atento."</p>
+
+                    <div class="testimonio-author">
+                        <div>
+                            <strong>Andrés Felipe Alzate</strong>
+                            <span>Aliado Logístico, Medellín (Moto)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+    
+{% endblock %}

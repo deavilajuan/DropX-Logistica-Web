@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} | DropX Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body class="dashboard-body {% block body_class %}{% endblock %}"{% block body_attrs %}{% endblock %}>
+    <aside class="sidebar">
+        <div>
+            <div class="brand-wrapper">
+                <a class="brand-link" href="{{ url_for('public.index') }}" aria-label="Ir al inicio de DropX">
+                    <img src="{{ url_for('static', filename='img/Logo.png') }}" alt="DropX Logística que avanza" class="brand-logo-img">
+                </a>
+            </div>
+            <nav class="sidebar-nav" aria-label="Navegación principal">
+                <a href="{{ url_for('suite.dashboard') }}" class="nav-link-item{% if request.endpoint == 'suite.dashboard' %} active{% endif %}">
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m4.24 1.25v5"></path></svg>
+                    </span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{{ url_for('suite.paquetes') }}" class="nav-link-item{% if request.endpoint == 'suite.paquetes' %} active{% endif %}">
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="m9 9 6 6m0-6-6 6"></path></svg>
+                    </span>
+                    <span>Paquetes</span>
+                </a>
+                <a href="{{ url_for('suite.repartidores') }}" class="nav-link-item{% if request.endpoint == 'suite.repartidores' %} active{% endif %}">
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </span>
+                    <span>Repartidores</span>
+                </a>
+                <a href="{{ url_for('suite.logisticos') }}" class="nav-link-item{% if request.endpoint == 'suite.logisticos' %} active{% endif %}">
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><path d="M16 8h4l3 3v5h-7z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                    </span>
+                    <span>Logísticos</span>
+                </a>
+                {% if current_user.role == 'admin' %}
+                <a href="{{ url_for('suite.reportes') }}" class="nav-link-item{% if request.endpoint == 'suite.reportes' %} active{% endif %}">
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6M8 18v-4m4 4v-7m4 7v-2"></path></svg>
+                    </span>
+                    <span>Reportes</span>
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+        <div class="sidebar-footer">
+            <a href="{{ url_for('suite.logout') }}" class="btn-sidebar-logout">
+                <span class="logout-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5m5 5H9"></path></svg>
+                </span>
+                <span>Finalizar sesión</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-wrapper">
+        <header class="topbar-row">
+            <nav class="breadcrumb-path" aria-label="Ruta de navegación">
+                <a href="{{ url_for('suite.dashboard') }}">Suite</a>
+                <span class="separator">/</span>
+                <span class="current-page">{{ self.title() }}</span>
+            </nav>
+            <div class="user-profile-badge" title="{{ current_user.email }}">
+                <img src="{{ url_for('static', filename='img/avatar_admin.jpg') }}" alt="" class="user-avatar-img">
+                <span class="user-role-label">{{ current_user.name }}</span>
+                <span class="chevron-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+                </span>
+            </div>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="packages-flashes" role="status">
+                {% for category, message in messages %}
+                <div class="packages-flash packages-flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block after_main %}{% endblock %}
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
