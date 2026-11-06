@@ -47,7 +47,60 @@ Responde `200`:
 | `401` | El token no es válido | `{"message": "El token no es válido"}` |
 | `401` | El token expiró | `{"message": "El token expiró, inicia sesión de nuevo"}` |
 
-El token dura las horas indicadas en `JWT_EXPIRES_HOURS` (por defecto, 8) y guarda el id y el rol del usuario.
+El token dura las horas indicadas en `JWT_EXPIRES_HOURS` (por defecto, 168, es decir, 7 días) y guarda el id y el rol del usuario.
+
+## Paquetes del repartidor
+
+Requieren el header `Authorization: Bearer <token>`. Devuelven solo los paquetes asignados al usuario del token.
+
+Estados (`status`): `pending` (pendiente), `picked_up` (recogido), `delivered` (entregado) e `issue` (con novedad).
+En la app: `pending` es pendiente, `picked_up` es en tránsito, `delivered` es entregado e `issue` es problema.
+
+### `GET /api/packages`
+
+Lista los paquetes asignados, los urgentes primero. Filtro opcional por estado: `GET /api/packages?status=pending`.
+
+Responde `200`:
+
+```json
+{
+  "packages": [
+    {
+      "id": 1,
+      "number": "DX-000001",
+      "weightKg": 3.2,
+      "distanceKm": 4.1,
+      "isUrgent": true,
+      "status": "pending",
+      "originAddress": "Calle 30 #12-45",
+      "destinationAddress": "Getsemaní",
+      "sender": { "name": "Tienda Mar", "document": null, "phone": "300 000 0000" },
+      "receiver": { "name": "Carolina Díaz", "document": null, "phone": "300 111 1111" },
+      "updatedAt": "2026-11-06T10:30:00"
+    }
+  ]
+}
+```
+
+| Código | Cuándo | Respuesta |
+|---|---|---|
+| `400` | El estado del filtro no existe | `{"message": "El estado no es válido"}` |
+| `401` | Falta el token, no es válido o expiró | ver `/api/auth/me` |
+
+### `GET /api/packages/<id>`
+
+Devuelve un paquete (`{"package": {...}}`) con los mismos campos. Responde `404` (`{"message": "Paquete no encontrado"}`) si no existe o no está asignado al usuario.
+
+## Probar en Postman
+
+1. Inicie el servidor: `flask --app app run`.
+2. Cree una petición `POST` a `http://127.0.0.1:5000/api/auth/login`. En **Body**, elija **raw** y **JSON**, y escriba:
+   `{ "email": "courier@dropx.com", "password": "su-clave" }`
+3. Copie el valor de `token` de la respuesta.
+4. Cree una petición `GET` a `http://127.0.0.1:5000/api/packages`. En **Authorization**, elija **Bearer Token** y pegue el token.
+5. Para filtrar, agregue en **Params** la clave `status` con un valor como `pending`.
+
+Si la lista llega vacía, asigne paquetes al repartidor desde la Suite (Paquetes, Editar, Repartidor).
 
 ## Probar desde la terminal
 
@@ -59,6 +112,5 @@ Invoke-RestMethod -Uri http://127.0.0.1:5000/api/auth/me -Headers @{ Authorizati
 
 ## Pendientes
 
-- `GET /api/packages`: listado de guías del courier (filtro por estado) y detalle.
 - Cambio de estado de una guía desde la app.
 - CORS, si la app Flutter se prueba en Chrome.

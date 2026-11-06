@@ -1,14 +1,14 @@
-from datetime import datetime
-
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import db, login_manager
 
+# ---------- Constantes ----------
 # Roles del sistema
 ROLES = ('admin', 'manager', 'courier')
 
-# Estados de una guía (clave guardada en la base de datos -> texto en pantalla)
+# Estados de una guía (clave guardada en la base de datos -> texto que se muestra).
+# Son los mismos estados de la app: Pendiente, Recogido, Entregado y Con novedad.
 STATUSES = {
     'pending': 'Pendiente',
     'picked_up': 'Recogido',
@@ -17,7 +17,10 @@ STATUSES = {
 }
 
 
+# ---------- Usuarios ----------
 class User(UserMixin, db.Model):
+    """Cualquier persona que inicia sesión: admin, manager o courier."""
+
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -25,8 +28,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(20), nullable=False)  # admin, manager o courier
-    phone = db.Column(db.String(30))  # solo couriers
-    zone = db.Column(db.String(100))  # solo couriers
+    phone = db.Column(db.String(30))  # se usa en los couriers
     created_at = db.Column(db.DateTime, server_default=db.text('CURRENT_TIMESTAMP'))
 
     # La contraseña nunca se guarda en texto plano
@@ -41,38 +43,79 @@ class User(UserMixin, db.Model):
         return {'id': self.id, 'name': self.name, 'email': self.email, 'role': self.role}
 
 
+# ---------- Paquetes (guías) ----------
 class Package(db.Model):
+    """Una guía de envío. Los campos coinciden con el modelo de la app (PackageModel)."""
+
     __tablename__ = 'packages'
 
     id = db.Column(db.Integer, primary_key=True)
-    tracking_number = db.Column(db.String(20), unique=True, nullable=False)  # ej: DX-152216
-    sender = db.Column(db.String(120), nullable=False)
-    recipient = db.Column(db.String(120), nullable=False)
-    city = db.Column(db.String(100), nullable=False)
-    address = db.Column(db.String(255), nullable=False)
-    weight = db.Column(db.Float, nullable=False, default=1.0)
+    tracking_number = db.Column(db.String(20), unique=True, nullable=False)  # ej: DX-000001
+    weight = db.Column(db.Float, nullable=False)  # en kilogramos
+    distance_km = db.Column(db.Float, nullable=False, default=0)
+    is_urgent = db.Column(db.Boolean, nullable=False, default=False, server_default=db.text('0'))
     status = db.Column(db.String(20), nullable=False, default='pending')
+
+    # Quien envía
+    sender_name = db.Column(db.String(120), nullable=False)
+    sender_document = db.Column(db.String(30))  # ej: CC 1.100.000.000
+    sender_phone = db.Column(db.String(30), nullable=False)
+    origin_address = db.Column(db.String(255), nullable=False)
+
+    # Quien recibe
+    recipient_name = db.Column(db.String(120), nullable=False)
+    recipient_document = db.Column(db.String(30))
+    recipient_phone = db.Column(db.String(30), nullable=False)
+    destination_address = db.Column(db.String(255), nullable=False)
+
+    # Repartidor asignado (vacío mientras no se asigne)
     courier_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'))
+
     created_at = db.Column(db.DateTime, server_default=db.text('CURRENT_TIMESTAMP'))
     updated_at = db.Column(
-        db.DateTime, server_default=db.text('CURRENT_TIMESTAMP'), onupdate=datetime.now
+        db.DateTime, server_default=db.text('CURRENT_TIMESTAMP'), onupdate=db.func.now()
     )
-    delivered_at = db.Column(db.DateTime)
+    delivered_at = db.Column(db.DateTime)  # se llena cuando el estado pasa a "delivered"
 
     courier = db.relationship('User')
     events = db.relationship(
         'PackageEvent',
         order_by='PackageEvent.id.desc()',  # el más reciente primero
-        cascade='all, delete-orphan',
+        cascade='all, delete-orphan',  # al borrar el paquete se borra su historial
     )
 
     @property
     def status_label(self):
         return STATUSES[self.status]
 
+    # Datos que devuelve la API (mismos nombres que usa el modelo de la app)
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'number': self.tracking_number,
+            'weightKg': self.weight,
+            'distanceKm': self.distance_km,
+            'isUrgent': self.is_urgent,
+            'status': self.status,
+            'originAddress': self.origin_address,
+            'destinationAddress': self.destination_address,
+            'sender': {
+                'name': self.sender_name,
+                'document': self.sender_document,
+                'phone': self.sender_phone,
+            },
+            'receiver': {
+                'name': self.recipient_name,
+                'document': self.recipient_document,
+                'phone': self.recipient_phone,
+            },
+            'updatedAt': self.updated_at.isoformat() if self.updated_at else None,
+        }
 
-# Historial de movimientos de una guía (lo que ve el cliente en el rastreo)
+
 class PackageEvent(db.Model):
+    """Historial de movimientos de una guía (lo que se ve en el rastreo)."""
+
     __tablename__ = 'package_events'
 
     id = db.Column(db.Integer, primary_key=True)

@@ -1,0 +1,66 @@
+{# Piezas reutilizables (componentes de plantilla). Se importan con {% from '_macros.html' import ... %} #}
+{% import '_ui.html' as ui %}
+
+{# Icono del sprite SVG de la página (suite/_icons.html o public/_icons.html) #}
+{% macro icon(name, size='size-4') %}<svg class="{{ size }} shrink-0" aria-hidden="true"><use href="#{{ name }}"/></svg>{% endmacro %}
+
+{# Mensajes flash de Flask (success, danger, warning, info) #}
+{% macro flashes() %}
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+        <div class="mb-4 flex items-center justify-between gap-3 rounded-2xl px-4 py-3 text-sm font-semibold {{ ui.flash_tone.get(category, ui.flash_tone.info) }}" role="alert">
+            <span>{{ message }}</span>
+            <button type="button" class="opacity-60 hover:opacity-100" aria-label="Cerrar" onclick="this.parentElement.remove()"><svg class="size-4" aria-hidden="true"><use href="#i-x"/></svg></button>
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+{# Etiqueta con punto de color (ej: "Entregado") #}
+{% macro pill(text, tone_classes) %}
+    <span class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-bold before:size-1.5 before:rounded-full before:bg-current {{ tone_classes }}">{{ text }}</span>
+{% endmacro %}
+
+{# Estado del paquete como etiqueta de color #}
+{% macro status_badge(status) %}{{ pill(STATUSES.get(status, status), ui.status_tone.get(status, ui.status_tone.pending)) }}{% endmacro %}
+
+{# Círculo con las iniciales; el color depende del nombre (filtros en app/__init__.py) #}
+{% macro avatar(name, size='size-8 text-[11px]') %}<span class="inline-grid shrink-0 place-items-center rounded-full font-extrabold {{ size }} {{ ui.tones[name|tone] }}">{{ name|initials }}</span>{% endmacro %}
+
+{# Fila "etiqueta: valor" para las fichas de detalle #}
+{% macro field(label, value) %}
+    <div class="mb-3 last:mb-0"><span class="block text-xs text-muted">{{ label }}</span><b class="block break-words font-bold">{{ value if value else '—' }}</b></div>
+{% endmacro %}
+
+{# Campo de formulario con su etiqueta #}
+{% macro input(id, label, value='', type='text', name=None, required=false, placeholder='', hint='', extra='') %}
+    <div>
+        <label class="{{ ui.label }}" for="{{ id }}">{{ label }}</label>
+        <input class="{{ ui.input }}" id="{{ id }}" name="{{ name or id }}" type="{{ type }}" value="{{ value if value is not none else '' }}" placeholder="{{ placeholder }}" {{ 'required' if required }} {{ extra }}>
+        {% if hint %}<p class="{{ ui.hint }}">{{ hint }}</p>{% endif %}
+    </div>
+{% endmacro %}
+
+{# Encabezado de página: título, texto pequeño y, si se usa {% call %}, botones a la derecha #}
+{% macro page_head(title, sub='') %}
+    <div class="mb-5 flex flex-wrap items-end justify-between gap-3">
+        <div>
+            <h1 class="text-2xl font-extrabold tracking-tight">{{ title }}</h1>
+            {% if sub %}<p class="mt-1 text-muted">{{ sub }}</p>{% endif %}
+        </div>
+        {% if caller %}<div class="flex flex-wrap items-center gap-2">{{ caller() }}</div>{% endif %}
+    </div>
+{% endmacro %}
+
+{# Ventana emergente: suite.js la abre con data-open y la cierra con data-close, Escape o tocando el fondo #}
+{% macro overlay(id, width='max-w-lg') %}
+    <div id="{{ id }}" data-overlay class="fixed inset-0 z-50 hidden items-center justify-center bg-ink/40 p-4" role="dialog" aria-modal="true" aria-labelledby="{{ id }}-title">
+        <div class="max-h-[92vh] w-full {{ width }} overflow-y-auto rounded-[24px] bg-white p-6 shadow-pop">{{ caller() }}</div>
+    </div>
+{% endmacro %}
+
+{# Encabezado de una ventana emergente: título y botón para cerrar #}
+{% macro modal_head(id, title) %}
+    <div class="mb-4 flex items-start justify-between gap-3">
+        <h2 id="{{ id }}-title" class="text-xl font-extrabold tracking-tight">{{ title }}</h2>
+        <button type="button" data-close class="{{ ui.icon_btn }}" aria-label="Cerrar">{{ icon('i-x') }}</button>
+    </div>
+{% endmacro %}

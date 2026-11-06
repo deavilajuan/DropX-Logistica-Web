@@ -4,7 +4,7 @@ from datetime import timedelta
 from dotenv import load_dotenv
 from sqlalchemy.engine import URL
 
-# Lee el archivo .env (equivale al .env de Laravel)
+# Lee el archivo .env (variables de entorno del proyecto)
 load_dotenv()
 
 # Conexión a MySQL a partir de sus partes (URL.create codifica bien los símbolos de la contraseña)
@@ -29,8 +29,9 @@ class Config:
     _ssl_ca = os.getenv('DB_SSL_CA')
     SQLALCHEMY_ENGINE_OPTIONS = {'connect_args': {'ssl': {'ca': _ssl_ca}}} if _ssl_ca else {}
 
-    # Duración del token JWT de la API
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=int(os.getenv('JWT_EXPIRES_HOURS', 8)))
+    # Duración del token JWT de la API (por defecto 168 horas = 7 días, para que
+    # el repartidor no tenga que iniciar sesión en la app todos los días)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=int(os.getenv('JWT_EXPIRES_HOURS', 168)))
 
     # Número del asesor para el formulario de contacto (con indicativo y sin "+")
     WHATSAPP_ADVISOR_NUMBER = os.getenv('WHATSAPP_ADVISOR_NUMBER', '')

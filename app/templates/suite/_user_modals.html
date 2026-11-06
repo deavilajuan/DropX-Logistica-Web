@@ -1,0 +1,21 @@
+{# Ventanas de "agregar" y "editar" usuario (repartidores y managers). Se llenan desde suite.js. #}
+{% import '_ui.html' as ui %}
+{% from '_macros.html' import input, overlay, modal_head %}
+
+{% macro user_modal(id, title, phone_required, new=true) %}
+    {% call overlay(id, 'max-w-md') %}
+        {{ modal_head(id, title) }}
+        <form method="post" class="grid gap-4">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            {{ input(id ~ '_name', 'Nombre', name='name', required=true) }}
+            {{ input(id ~ '_email', 'Correo electrónico', type='email', name='email', required=true) }}
+            {{ input(id ~ '_phone', 'Teléfono' if phone_required else 'Teléfono (opcional)', name='phone', required=phone_required) }}
+            {% if new %}
+                {{ input(id ~ '_password', 'Contraseña', type='password', name='password', required=true, hint='Mínimo 8 caracteres.', extra='minlength=8') }}
+            {% else %}
+                {{ input(id ~ '_password', 'Nueva contraseña', type='password', name='password', hint='Déjela vacía para conservar la actual.', extra='minlength=8') }}
+            {% endif %}
+            <div class="flex justify-end gap-2"><button type="button" data-close class="{{ ui.btn_line }}">Cancelar</button><button class="{{ ui.btn }}">{{ 'Guardar' if new else 'Guardar cambios' }}</button></div>
+        </form>
+    {% endcall %}
+{% endmacro %}

@@ -1,85 +1,24 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso a Suite Logística | DropX</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
-</head>
-<body class="auth-page">
-    <header class="auth-header">
-        <a class="auth-brand" href="{{ url_for('public.index') }}" aria-label="DropX, volver al sitio">
-            <span class="auth-brand-mark" aria-hidden="true">D</span>
-            <span class="auth-brand-name">DropX<small>LOGÍSTICA QUE AVANZA</small></span>
-        </a>
-        <span class="auth-header-divider" aria-hidden="true"></span>
-        <span class="auth-suite-name">Suite logística</span>
-        <a class="auth-site-link" href="{{ url_for('public.index') }}">←&nbsp; Volver al sitio</a>
-    </header>
+{% extends 'suite/auth_base.html' %}
+{% import '_ui.html' as ui %}
+{% from '_macros.html' import input %}
+{% block title %}Iniciar sesión{% endblock %}
 
-    <main class="auth-main">
-        <div class="auth-breadcrumb">
-            <span>WEB / ADMINISTRADOR</span>
-            <span>Acceso a la Suite</span>
+{% block auth_content %}
+<form method="post" class="{{ ui.card }} grid gap-4 p-6 text-left">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div><h1 class="text-2xl font-extrabold tracking-tight">Inicie sesión</h1><p class="mt-1 text-muted">Ingrese con su cuenta DropX.</p></div>
+    {{ input('email', 'Correo electrónico', type='email', required=true, extra='autocomplete=username autofocus') }}
+    <div>
+        <label class="{{ ui.label }}" for="password">Contraseña</label>
+        <div class="relative">
+            <input class="{{ ui.input }} pr-20" id="password" name="password" type="password" autocomplete="current-password" required>
+            <button type="button" data-toggle-password="#password" class="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 text-sm font-bold text-accent-text">Mostrar</button>
         </div>
-        <section class="auth-card" aria-label="Iniciar sesión">
-            <aside class="auth-aside">
-                <div>
-                    <span class="auth-aside-eyebrow"><span aria-hidden="true">♢</span> ACCESO A LA SUITE</span>
-                    <h1>Tu operación, en un solo lugar.</h1>
-                    <p>Accede a la Suite para gestionar y dar seguimiento a tu operación logística.</p>
-                </div>
-                <div class="auth-aside-note">
-                    <strong>Una cuenta para tu operación</strong>
-                    <span>Administradores y trabajadores ingresan con su cuenta DropX.</span>
-                </div>
-            </aside>
-
-            <div class="auth-content">
-                <h2>Inicia sesión en la Suite</h2>
-                <p class="auth-description">Ingresa con tu cuenta de DropX.</p>
-
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="auth-alert auth-alert-{{ category }}" role="alert">{{ message }}</div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-
-                <form action="{{ url_for('suite.login') }}" method="POST" class="auth-form"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <div class="auth-field">
-                        <label for="email">Email corporativo</label>
-                        <input type="email" id="email" name="email" placeholder="nombre@empresa.com" autocomplete="username" required>
-                    </div>
-                    <div class="auth-field">
-                        <label for="password">Contraseña</label>
-                        <div class="auth-password-wrap">
-                            <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" autocomplete="current-password" required>
-                            <button class="auth-password-toggle" type="button" data-password-toggle="password" aria-label="Mostrar contraseña" aria-pressed="false">Mostrar</button>
-                        </div>
-                    </div>
-                    <label class="auth-checkbox">
-                        <input type="checkbox" name="remember" value="1">
-                        <span>Recordar sesión</span>
-                    </label>
-                    <button type="submit" class="auth-submit">Iniciar sesión <span aria-hidden="true">→</span></button>
-                </form>
-
-                <a class="auth-forgot-link" href="{{ url_for('suite.recuperar') }}">¿Olvidaste tu contraseña?</a>
-                <div class="auth-content-divider"></div>
-                <div class="auth-worker-note">
-                    <strong><span aria-hidden="true">▯</span> ¿Eres trabajador?</strong>
-                    <p>Usa el mismo acceso de DropX para ingresar a la Suite.</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="auth-footer">
-        <span>© 2026 DropX. Todos los derechos reservados.</span>
-        <span>Suite logística · Acceso a la plataforma</span>
-    </footer>
-    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-</body>
-</html>
+    </div>
+    <div class="flex flex-wrap items-center justify-between gap-2">
+        <label class="flex items-center gap-2 font-semibold text-ink2"><input type="checkbox" name="remember" value="1" class="size-4 accent-accent"> Recordar sesión</label>
+        <a class="font-bold text-accent-text hover:underline" href="{{ url_for('suite.recuperar') }}">¿Olvidó su contraseña?</a>
+    </div>
+    <button class="{{ ui.btn }} w-full">Iniciar sesión</button>
+</form>
+{% endblock %}

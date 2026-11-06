@@ -1,248 +1,94 @@
-{% extends "suite/base.html" %}
-
+{% extends 'suite/base.html' %}
+{% import '_ui.html' as ui %}
+{% from '_macros.html' import status_badge, avatar, icon, page_head, overlay, modal_head with context %}
 {% block title %}Paquetes{% endblock %}
-{% block body_class %}packages-page{% endblock %}
 
 {% block content %}
-        <section class="packages-heading">
-            <h1 class="console-title">Paquetes</h1>
-            <button type="button" class="packages-new-button" data-open-modal="create-package-modal">
-                <span aria-hidden="true">＋</span> Nuevo paquete
-            </button>
-        </section>
+{% call page_head('Paquetes', total ~ ' guías registradas') %}
+    <a class="{{ ui.btn }}" href="{{ url_for('suite.nuevo_paquete') }}">{{ icon('i-plus') }}Nuevo paquete</a>
+{% endcall %}
 
-        <section class="packages-kpis" aria-label="Resumen de paquetes">
-            <article class="packages-kpi packages-kpi-gray">
-                <span>Total paquetes</span>
-                <strong>{{ '{:,}'.format(total) }}</strong>
-            </article>
-            <article class="packages-kpi packages-kpi-orange">
-                <span>Pendientes</span>
-                <strong>{{ '{:,}'.format(counts.get('pending', 0)) }}</strong>
-            </article>
-            <article class="packages-kpi packages-kpi-blue">
-                <span>Recogidos</span>
-                <strong>{{ '{:,}'.format(counts.get('picked_up', 0)) }}</strong>
-            </article>
-            <article class="packages-kpi packages-kpi-green">
-                <span>Entregados</span>
-                <strong>{{ '{:,}'.format(counts.get('delivered', 0)) }}</strong>
-            </article>
-        </section>
-
-        <form class="packages-filter-bar" method="get" action="{{ url_for('suite.paquetes') }}">
-            <label class="packages-filter-field">
-                <span>Número de guía</span>
-                <input type="search" name="guia" value="{{ tracking }}" placeholder="Ej: DX-123456">
-            </label>
-            <label class="packages-filter-field">
-                <span>Estado</span>
-                <select name="estado">
-                    <option value="">Todos los estados</option>
-                    {% for key, label in STATUSES.items() %}
-                    <option value="{{ key }}" {% if status == key %}selected{% endif %}>{{ label }}</option>
-                    {% endfor %}
-                </select>
-            </label>
-            <label class="packages-filter-field">
-                <span>Rango de fecha</span>
-                <select name="rango">
-                    <option value="7" {% if period == '7' %}selected{% endif %}>Últimos 7 días</option>
-                    <option value="30" {% if period == '30' %}selected{% endif %}>Últimos 30 días</option>
-                    <option value="mes" {% if period == 'mes' %}selected{% endif %}>Este mes</option>
-                    <option value="todo" {% if period == 'todo' %}selected{% endif %}>Todo el tiempo</option>
-                </select>
-            </label>
-            <button class="packages-search-button" type="submit">Buscar</button>
-        </form>
-
-        <section class="packages-table-card" aria-label="Listado de paquetes">
-            <div class="packages-table-scroll">
-                <table class="packages-table">
-                    <thead>
-                        <tr>
-                            <th scope="col"># Guía</th>
-                            <th scope="col">Remitente</th>
-                            <th scope="col">Destinatario</th>
-                            <th scope="col">Ciudad destino</th>
-                            <th scope="col">Estado</th>
-                            <th scope="col">Peso (kg)</th>
-                            <th scope="col">Fecha</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for p in pagination.items %}
-                        {% set date = p.created_at.strftime('%d/%m/%Y') if p.created_at else '—' %}
-                        <tr>
-                            <td class="packages-guide">{{ p.tracking_number }}</td>
-                            <td>{{ p.sender }}</td>
-                            <td>{{ p.recipient }}</td>
-                            <td>{{ p.city }}</td>
-                            <td><span class="packages-status status-{{ p.status|replace('_', '-') }}">{{ p.status_label }}</span></td>
-                            <td class="packages-number">{{ '%.1f'|format(p.weight) }}</td>
-                            <td class="packages-date">{{ date }}</td>
-                            <td>
-                                <div class="packages-actions">
-                                    <button type="button" class="packages-action-button" data-view-package
-                                        data-guide="{{ p.tracking_number }}"
-                                        data-sender="{{ p.sender }}"
-                                        data-recipient="{{ p.recipient }}"
-                                        data-city="{{ p.city }}"
-                                        data-address="{{ p.address }}"
-                                        data-status-label="{{ p.status_label }}"
-                                        data-courier="{{ p.courier.name if p.courier else '' }}"
-                                        data-weight="{{ p.weight }}"
-                                        data-date="{{ date }}"
-                                        aria-label="Ver paquete {{ p.tracking_number }}" title="Ver detalles">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                    </button>
-                                    <button type="button" class="packages-action-button" data-edit-package
-                                        data-id="{{ p.id }}"
-                                        data-guide="{{ p.tracking_number }}"
-                                        data-sender="{{ p.sender }}"
-                                        data-recipient="{{ p.recipient }}"
-                                        data-city="{{ p.city }}"
-                                        data-address="{{ p.address }}"
-                                        data-status="{{ p.status }}"
-                                        data-courier-id="{{ p.courier_id or '' }}"
-                                        data-weight="{{ p.weight }}"
-                                        aria-label="Editar paquete {{ p.tracking_number }}" title="Editar paquete">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5 4 4M4 20l4-.8L19.2 8a2.1 2.1 0 0 0-3-3L5 16.2 4 20Z"></path></svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        {% else %}
-                        <tr>
-                            <td colspan="8" class="packages-empty-state">No se encontraron paquetes para estos filtros.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <footer class="packages-pagination">
-                <p>
-                    {% if pagination.total %}
-                    Mostrando {{ pagination.first }}–{{ pagination.last }} de {{ '{:,}'.format(pagination.total) }} paquetes
-                    {% else %}
-                    No hay paquetes para mostrar
-                    {% endif %}
-                </p>
-                <nav aria-label="Paginación de paquetes">
-                    <a class="packages-page-link {% if not pagination.has_prev %}is-disabled{% endif %}"
-                        href="{{ url_for('suite.paquetes', guia=tracking, estado=status, rango=period, pagina=pagination.prev_num) if pagination.has_prev else '#' }}">Anterior</a>
-                    {% for number in pagination.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
-                    {% if number %}
-                    <a class="packages-page-link {% if number == pagination.page %}is-current{% endif %}"
-                        href="{{ url_for('suite.paquetes', guia=tracking, estado=status, rango=period, pagina=number) }}">{{ number }}</a>
-                    {% endif %}
-                    {% endfor %}
-                    <a class="packages-page-link {% if not pagination.has_next %}is-disabled{% endif %}"
-                        href="{{ url_for('suite.paquetes', guia=tracking, estado=status, rango=period, pagina=pagination.next_num) if pagination.has_next else '#' }}">Siguiente</a>
-                </nav>
-            </footer>
-        </section>
-{% endblock %}
-
-{% block after_main %}
-    <div class="packages-modal-backdrop" id="create-package-modal" data-modal aria-hidden="true">
-        <section class="packages-modal" role="dialog" aria-modal="true" aria-labelledby="create-package-title">
-            <header class="packages-modal-header">
-                <div>
-                    <h2 id="create-package-title">Nuevo paquete</h2>
-                    <p>Completa la información para registrar un envío.</p>
-                </div>
-                <button type="button" class="packages-modal-close" data-close-modal aria-label="Cerrar">×</button>
-            </header>
-            <form method="post" action="{{ url_for('suite.paquetes') }}" class="packages-modal-form"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <label><span>Número de guía</span><input name="tracking_number" placeholder="Ej: DX-123456" required></label>
-                <div class="packages-form-grid">
-                    <label><span>Remitente</span><input name="sender" required></label>
-                    <label><span>Destinatario</span><input name="recipient" required></label>
-                    <label><span>Ciudad destino</span><input name="city" required></label>
-                    <label><span>Peso (kg)</span><input name="weight" type="number" min="0.1" step="0.1" value="1" required></label>
-                </div>
-                <label><span>Dirección de entrega</span><input name="address" required></label>
-                <label><span>Repartidor</span>
-                    <select name="courier_id">
-                        <option value="">Sin asignar</option>
-                        {% for courier in couriers %}
-                        <option value="{{ courier.id }}">{{ courier.name }}</option>
-                        {% endfor %}
-                    </select>
-                </label>
-                <footer class="packages-modal-actions">
-                    <button type="button" class="packages-secondary-button" data-close-modal>Cancelar</button>
-                    <button type="submit" class="packages-search-button">Crear paquete</button>
-                </footer>
-            </form>
-        </section>
+<form method="get" class="{{ ui.card }} mb-4 grid items-end gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_auto]">
+    <div><label class="{{ ui.label }}" for="f-guia">Número de guía</label><input class="{{ ui.input }}" id="f-guia" name="guia" value="{{ tracking }}" placeholder="Ej. DX-000214"></div>
+    <div><label class="{{ ui.label }}" for="f-estado">Estado</label>
+        <select class="{{ ui.input }}" id="f-estado" name="estado">
+            <option value="">Todos los estados</option>
+            {% for key, label in STATUSES.items() %}<option value="{{ key }}" {{ 'selected' if status == key }}>{{ label }}</option>{% endfor %}
+        </select>
     </div>
-
-    <div class="packages-modal-backdrop" id="view-package-modal" data-modal aria-hidden="true">
-        <section class="packages-modal packages-detail-modal" role="dialog" aria-modal="true" aria-labelledby="view-package-title">
-            <header class="packages-modal-header">
-                <div>
-                    <h2 id="view-package-title">Detalle del paquete</h2>
-                    <p id="detail-guide"></p>
-                </div>
-                <button type="button" class="packages-modal-close" data-close-modal aria-label="Cerrar">×</button>
-            </header>
-            <dl class="packages-detail-list">
-                <div><dt>Remitente</dt><dd id="detail-sender"></dd></div>
-                <div><dt>Destinatario</dt><dd id="detail-recipient"></dd></div>
-                <div><dt>Ciudad destino</dt><dd id="detail-city"></dd></div>
-                <div><dt>Dirección</dt><dd id="detail-address"></dd></div>
-                <div><dt>Estado</dt><dd id="detail-status"></dd></div>
-                <div><dt>Repartidor</dt><dd id="detail-courier"></dd></div>
-                <div><dt>Peso</dt><dd id="detail-weight"></dd></div>
-                <div><dt>Fecha</dt><dd id="detail-date"></dd></div>
-            </dl>
-        </section>
+    <div><label class="{{ ui.label }}" for="f-rango">Periodo</label>
+        <select class="{{ ui.input }}" id="f-rango" name="rango">
+            {% for key, label in [('30', 'Últimos 30 días'), ('7', 'Últimos 7 días'), ('mes', 'Este mes'), ('todo', 'Todo')] %}
+                <option value="{{ key }}" {{ 'selected' if period == key }}>{{ label }}</option>
+            {% endfor %}
+        </select>
     </div>
+    <button class="{{ ui.btn }}">Filtrar</button>
+</form>
 
-    <div class="packages-modal-backdrop" id="edit-package-modal" data-modal aria-hidden="true">
-        <section class="packages-modal" role="dialog" aria-modal="true" aria-labelledby="edit-package-title">
-            <header class="packages-modal-header">
-                <div>
-                    <h2 id="edit-package-title">Editar paquete</h2>
-                    <p id="edit-package-guide"></p>
-                </div>
-                <button type="button" class="packages-modal-close" data-close-modal aria-label="Cerrar">×</button>
-            </header>
-            <form method="post" id="delete-package-form" data-delete-url="{{ url_for('suite.paquetes') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></form>
-            <form method="post" class="packages-modal-form" id="edit-package-form" data-edit-url="{{ url_for('suite.paquetes') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <div class="packages-form-grid">
-                    <label><span>Remitente</span><input name="sender" id="edit-sender" required></label>
-                    <label><span>Destinatario</span><input name="recipient" id="edit-recipient" required></label>
-                    <label><span>Ciudad destino</span><input name="city" id="edit-city" required></label>
-                    <label><span>Peso (kg)</span><input name="weight" id="edit-weight" type="number" min="0.1" step="0.1" required></label>
-                </div>
-                <label><span>Dirección de entrega</span><input name="address" id="edit-address" required></label>
-                <div class="packages-form-grid">
-                    <label><span>Estado</span>
-                        <select name="status" id="edit-status" required>
-                            {% for key, label in STATUSES.items() %}
-                            <option value="{{ key }}">{{ label }}</option>
-                            {% endfor %}
-                        </select>
-                    </label>
-                    <label><span>Repartidor</span>
-                        <select name="courier_id" id="edit-courier">
-                            <option value="">Sin asignar</option>
-                            {% for courier in couriers %}
-                            <option value="{{ courier.id }}">{{ courier.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </label>
-                </div>
-                <footer class="packages-modal-actions">
-                    <button type="button" class="packages-delete-button" id="delete-package-button">Eliminar paquete</button>
-                    <button type="button" class="packages-secondary-button" data-close-modal>Cancelar</button>
-                    <button type="submit" class="packages-search-button">Guardar cambios</button>
-                </footer>
-            </form>
-        </section>
+<div class="{{ ui.card }}">
+    <div class="overflow-x-auto"><table class="w-full">
+        <thead><tr>
+            <th class="{{ ui.th }}">Guía</th><th class="{{ ui.th }}">Remitente</th><th class="{{ ui.th }}">Destinatario</th><th class="{{ ui.th }}">Estado</th>
+            <th class="{{ ui.th }}">Peso</th><th class="{{ ui.th }}">Fecha</th><th class="{{ ui.th }} text-right!">Acciones</th>
+        </tr></thead>
+        <tbody>
+        {% for p in pagination.items %}
+            <tr>
+                <td class="{{ ui.td }} whitespace-nowrap font-extrabold">{{ p.tracking_number }} {% if p.is_urgent %}<span class="ml-1.5 rounded-full bg-rose px-2 py-0.5 align-middle text-[11px] font-bold text-rose-ink">Urgente</span>{% endif %}</td>
+                <td class="{{ ui.td }}"><div class="flex items-center gap-2.5 whitespace-nowrap">{{ avatar(p.sender_name) }}{{ p.sender_name }}</div></td>
+                <td class="{{ ui.td }}">{{ p.recipient_name }}</td>
+                <td class="{{ ui.td }}">{{ status_badge(p.status) }}</td>
+                <td class="{{ ui.td }} whitespace-nowrap">{{ '%.1f'|format(p.weight) }} kg</td>
+                <td class="{{ ui.td }} whitespace-nowrap">{{ p.created_at|short_date }}</td>
+                <td class="{{ ui.td }}"><div class="flex justify-end gap-1.5">
+                    <button type="button" class="{{ ui.icon_btn }}" data-quick="{{ p.id }}" aria-label="Vista rápida">{{ icon('i-eye') }}</button>
+                    <a class="{{ ui.icon_btn }}" href="{{ url_for('suite.editar_paquete', package_id=p.id) }}" aria-label="Editar">{{ icon('i-edit') }}</a>
+                </div></td>
+            </tr>
+        {% else %}
+            <tr><td colspan="7" class="p-8 text-center text-muted">No hay paquetes con esos filtros.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table></div>
+
+    {# Paginación: los enlaces conservan los filtros #}
+    {% set args = {'guia': tracking, 'estado': status, 'rango': period} %}
+    {% set page_link = 'rounded-xl border border-line bg-white px-3 py-1.5 font-semibold text-ink2 hover:bg-soft' %}
+    {% set page_on = 'rounded-xl border border-accent bg-accent px-3 py-1.5 font-semibold text-white' %}
+    {% set page_off = 'rounded-xl border border-line bg-white px-3 py-1.5 font-semibold text-ink2 opacity-45' %}
+    <div class="mt-4 flex flex-wrap items-center justify-between gap-3 text-muted">
+        <span>Mostrando {{ pagination.items|length }} de {{ pagination.total }} paquetes</span>
+        <div class="flex gap-1.5">
+            {% if pagination.has_prev %}<a class="{{ page_link }}" href="{{ url_for('suite.paquetes', pagina=pagination.prev_num, **args) }}">Anterior</a>{% else %}<span class="{{ page_off }}">Anterior</span>{% endif %}
+            {% for n in pagination.iter_pages(left_edge=1, left_current=1, right_current=1, right_edge=1) %}
+                {% if n %}<a class="{{ page_on if n == pagination.page else page_link }}" href="{{ url_for('suite.paquetes', pagina=n, **args) }}">{{ n }}</a>{% else %}<span class="{{ page_off }}">…</span>{% endif %}
+            {% endfor %}
+            {% if pagination.has_next %}<a class="{{ page_link }}" href="{{ url_for('suite.paquetes', pagina=pagination.next_num, **args) }}">Siguiente</a>{% else %}<span class="{{ page_off }}">Siguiente</span>{% endif %}
+        </div>
     </div>
+</div>
+
+{# Vista rápida: una sola ventana que suite.js llena con los datos de la fila #}
+{% call overlay('quick', 'max-w-3xl') %}
+    <div class="mb-4 flex items-start justify-between gap-3">
+        <div><h2 id="quick-title" class="text-xl font-extrabold tracking-tight"></h2><div id="q-pills" class="mt-2 flex items-center gap-2"></div></div>
+        <button type="button" data-close class="{{ ui.icon_btn }}" aria-label="Cerrar">{{ icon('i-x') }}</button>
+    </div>
+    <div class="grid gap-3 sm:grid-cols-2">
+        <div class="{{ ui.box }}"><h3 class="{{ ui.card_title }} mb-3!">{{ icon('i-send') }}Remitente</h3><div id="q-from"></div></div>
+        <div class="{{ ui.box }}"><h3 class="{{ ui.card_title }} mb-3!">{{ icon('i-recv') }}Destinatario</h3><div id="q-to"></div></div>
+    </div>
+    <div class="mt-4 grid gap-3 sm:grid-cols-3">
+        <div><span class="block text-xs text-muted">Peso</span><b id="q-w"></b></div>
+        <div><span class="block text-xs text-muted">Distancia</span><b id="q-km"></b></div>
+        <div><span class="block text-xs text-muted">Repartidor</span><b id="q-c"></b></div>
+    </div>
+    <div class="mt-5 flex flex-wrap justify-end gap-2">
+        <button type="button" data-close class="{{ ui.btn_line }}">Cerrar</button>
+        <a id="q-edit" href="#" class="{{ ui.btn_soft }}">Editar</a>
+        <a id="q-detail" href="#" class="{{ ui.btn }}">Ver detalle completo →</a>
+    </div>
+{% endcall %}
+<script id="quick-data" type="application/json">{{ quick | tojson }}</script>
 {% endblock %}

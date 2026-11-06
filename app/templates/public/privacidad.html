@@ -1,235 +1,26 @@
-{% extends "public/base.html" %}
+{# Política de privacidad: texto de borrador, pendiente de revisión legal #}
+{% extends 'public/base.html' %}
+{% block title %}Política de privacidad{% endblock %}
 
-{% block title %}DropX - Política de Privacidad{% endblock %}
-{% block main_class %}pagina-legal{% endblock %}
-
-{% block content %}        <!-- 2. HERO / CABECERA LEGAL -->
-        <section class="seccion-legal-header">
-            <div class="legal-container">
-                <nav class="legal-breadcrumbs" aria-label="Miga de pan">
-                    <a href="{{ url_for('public.index') }}">Inicio</a>
-                    <span class="breadcrumb-separator">/</span>
-                    <a href="{{ url_for('public.contacto') }}">Soporte y Legal</a>
-                    <span class="breadcrumb-separator">/</span>
-                    <span class="breadcrumb-current">Privacidad</span>
-                </nav>
-
-                <div class="legal-badge">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
-                    </svg>
-                    <span>Borrador para revisión legal</span>
-                </div>
-
-                <h1 class="legal-title">Privacidad</h1>
-                <p class="legal-description">
-                    Cómo se contempla el uso de la información de cuenta, contacto y envíos para acompañar la operación
-                    y el rastreo en DropX.
-                </p>
-                <p class="legal-disclaimer">
-                    Contenido de ejemplo para diseño. No constituye una política jurídicamente aprobada.
-                </p>
-            </div>
-        </section>
-
-        <!-- 3. CONTENIDO PRINCIPAL: 2 COLUMNAS -->
-        <section class="seccion-legal-body">
-            <div class="legal-container legal-grid">
-                <!-- Columna Izquierda: Índice y Ayuda -->
-                <aside class="legal-sidebar">
-                    <div class="legal-toc-card">
-                        <h3 class="legal-toc-title">En este documento</h3>
-                        <nav class="legal-toc-nav">
-                            <a href="#seccion-01" class="toc-link">
-                                <span class="toc-num">01</span>
-                                <span class="toc-text">Información de cuenta y contacto</span>
-                            </a>
-                            <a href="#seccion-02" class="toc-link">
-                                <span class="toc-num">02</span>
-                                <span class="toc-text">Información de los envíos</span>
-                            </a>
-                            <a href="#seccion-03" class="toc-link">
-                                <span class="toc-num">03</span>
-                                <span class="toc-text">Finalidades de operación y rastreo</span>
-                            </a>
-                            <a href="#seccion-04" class="toc-link">
-                                <span class="toc-num">04</span>
-                                <span class="toc-text">Proveedores y aliados operativos</span>
-                            </a>
-                            <a href="#seccion-05" class="toc-link">
-                                <span class="toc-num">05</span>
-                                <span class="toc-text">Seguridad y conservación</span>
-                            </a>
-                            <a href="#seccion-06" class="toc-link">
-                                <span class="toc-num">06</span>
-                                <span class="toc-text">Derechos y solicitudes</span>
-                            </a>
-                            <a href="#seccion-07" class="toc-link">
-                                <span class="toc-num">07</span>
-                                <span class="toc-text">Contacto y cambios del documento</span>
-                            </a>
-                        </nav>
-                    </div>
-
-                    <div class="legal-help-card">
-                        <h4 class="legal-help-title">¿Necesitas orientación?</h4>
-                        <p class="legal-help-desc">
-                            Consulta el Centro de Ayuda o comunícate con nosotros desde Contacto.
-                        </p>
-                        <a href="{{ url_for('public.contacto') }}" class="legal-help-link">
-                            Ir a Contacto <span aria-hidden="true">→</span>
-                        </a>
-                    </div>
-                </aside>
-
-                <!-- Columna Derecha: Secciones del Documento -->
-                <article class="legal-content">
-                    <!-- Alerta de borrador -->
-                    <div class="legal-callout">
-                        <h4 class="callout-title">Documento en revisión</h4>
-                        <p class="callout-text">
-                            La versión definitiva debe validar las condiciones aplicables, la identificación del
-                            responsable y los procedimientos antes de su publicación.
-                        </p>
-                    </div>
-
-                    <!-- Sección 01 -->
-                    <section id="seccion-01" class="legal-article-section">
-                        <h2 class="legal-section-heading">01. Información de cuenta y contacto</h2>
-                        <p>
-                            Este borrador contempla la información que una persona o empresa aporta al crear y utilizar
-                            su cuenta, solicitar una cotización o contactar a DropX. Puede incluir nombre, correo
-                            electrónico, teléfono y datos de la empresa relacionados con la operación.
-                        </p>
-                        <p>
-                            La versión definitiva deberá precisar qué datos se solicitan en cada formulario, cuáles son
-                            necesarios y quién es responsable de su tratamiento. Este ejemplo no confirma una razón
-                            social, una base jurídica ni una autorización específica.
-                        </p>
-                    </section>
-
-                    <!-- Sección 02 -->
-                    <section id="seccion-02" class="legal-article-section">
-                        <h2 class="legal-section-heading">02. Información de los envíos</h2>
-                        <p>
-                            La gestión logística utiliza los datos del remitente y del destinatario que se incorporan al
-                            envío: nombre, contacto, ciudad, dirección y referencias necesarias para la entrega. También
-                            considera la guía y la información de seguimiento asociada al recorrido del paquete.
-                        </p>
-                        <p>
-                            Estos datos pueden ser ingresados en la Suite Logística o recibidos desde una tienda
-                            e-commerce integrada. Quien los registra debe revisar su exactitud y evitar incluir
-                            información personal que no sea necesaria para la operación.
-                        </p>
-                    </section>
-
-                    <!-- Sección 03 -->
-                    <section id="seccion-03" class="legal-article-section">
-                        <h2 class="legal-section-heading">03. Finalidades de operación y rastreo</h2>
-                        <p>
-                            La información permite gestionar la cuenta y los pedidos, organizar la recolección y
-                            distribución, identificar los envíos, mostrar su avance en el rastreo y atender consultas
-                            relacionadas con la operación.
-                        </p>
-                        <p>
-                            Las integraciones facilitan el intercambio de información del pedido entre la tienda y la
-                            plataforma. La versión final deberá delimitar las finalidades y las condiciones de uso de
-                            los datos. Cualquier finalidad adicional debe revisarse y explicarse antes de su
-                            implementación.
-                        </p>
-                    </section>
-
-                    <!-- Sección 04 -->
-                    <section id="seccion-04" class="legal-article-section">
-                        <h2 class="legal-section-heading">04. Proveedores y aliados operativos</h2>
-                        <p>
-                            Para coordinar una operación puede ser necesario que los aliados de distribución y los
-                            proveedores tecnológicos accedan a la información pertinente para su función. El alcance
-                            debe limitarse a lo necesario para gestionar el servicio o prestar soporte.
-                        </p>
-                        <p>
-                            La revisión legal y operativa deberá identificar las categorías de proveedores, sus
-                            obligaciones y los mecanismos aplicables al intercambio de información. Este borrador no
-                            confirma transferencias internacionales ni condiciones contractuales con terceros.
-                        </p>
-                    </section>
-
-                    <!-- Sección 05 -->
-                    <section id="seccion-05" class="legal-article-section">
-                        <h2 class="legal-section-heading">05. Seguridad y conservación</h2>
-                        <p>
-                            La protección de la información requiere medidas técnicas y organizativas acordes con la
-                            operación. Este documento no afirma certificaciones ni medidas específicas no verificadas.
-                            Las personas usuarias deben cuidar sus credenciales y comunicar accesos que no reconozcan.
-                        </p>
-                        <p>
-                            La versión definitiva deberá describir los criterios de conservación y eliminación según las
-                            necesidades operativas y las obligaciones aplicables. No se establece aquí un plazo exacto
-                            de retención. Evita compartir contraseñas u otros datos sensibles en las solicitudes de
-                            soporte.
-                        </p>
-                    </section>
-
-                    <!-- Sección 06 -->
-                    <section id="seccion-06" class="legal-article-section">
-                        <h2 class="legal-section-heading">06. Derechos y solicitudes</h2>
-                        <p>
-                            Si necesitas conocer o actualizar información relacionada contigo, o solicitar su corrección
-                            o eliminación, puedes presentar una solicitud por los canales de Contacto. Su alcance y
-                            procedencia deberán revisarse según la normativa y las condiciones aplicables.
-                        </p>
-                        <p>
-                            Describe qué necesitas y facilita un medio para responderte. Si la solicitud se refiere a un
-                            envío, incluye su guía cuando sea pertinente y evita adjuntar datos de terceros que no sean
-                            necesarios. Podrá requerirse verificar la identidad o la relación con la información
-                            solicitada.
-                        </p>
-                        <div class="legal-action-box">
-                            <a href="{{ url_for('public.contacto') }}" class="legal-inline-link">
-                                Enviar una solicitud desde Contacto <span aria-hidden="true">→</span>
-                            </a>
-                        </div>
-                    </section>
-
-                    <!-- Sección 07 -->
-                    <section id="seccion-07" class="legal-article-section">
-                        <h2 class="legal-section-heading">07. Contacto y cambios del documento</h2>
-                        <p>
-                            Para consultas sobre el tratamiento de información o para iniciar una solicitud, escribe a
-                            info@dropxlogistica.com o utiliza la página de Contacto. La versión aprobada deberá detallar
-                            el procedimiento y los canales de atención correspondientes.
-                        </p>
-                        <p>
-                            Los cambios de este documento deberán indicar cómo se informa a las personas y cuál es la
-                            versión vigente. Antes de publicarlo, deben validarse la identificación del responsable, las
-                            finalidades, los procedimientos y los demás requisitos legales. Este contenido es un
-                            borrador de diseño, no una política aprobada.
-                        </p>
-                        <div class="legal-action-box">
-                            <a href="mailto:info@dropxlogistica.com" class="legal-inline-link">
-                                info@dropxlogistica.com • Bogotá, Colombia
-                            </a>
-                        </div>
-                    </section>
-
-                    <!-- Tarjeta Enlace Relacionado -->
-                    <div class="legal-related-card">
-                        <div class="related-card-text">
-                            <span class="related-card-label">También puedes consultar:</span>
-                            <h3 class="related-card-title">Términos del Servicio</h3>
-                        </div>
-                        <a href="{{ url_for('public.terminos') }}" class="related-card-arrow"
-                            aria-label="Ir a Términos del Servicio">
-                            <span aria-hidden="true">→</span>
-                        </a>
-                    </div>
-                </article>
-            </div>
-        </section>
-    
+{% block content %}
+<div class="mx-auto w-full max-w-3xl px-5 pt-12">
+    <h1 class="text-3xl font-extrabold tracking-tight md:text-4xl">Política de privacidad</h1>
+    <div class="mt-4 rounded-2xl bg-amber px-4 py-3 font-semibold text-amber-ink">Texto en borrador, pendiente de revisión legal.</div>
+    <div class="mt-6 grid gap-2">
+        <h2 class="mt-4 text-xl font-extrabold">1. Responsable del tratamiento</h2>
+        <p class="text-ink2">DropX, con operación en Cartagena de Indias, Colombia, es responsable del tratamiento de los datos personales recolectados en este sitio y en la app.</p>
+        <h2 class="mt-4 text-xl font-extrabold">2. Datos que recolectamos</h2>
+        <p class="text-ink2">Nombre, documento, teléfono, correo y direcciones de recogida y entrega, necesarios para prestar el servicio de mensajería.</p>
+        <h2 class="mt-4 text-xl font-extrabold">3. Finalidad</h2>
+        <p class="text-ink2">Los datos se usan para gestionar envíos, contactar a remitentes y destinatarios, atender solicitudes y mejorar el servicio.</p>
+        <h2 class="mt-4 text-xl font-extrabold">4. Compartición de datos</h2>
+        <p class="text-ink2">Solo se comparte con los repartidores que realizan la entrega y con las autoridades cuando la ley lo exija.</p>
+        <h2 class="mt-4 text-xl font-extrabold">5. Seguridad</h2>
+        <p class="text-ink2">Se aplican medidas técnicas y organizativas razonables para proteger la información, como el acceso restringido por roles.</p>
+        <h2 class="mt-4 text-xl font-extrabold">6. Derechos del titular</h2>
+        <p class="text-ink2">Puede conocer, actualizar, rectificar y solicitar la supresión de sus datos escribiendo al canal de contacto.</p>
+        <h2 class="mt-4 text-xl font-extrabold">7. Cambios en esta política</h2>
+        <p class="text-ink2">Esta política podrá actualizarse; la versión vigente siempre estará publicada en este sitio.</p>
+    </div>
+</div>
 {% endblock %}

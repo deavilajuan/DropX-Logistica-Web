@@ -1,239 +1,76 @@
-{% extends "public/base.html" %}
+{# Rastreo público: muestra estado, progreso y movimientos. Nunca muestra datos personales. #}
+{% extends 'public/base.html' %}
+{% import '_ui.html' as ui %}
+{% from '_macros.html' import status_badge, icon, pill with context %}
+{% block title %}Rastreo de guía{% endblock %}
 
-{% block title %}DropX - Rastreo de Envíos{% endblock %}
+{% block content %}
+<section class="border-b border-line bg-white px-5 pb-16 pt-12 text-center">
+    <span class="{{ ui.eyebrow }}">Rastreo de guía</span>
+    <h1 class="mt-4 text-[clamp(2rem,4vw,3rem)] font-extrabold leading-tight tracking-tight">¿Dónde está su paquete?</h1>
+    <p class="mx-auto mt-3 max-w-md text-lg text-ink2">Consulte el estado de su envío en Cartagena con el número de su comprobante.</p>
+    <form class="mx-auto mt-6 flex max-w-xl gap-2 rounded-2xl border border-line bg-white p-2 shadow-pop" method="get">
+        <input name="guia" value="{{ tracking }}" placeholder="Ej. DX-000214" aria-label="Número de guía" required class="min-w-0 flex-1 rounded-xl bg-transparent px-3 placeholder:text-muted focus:outline-none">
+        <button class="{{ ui.btn }}">{{ icon('i-search') }}Rastrear</button>
+    </form>
+</section>
 
-{% block content %}        <!-- 2. HERO BUSCADOR -->
-        <section class="seccion-hero hero-interno">
-            <div class="hero-container">
-                <span class="hero-tag">SEGUIMIENTO EN TIEMPO REAL</span>
-                <h1 class="hero-title">Rastrea tu envío</h1>
+<div class="relative mx-auto -mt-8 w-full max-w-3xl px-5">
+{% if package %}
+    {# Posición del envío en la barra de progreso (el estado "Con novedad" no es un paso) #}
+    {% set steps = [('pending', 'Pendiente', 'i-clip'), ('picked_up', 'Recogido', 'i-truck'), ('delivered', 'Entregado', 'i-home')] %}
+    {% set order = ['pending', 'picked_up', 'delivered'] %}
+    {% set current = order.index(package.status) if package.status in order else 0 %}
 
-                <form action="{{ url_for('public.rastreo') }}" method="get" class="hero-search-box">
-                    <input type="text" name="guia"
-                        placeholder="Ejemplo: DX-9827461" class="hero-input" required>
-                    <button type="submit" class="hero-btn-search">Buscar</button>
-                </form>
+    <div class="{{ ui.card }} p-6 shadow-pop md:p-8">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+            <div><div class="text-[13px] font-semibold text-muted">Número de guía</div><div class="text-3xl font-extrabold tracking-tight">{{ package.tracking_number }}</div></div>
+            <div class="text-right">
+                {{ status_badge(package.status) }}
+                {% if package.is_urgent %}<div class="mt-1.5">{{ pill('Envío urgente', ui.status_tone.issue) }}</div>{% endif %}
             </div>
-        </section>
+        </div>
 
-        {% if tracking %}
-        <!-- 3. RESULTADO DE RASTREO -->
-        <section class="seccion-resultado-rastreo">
-            <div class="rastreo-container">
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                <div class="flashes-container">
-                    {% for category, message in messages %}
-                    <div class="flash-alert flash-{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                {% endwith %}
-
-                {% if package %}
-                <!-- Encabezado de estado de la guía -->
-                <div class="rastreo-header-info">
-                    <div class="rastreo-guia-box">
-                        <span class="rastreo-subtag">ESTADO DEL ENVÍO</span>
-                        <h2 class="rastreo-guia-title">Guía: {{ package.tracking_number }}</h2>
+        {% if package.status == 'issue' %}
+            <div class="mt-6 rounded-2xl bg-rose px-4 py-3 font-semibold text-rose-ink">El envío presenta una novedad. Comuníquese con un asesor para resolverla.</div>
+        {% else %}
+            {# Barra de progreso: la línea naranja avanza 50 % por cada paso #}
+            <div class="relative mt-8 flex justify-between">
+                <div class="absolute left-[16.7%] right-[16.7%] top-[18px] h-[3px] rounded bg-line"><div class="h-full rounded bg-accent" style="width: {{ current * 50 }}%"></div></div>
+                {% for key, label, ico in steps %}
+                    {% set reached = loop.index0 <= current %}
+                    <div class="relative z-10 flex-1 text-center text-[13px] font-semibold {{ 'text-ink' if reached else 'text-muted' }}">
+                        <div class="mx-auto mb-1.5 grid size-[38px] place-items-center rounded-full border-[3px] {{ 'border-accent bg-accent text-white' if reached else 'border-line bg-white' }} {{ 'ring-[5px] ring-accent/20' if loop.index0 == current }}">{{ icon(ico) }}</div>
+                        {{ label }}
                     </div>
-                    <div class="rastreo-badge-status">
-                        <span class="badge-status-pill">{{ package.status_label }}</span>
-                    </div>
-                </div>
-
-                <!-- Cuadrícula de 2 columnas: Historial y Detalles -->
-                <div class="rastreo-grid-cards">
-                    <!-- Columna Izquierda: Historial de Ruta -->
-                    <div class="card-historial">
-                        <h3 class="card-section-title">Historial de ruta</h3>
-
-                        <div class="timeline-tracking">
-                            {% if package and package.events %}
-                            {% for event in package.events %}
-                            <div
-                                class="timeline-step {% if loop.first %}step-active{% else %}step-completed{% endif %}">
-                                <div class="timeline-marker">
-                                    <span class="timeline-dot"></span>
-                                    {% if not loop.last %}
-                                    <span class="timeline-line"></span>
-                                    {% endif %}
-                                </div>
-                                <div class="timeline-content">
-                                    <h4 class="timeline-title">{{ event.title }}</h4>
-                                    {% if event.description %}
-                                    <p class="timeline-desc">{{ event.description }}</p>
-                                    {% endif %}
-                                    <span class="timeline-time">{{ event.created_at.strftime('%d/%m/%Y %I:%M %p') if event.created_at }}</span>
-                                </div>
-                            </div>
-                            {% endfor %}
-                            {% else %}
-                            <p>No hay movimientos registrados para este envío todavía.</p>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <!-- Columna Derecha: Detalles de Entrega -->
-                    <div class="card-detalles">
-                        <h3 class="card-detalles-title">Detalles de entrega</h3>
-
-                        <div class="detalles-list">
-                            <div class="detalle-item">
-                                <span class="detalle-label">DESTINATARIO</span>
-                                <p class="detalle-value">{{ package.recipient }}</p>
-                            </div>
-
-                            <div class="detalle-item">
-                                <span class="detalle-label">DIRECCIÓN DE ENTREGA</span>
-                                <p class="detalle-value">{{ package.address }}</p>
-                                <p class="detalle-subvalue">{{ package.city }}</p>
-                            </div>
-
-                            <div class="detalle-item">
-                                <span class="detalle-label">ÚLTIMA ACTUALIZACIÓN</span>
-                                <p class="detalle-value-highlight">{{ package.updated_at.strftime('%d/%m/%Y %I:%M %p') if package.updated_at else 'No disponible' }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
+                {% endfor %}
             </div>
-        </section>
         {% endif %}
 
-        <!-- 4. SECCIÓN CÓMO FUNCIONA -->
-        <section class="seccion-pasos-rastreo">
-            <div class="rastreo-container">
-                <div class="section-center-head">
-                    <span class="section-tag">PROCESO DE MONITOREO</span>
-                    <h2 class="section-main-title">¿Cómo funciona el rastreo?</h2>
-                </div>
+        <div class="mt-6 grid gap-3 sm:grid-cols-2">
+            <div class="{{ ui.box }}"><span class="block text-xs text-muted">Ciudad</span><b>Cartagena de Indias</b></div>
+            <div class="{{ ui.box }}"><span class="block text-xs text-muted">Última actualización</span><b>{{ package.updated_at.strftime('%d/%m/%Y %H:%M') }}</b></div>
+        </div>
 
-                <div class="pasos-grid-3">
-                    <div class="paso-card">
-                        <div class="paso-number-badge">1</div>
-                        <h3 class="paso-title">Ingresa tu número</h3>
-                        <p class="paso-desc">Introduce la guía de 8 dígitos proporcionada en el correo de confirmación
-                            de la compra.</p>
-                    </div>
-
-                    <div class="paso-card">
-                        <div class="paso-number-badge">2</div>
-                        <h3 class="paso-title">Consulta el estado</h3>
-                        <p class="paso-desc">Mira en tiempo real la ubicación exacta del transportista y los puntos de
-                            control superados.</p>
-                    </div>
-
-                    <div class="paso-card">
-                        <div class="paso-number-badge">3</div>
-                        <h3 class="paso-title">Recibe notificaciones</h3>
-                        <p class="paso-desc">Obtén avisos inmediatos vía SMS o correo cuando el repartidor esté a menos
-                            de 1 km.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 5. SECCIÓN SIGNIFICADO DE ESTADOS -->
-        <section class="seccion-estados-info">
-            <div class="rastreo-container">
-                <div class="section-center-head">
-                    <span class="section-tag">ESTADOS DISPONIBLES</span>
-                    <h2 class="section-main-title">Significado de los estados de entrega</h2>
-                </div>
-
-                <div class="estados-grid-4">
-                    <!-- Recibido -->
-                    <div class="estado-card">
-                        <div class="estado-icon-box icon-blue" aria-hidden="true">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path
-                                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                                </path>
-                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                            </svg>
-                        </div>
-                        <h3 class="estado-title">Recibido</h3>
-                        <p class="estado-desc">El paquete ha ingresado a nuestra bodega principal y está clasificado.
-                        </p>
-                    </div>
-
-                    <!-- En tránsito -->
-                    <div class="estado-card">
-                        <div class="estado-icon-box icon-amber" aria-hidden="true">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="1" y="3" width="15" height="13"></rect>
-                                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-                                <circle cx="5.5" cy="18.5" r="2.5"></circle>
-                                <circle cx="18.5" cy="18.5" r="2.5"></circle>
-                            </svg>
-                        </div>
-                        <h3 class="estado-title">En tránsito</h3>
-                        <p class="estado-desc">El envío viaja en ruta intermunicipal hacia el destino final.</p>
-                    </div>
-
-                    <!-- En camino -->
-                    <div class="estado-card">
-                        <div class="estado-icon-box icon-orange" aria-hidden="true">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                            </svg>
-                        </div>
-                        <h3 class="estado-title">En camino</h3>
-                        <p class="estado-desc">El repartidor local ya lleva la carga en su vehículo para entrega.</p>
-                    </div>
-
-                    <!-- Entregado -->
-                    <div class="estado-card">
-                        <div class="estado-icon-box icon-green" aria-hidden="true">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                            </svg>
-                        </div>
-                        <h3 class="estado-title">Entregado</h3>
-                        <p class="estado-desc">El paquete fue recibido a satisfacción en la puerta del destino.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6. SECCIÓN PREGUNTAS FRECUENTES -->
-        <section class="seccion-faqs-rastreo">
-            <div class="rastreo-container">
-                <div class="section-center-head">
-                    <span class="section-tag">RESOLVEMOS TUS DUDAS</span>
-                    <h2 class="section-main-title">Preguntas frecuentes de seguimiento</h2>
-                </div>
-
-                <div class="faqs-list">
-                    <div class="faq-item-card">
-                        <h3 class="faq-question">¿Dónde encuentro mi número de guía?</h3>
-                        <p class="faq-answer">El número de guía de DropX consta de un prefijo 'DX-' seguido de 7
-                            dígitos. Lo puedes encontrar en el correo electrónico de confirmación emitido cuando
-                            despacharon tu pedido.</p>
-                    </div>
-
-                    <div class="faq-item-card">
-                        <h3 class="faq-question">¿Qué pasa si no estoy en casa para recibir el paquete?</h3>
-                        <p class="faq-answer">Realizamos hasta tres intentos de entrega en días consecutivos. Si no te
-                            encontramos, te contactaremos vía telefónica para coordinar un horario especial.</p>
-                    </div>
-
-                    <div class="faq-item-card">
-                        <h3 class="faq-question">¿Puedo cambiar la dirección de entrega en camino?</h3>
-                        <p class="faq-answer">Por seguridad de la carga, los cambios de dirección deben ser autorizados
-                            directamente por el comercio o remitente original antes de que el despacho salga a ruta.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    
+        <h3 class="mt-7 font-extrabold">Movimientos</h3>
+        <ul class="mt-3 grid gap-4">
+            {% for event in package.events %}
+                <li class="flex gap-3"><i class="mt-2 size-2 shrink-0 rounded-full bg-accent"></i><div><b class="block">{{ event.title }}</b><small class="text-muted">{{ event.created_at.strftime('%d/%m/%Y %H:%M') }}</small></div></li>
+            {% endfor %}
+        </ul>
+        <p class="mt-4 text-[13px] text-muted">Por privacidad, esta consulta no muestra datos personales.</p>
+    </div>
+{% else %}
+    <div class="{{ ui.card }} grid justify-items-center gap-1.5 p-10 text-center shadow-pop">
+        {# Si la guía no existe, el mensaje flash aparece en esta tarjeta #}
+        {% if tracking %}
+            <h2 class="text-xl font-extrabold">No encontramos la guía {{ tracking }}</h2>
+            <p class="text-muted">Verifique el número e inténtelo de nuevo.</p>
+        {% else %}
+            <h2 class="text-xl font-extrabold">Ingrese su número de guía</h2>
+            <p class="text-muted">Tiene el formato <b>DX-000001</b>.</p>
+        {% endif %}
+    </div>
+{% endif %}
+</div>
 {% endblock %}

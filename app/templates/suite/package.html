@@ -1,0 +1,64 @@
+{# Detalle completo de un paquete: datos, partes, repartidor e historial #}
+{% extends 'suite/base.html' %}
+{% import '_ui.html' as ui %}
+{% from '_macros.html' import status_badge, field, icon, pill with context %}
+{% block title %}{{ package.tracking_number }}{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('suite.paquetes') }}" class="mb-2 inline-block font-semibold text-muted hover:text-ink">← Volver a paquetes</a>
+<div class="mb-5 flex flex-wrap items-end justify-between gap-3">
+    <div>
+        <h1 class="text-2xl font-extrabold tracking-tight">{{ package.tracking_number }}</h1>
+        <p class="mt-2 flex items-center gap-2">{{ status_badge(package.status) }}{% if package.is_urgent %}{{ pill('Urgente', ui.status_tone.issue) }}{% endif %}</p>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+        <a class="{{ ui.btn }}" href="{{ url_for('suite.editar_paquete', package_id=package.id) }}">{{ icon('i-edit') }}Editar</a>
+        {% if current_user.role == 'admin' %}
+        <form method="post" action="{{ url_for('suite.eliminar_paquete', package_id=package.id) }}" onsubmit="return confirm('¿Eliminar el paquete {{ package.tracking_number }}?');">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="{{ ui.btn_danger }}">{{ icon('i-trash') }}Eliminar</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+<div class="grid items-start gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+    <div class="{{ ui.card }} grid gap-5">
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div class="{{ ui.box }}"><h3 class="{{ ui.card_title }}">{{ icon('i-send') }}Remitente</h3>
+                {{ field('Nombre', package.sender_name) }}{{ field('Documento', package.sender_document) }}{{ field('Teléfono', package.sender_phone) }}{{ field('Dirección de origen', package.origin_address) }}
+            </div>
+            <div class="{{ ui.box }}"><h3 class="{{ ui.card_title }}">{{ icon('i-recv') }}Destinatario</h3>
+                {{ field('Nombre', package.recipient_name) }}{{ field('Documento', package.recipient_document) }}{{ field('Teléfono', package.recipient_phone) }}{{ field('Dirección de destino', package.destination_address) }}
+            </div>
+        </div>
+        <div class="border-t border-line pt-5">
+            <h2 class="mb-3 text-base font-extrabold">Envío</h2>
+            <div class="grid gap-x-4 sm:grid-cols-2 xl:grid-cols-3">
+                {{ field('Peso', '%.1f kg' % package.weight) }}
+                {{ field('Distancia', '%.1f km' % package.distance_km) }}
+                {{ field('Repartidor', package.courier.name if package.courier else 'Sin asignar') }}
+                {{ field('Creado', package.created_at.strftime('%d/%m/%Y %H:%M')) }}
+                {{ field('Actualizado', package.updated_at.strftime('%d/%m/%Y %H:%M')) }}
+                {{ field('Entregado', package.delivered_at.strftime('%d/%m/%Y %H:%M') if package.delivered_at else None) }}
+            </div>
+        </div>
+    </div>
+    <div class="{{ ui.card }}">
+        <h2 class="mb-4 text-base font-extrabold">Historial</h2>
+        {# Un punto por movimiento #}
+        <ul class="grid gap-4">
+            {% for e in package.events %}
+                <li class="flex gap-3">
+                    <i class="mt-2 size-2 shrink-0 rounded-full bg-accent"></i>
+                    <div>
+                        <b class="block">{{ e.title }}</b>
+                        {% if e.description %}<small class="block text-muted">{{ e.description }}</small>{% endif %}
+                        <small class="block text-muted">{{ e.created_at.strftime('%d/%m/%Y %H:%M') }}</small>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

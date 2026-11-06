@@ -1,0 +1,61 @@
+{# Formulario para crear o editar un paquete. En edición también se puede cambiar el estado. #}
+{% extends 'suite/base.html' %}
+{% import '_ui.html' as ui %}
+{% from '_macros.html' import input, icon with context %}
+{% block title %}{{ 'Editar ' ~ package.tracking_number if package else 'Nuevo paquete' }}{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('suite.paquetes') }}" class="mb-2 inline-block font-semibold text-muted hover:text-ink">← Volver a paquetes</a>
+<div class="mb-5">
+    <h1 class="text-2xl font-extrabold tracking-tight">{{ 'Editar ' ~ package.tracking_number if package else 'Nuevo paquete' }}</h1>
+    {% if not package %}<p class="mt-1 text-muted">El número de guía se asigna automáticamente al guardar.</p>{% endif %}
+</div>
+
+<form method="post" class="grid gap-4">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="grid gap-4 lg:grid-cols-2">
+    {% for prefix, title, ico, address_field, address_label in [
+        ('sender', 'Remitente', 'i-send', 'origin_address', 'Dirección de origen'),
+        ('recipient', 'Destinatario', 'i-recv', 'destination_address', 'Dirección de destino'),
+    ] %}
+        <div class="{{ ui.card }}">
+            <div class="{{ ui.card_title }}">{{ icon(ico) }}{{ title }}</div>
+            <div class="grid gap-4 sm:grid-cols-2">
+                <div class="sm:col-span-2">{{ input(prefix ~ '_name', 'Nombre', values.get(prefix ~ '_name', ''), required=true) }}</div>
+                {{ input(prefix ~ '_document', 'Documento', values.get(prefix ~ '_document'), placeholder='CC 1.100.000.000') }}
+                {{ input(prefix ~ '_phone', 'Teléfono', values.get(prefix ~ '_phone', ''), required=true) }}
+                <div class="sm:col-span-2">{{ input(address_field, address_label, values.get(address_field, ''), placeholder='Ej. Bocagrande, Cra. 2 #10-45', required=true) }}</div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    <div class="{{ ui.card }}">
+        <div class="{{ ui.card_title }}">Envío</div>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {{ input('weight', 'Peso (kg)', values.get('weight', ''), type='number', required=true, extra='step=0.1 min=0.1') }}
+            {{ input('distance_km', 'Distancia (km)', values.get('distance_km', ''), type='number', extra='step=0.1 min=0') }}
+            <div><label class="{{ ui.label }}" for="courier_id">Repartidor</label>
+                <select class="{{ ui.input }}" id="courier_id" name="courier_id">
+                    <option value="">Sin asignar</option>
+                    {% for c in couriers %}<option value="{{ c.id }}" {{ 'selected' if values.get('courier_id') == c.id or values.get('courier_id') == c.id|string }}>{{ c.name }}</option>{% endfor %}
+                </select>
+            </div>
+            {% if package %}
+            <div><label class="{{ ui.label }}" for="status">Estado</label>
+                <select class="{{ ui.input }}" id="status" name="status">
+                    {% for key, label in STATUSES.items() %}<option value="{{ key }}" {{ 'selected' if values.get('status', package.status) == key }}>{{ label }}</option>{% endfor %}
+                </select>
+            </div>
+            {% endif %}
+            <label class="flex items-center gap-2.5 font-semibold text-ink2 sm:col-span-2 lg:col-span-4"><input type="checkbox" id="is_urgent" name="is_urgent" value="1" class="size-[18px] accent-accent" {{ 'checked' if values.get('is_urgent') }}>Envío urgente</label>
+        </div>
+    </div>
+
+    <div class="flex flex-wrap gap-2">
+        <button class="{{ ui.btn }}">{{ 'Guardar cambios' if package else 'Crear paquete' }}</button>
+        <a class="{{ ui.btn_line }}" href="{{ url_for('suite.paquetes') }}">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

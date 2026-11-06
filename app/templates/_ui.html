@@ -1,0 +1,33 @@
+{#
+  Clases de Tailwind que se repiten en muchas pantallas (botones, tarjetas, campos...).
+  Se usan así:  {% import '_ui.html' as ui %}  ->  class="{{ ui.btn }}"
+  Cambiar una clase aquí cambia ese elemento en todo el sitio.
+#}
+{% set btn = 'inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-bold text-white shadow-[0_6px_16px_-6px_rgba(255,87,34,.6)] transition hover:brightness-95' %}
+{% set btn_line = 'inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-sm font-bold text-ink2 transition hover:bg-soft' %}
+{% set btn_soft = 'inline-flex items-center justify-center gap-2 rounded-xl bg-accent-soft px-4 py-2.5 text-sm font-bold text-accent-text transition hover:brightness-95' %}
+{% set btn_danger = 'inline-flex items-center justify-center gap-2 rounded-xl border border-rose bg-white px-4 py-2.5 text-sm font-bold text-rose-ink transition hover:bg-rose' %}
+{# Se agrega a un botón para hacerlo más grande (sitio público) #}
+{% set lg = ' px-6! py-3.5! text-base!' %}
+
+{% set icon_btn = 'inline-grid size-9 place-items-center rounded-xl border border-line bg-white text-ink2 transition hover:bg-soft' %}
+{% set icon_btn_danger = 'inline-grid size-9 place-items-center rounded-xl border border-rose bg-white text-rose-ink transition hover:bg-rose' %}
+
+{% set card = 'rounded-card bg-white p-5 shadow-card' %}
+{% set box = 'rounded-2xl border border-line bg-white p-4' %}
+{% set label = 'mb-1.5 block text-xs font-semibold text-muted' %}
+{% set input = 'w-full rounded-xl border border-transparent bg-soft px-3.5 py-2.5 text-ink placeholder:text-muted focus:border-accent focus:bg-white focus:outline-none' %}
+{% set hint = 'mt-1.5 text-xs text-muted' %}
+
+{% set th = 'px-3 py-2.5 text-left text-xs font-semibold text-muted whitespace-nowrap' %}
+{% set td = 'border-t border-line px-3 py-3 align-middle' %}
+
+{# Título pequeño naranja de las tarjetas (con su icono) #}
+{% set card_title = 'mb-4 flex items-center gap-2 text-sm font-bold text-accent-text' %}
+{# Etiqueta de sección del sitio público (ej: "Servicios") #}
+{% set eyebrow = 'inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3.5 py-1.5 text-xs font-bold text-accent-text' %}
+
+{# Colores por estado del paquete y por tono (avatares, tarjetas) #}
+{% set status_tone = {'pending': 'bg-amber text-amber-ink', 'picked_up': 'bg-sky text-sky-ink', 'delivered': 'bg-mint text-mint-ink', 'issue': 'bg-rose text-rose-ink'} %}
+{% set tones = ['bg-peach text-peach-ink', 'bg-sky text-sky-ink', 'bg-mint text-mint-ink', 'bg-lilac text-lilac-ink'] %}
+{% set flash_tone = {'success': 'bg-mint text-mint-ink', 'danger': 'bg-rose text-rose-ink', 'warning': 'bg-amber text-amber-ink', 'info': 'bg-sky text-sky-ink'} %}

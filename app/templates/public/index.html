@@ -1,184 +1,164 @@
-{% extends "public/base.html" %}
+{# Landing: hero, servicios, proceso, nosotros, Suite, aliados y contacto #}
+{% extends 'public/base.html' %}
+{% import '_ui.html' as ui %}
+{% from '_macros.html' import flashes, icon, input, pill %}
+{% block title %}Mensajería y logística en Cartagena{% endblock %}
 
-{% block title %}DropX | Logística para tu negocio{% endblock %}
-{% block body_attrs %} class="home-page"{% endblock %}
-{% block main_class %}contenido-pagina{% endblock %}
+{# Los mensajes (por ejemplo, un error del formulario) salen dentro de la sección de contacto #}
+{% block flashes %}{% endblock %}
 
-{% block content %}        <section class="seccion-hero home-hero">
-            <div class="hero-container">
-                <span class="hero-tag">TU SOLUCIÓN LOGÍSTICA DE CONFIANZA</span>
-                <h1 class="hero-title">Rastrea tu guía</h1>
-                <form action="{{ url_for('public.rastreo') }}" method="get" class="hero-search-box">
-                    <input type="text" name="guia" placeholder="Ejemplo: DX-9827461" class="hero-input"
-                        aria-label="Número de guía" required>
-                    <button type="submit" class="hero-btn-search">Buscar</button>
-                </form>
-                <a href="{{ url_for('static', filename='img/Video-DropX.mp4') }}" class="hero-video-link">
-                    <span class="play-icon" aria-hidden="true">▶</span>
-                    Mira nuestro video institucional
-                </a>
-                <div class="scroll-down-arrow">
-                    <a href="#seccion-indicadores" aria-label="Ver nuestras cifras">⌄</a>
-                </div>
-            </div>
-        </section>
+{% block content %}
+{% set wrap = 'mx-auto w-full max-w-[1180px] px-5' %}
+{% set section = 'scroll-mt-24 py-14 md:py-20' %}
+{% set title = 'text-3xl font-extrabold leading-tight tracking-tight md:text-4xl' %}
 
-        <section id="seccion-indicadores" class="seccion-indicadores" aria-label="DropX en cifras">
-            <div class="indicador-card">
-                <h2 class="metric-number">+60</h2>
-                <p class="metric-label">Oficinas disponibles en Colombia</p>
+{# ---------- Hero: foto local de una bodega con un degradado claro encima ---------- #}
+<section class="relative isolate overflow-hidden">
+    <div class="absolute inset-0 -z-20 bg-cover bg-center" style="background-image: url('{{ url_for('static', filename='img/hero-bodega.jpg') }}')"></div>
+    <div class="absolute inset-0 -z-10 bg-linear-to-b from-canvas/95 to-canvas/70 md:bg-linear-to-r md:from-canvas md:from-0% md:via-canvas/95 md:via-30% md:to-canvas/40"></div>
+    <div class="{{ wrap }} py-14 md:pb-24 md:pt-16">
+        <div class="grid max-w-[34rem] justify-items-start gap-5">
+            <span class="{{ ui.eyebrow }}">Cartagena de Indias</span>
+            <h1 class="text-[clamp(2.1rem,4.2vw,3.1rem)] font-extrabold leading-[1.08] tracking-tight">Sus envíos, entregados a tiempo en toda Cartagena</h1>
+            <p class="text-lg text-ink2">Recogida, transporte y entrega con seguimiento paso a paso. Toda la operación en un solo lugar.</p>
+            <div class="flex flex-wrap gap-3">
+                <a class="{{ ui.btn }}{{ ui.lg }}" href="#contacto">Solicitar servicio</a>
+                {# El video se abre en una ventana y no cambia de página #}
+                <button type="button" id="playBtn" class="{{ ui.btn_line }}{{ ui.lg }}"><span class="text-accent">{{ icon('i-play', 'size-[18px]') }}</span>Ver video institucional</button>
             </div>
-            <div class="indicador-card">
-                <h2 class="metric-number">+350</h2>
-                <p class="metric-label">Repartidores disponibles a nivel nacional</p>
-            </div>
-            <div class="indicador-card">
-                <h2 class="metric-number">+1,395</h2>
-                <p class="metric-label">Paquetes entregados en tiempo récord éste mes.</p>
-            </div>
-        </section>
+            <form class="flex w-full gap-2 rounded-2xl bg-white p-2 shadow-pop" action="{{ url_for('public.rastreo') }}" method="get">
+                <input name="guia" placeholder="Número de guía, ej. DX-000214" aria-label="Número de guía" required class="min-w-0 flex-1 rounded-xl bg-transparent px-3 placeholder:text-muted focus:outline-none">
+                <button class="{{ ui.btn }}">Rastrear</button>
+            </form>
+        </div>
+    </div>
+</section>
 
-        <section class="seccion-servicios">
-            <div class="section-header-center">
-                <span class="section-tag">NUESTRAS SOLUCIONES</span>
-                <h2>Logística diseñada para hacer crecer tu negocio</h2>
+{# ---------- Servicios ---------- #}
+<section id="servicios" class="{{ section }}"><div class="{{ wrap }}">
+    <div class="mx-auto mb-10 grid max-w-xl justify-items-center gap-3 text-center">
+        <span class="{{ ui.eyebrow }}">Servicios</span><h2 class="{{ title }}">Soluciones para cada envío</h2>
+        <p class="text-ink2">Desde un paquete suelto hasta la operación diaria de un comercio.</p>
+    </div>
+    <div class="grid gap-5 md:grid-cols-3">
+        {% for bg, ico, name, text in [
+            ('bg-peach text-peach-ink', 'i-box', 'Envíos', 'Recogida y entrega de paquetes en toda la ciudad, con número de guía y seguimiento.'),
+            ('bg-lilac text-lilac-ink', 'i-bolt', 'Express', 'Entregas urgentes el mismo día, con prioridad en ruta.'),
+            ('bg-sky text-sky-ink', 'i-build', 'Logística empresarial', 'Envíos recurrentes para comercios y empresas, con operación a la medida.'),
+        ] %}
+            <div class="rounded-card p-7 {{ bg }}">
+                <span class="mb-4 grid size-12 place-items-center rounded-2xl bg-white/80">{{ icon(ico, 'size-6') }}</span>
+                <h3 class="mb-2 text-lg font-extrabold text-ink">{{ name }}</h3><p class="text-ink2">{{ text }}</p>
             </div>
-            <div class="services-grid-4">
-                <div class="service-box">
-                    <div class="icono-escudo">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v10H3z"></path><path d="M14 10h4l3 3v4h-7z"></path><circle cx="7.5" cy="18.5" r="1.5"></circle><circle cx="17.5" cy="18.5" r="1.5"></circle><path d="M6 10h5"></path></svg>
-                    </div>
-                    <h3>Envíos Express</h3>
-                    <p>Entregas urgentes a nivel local y nacional en tiempo récord garantizando la seguridad de tu
-                        carga.</p>
-                </div>
-                <div class="service-box">
-                    <div class="icono-escudo">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path></svg>
-                    </div>
-                    <h3>Última Milla</h3>
-                    <p>Llevamos tus paquetes hasta la puerta del cliente final con la mejor experiencia de servicio.</p>
-                </div>
-                <div class="service-box">
-                    <div class="icono-escudo">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 8-4 4 4 4m8-8 4 4-4 4m-3-10-2 12"></path></svg>
-                    </div>
-                    <h3>Integración E-commerce</h3>
-                    <p>Conecta tu tienda Shopify, WooCommerce o Mercado Libre directamente con nuestra plataforma.</p>
-                </div>
-                <div class="service-box">
-                    <div class="icono-escudo">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 7 9-4 9 4-9 4-9-4Z"></path><path d="m3 12 9 4 9-4M3 17l9 4 9-4M12 11v5"></path></svg>
-                    </div>
-                    <h3>Almacenamiento</h3>
-                    <p>Bodegaje inteligente y control de inventario optimizados para potenciar tus despachos.</p>
-                </div>
-            </div>
-        </section>
+        {% endfor %}
+    </div>
+</div></section>
 
-        <section class="funcionamiento-section">
-            <div class="how-container">
-                <div class="how-image-col">
-                    <img class="dashboard-preview" src="{{ url_for('static', filename='img/fotodashboard.png') }}" alt="Vista previa del dashboard DropX con métricas y reportes logísticos">
-                </div>
-                <div class="how-content-col">
-                    <span class="section-tag">PROCESO SIMPLE</span>
-                    <h2 class="section-title">¿Cómo funciona DropX?</h2>
-                    <div class="step-item">
-                        <div class="step-badge">1</div>
-                        <div class="step-text">
-                            <h4>Genera tu envío</h4>
-                            <p>Ingresa los datos del destinatario en nuestra Suite Logística o sincronízalo
-                                automáticamente con tu plataforma de venta.</p>
-                        </div>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-badge">2</div>
-                        <div class="step-text">
-                            <h4>Colectamos el paquete</h4>
-                            <p>Nuestra red de repartidores recoge el pedido en tu bodega o punto acordado sin demoras.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-badge">3</div>
-                        <div class="step-text">
-                            <h4>Rastreo en tiempo real</h4>
-                            <p>Tanto tú como tu cliente final monitorean cada estado del envío desde cualquier
-                                dispositivo.</p>
-                        </div>
-                    </div>
-                </div>
+{# ---------- Cómo funciona ---------- #}
+<section class="pb-14 md:pb-20"><div class="{{ wrap }}">
+    <div class="mx-auto mb-10 grid max-w-xl justify-items-center gap-3 text-center"><span class="{{ ui.eyebrow }}">Proceso</span><h2 class="{{ title }}">¿Cómo funciona?</h2></div>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {% for n, name, text in [
+            (1, 'Solicitud', 'Se solicita el servicio por WhatsApp o con el formulario.'),
+            (2, 'Recogida', 'Un repartidor aliado pasa por el paquete.'),
+            (3, 'Seguimiento', 'El estado se consulta con el número de guía DX-.'),
+            (4, 'Entrega', 'El destinatario recibe el paquete en la dirección indicada.'),
+        ] %}
+            <div class="text-center">
+                <span class="mx-auto mb-3 grid size-12 place-items-center rounded-full bg-white text-lg font-extrabold text-accent shadow-card">{{ n }}</span>
+                <h3 class="mb-1 text-lg font-extrabold">{{ name }}</h3><p class="text-ink2">{{ text }}</p>
             </div>
-        </section>
+        {% endfor %}
+    </div>
+</div></section>
 
-        <section class="seccion-aliados">
-            <p class="section-title">EMPRESAS QUE CONFÍAN EN NOSOTROS</p>
-            <div class="aliados-logos">
-                <span>Mercado Libre</span>
-                <span>Shopify</span>
-                <span>Rappi</span>
-                <span>Alibaba</span>
-                <span>DHL Express</span>
-                <span>FedEx</span>
+{# ---------- Nosotros ---------- #}
+<section id="nosotros" class="scroll-mt-24 pb-14 md:pb-20"><div class="{{ wrap }} grid items-center gap-10 lg:grid-cols-[1fr_1.3fr]">
+    <div class="grid justify-items-start gap-4"><span class="{{ ui.eyebrow }}">Nosotros</span><h2 class="{{ title }}">Logística local, con seguimiento claro</h2><p class="text-lg text-ink2">DropX conecta a quienes envían con repartidores aliados de Cartagena de Indias, y ofrece información clara del estado de cada paquete.</p></div>
+    <div class="grid gap-4 sm:grid-cols-3">
+        {% for bg, ico, name, text in [
+            ('bg-peach text-peach-ink', 'i-target', 'Misión', 'Entregar cada paquete de forma segura y puntual.'),
+            ('bg-sky text-sky-ink', 'i-eye', 'Visión', 'Ser el aliado logístico de referencia de la ciudad.'),
+            ('bg-mint text-mint-ink', 'i-heart', 'Valores', 'Responsabilidad, transparencia y compromiso.'),
+        ] %}
+            <div class="{{ ui.card }}">
+                <span class="mb-3 grid size-11 place-items-center rounded-xl {{ bg }}">{{ icon(ico, 'size-5') }}</span>
+                <h3 class="mb-1 font-extrabold">{{ name }}</h3><p class="text-sm text-ink2">{{ text }}</p>
             </div>
-        </section>
+        {% endfor %}
+    </div>
+</div></section>
 
-        <section class="seccion-testimonios">
-            <div class="section-header-center">
-                <span class="section-tag">HISTORIAS DE ÉXITO</span>
-                <h2>Lo que nuestros clientes dicen sobre nosotros</h2>
-            </div>
+{# ---------- Suite (vista de ejemplo hecha con HTML, sin imagen) ---------- #}
+<section class="pb-14 md:pb-20"><div class="{{ wrap }}"><div class="grid items-center gap-10 rounded-[32px] bg-linear-to-br from-lilac to-sky/60 p-8 md:p-12 lg:grid-cols-2">
+    <div class="grid justify-items-start gap-4">
+        <span class="{{ ui.eyebrow }}">Suite logística</span><h2 class="{{ title }}">Un panel para toda la operación</h2>
+        <ul class="grid gap-2.5 text-ink2">
+            {% for item in ['Guías numeradas automáticamente', 'Historial de movimientos por paquete', 'Gestión de repartidores y managers'] %}
+                <li class="flex items-center gap-2.5"><span class="grid size-5 place-items-center rounded-full bg-mint text-mint-ink">{{ icon('i-check', 'size-3') }}</span>{{ item }}</li>
+            {% endfor %}
+        </ul>
+        <a class="{{ ui.btn }}{{ ui.lg }}" href="{{ url_for('suite.login') }}">Ingresar a la Suite</a>
+    </div>
+    <div class="grid gap-3 rounded-2xl bg-white p-4 shadow-pop" aria-hidden="true">
+        <div class="grid grid-cols-4 gap-2">
+            {% for bg, name, value in [('bg-peach text-peach-ink', 'Total', 312), ('bg-sky text-sky-ink', 'Pendientes', 34), ('bg-lilac text-lilac-ink', 'En ruta', 56), ('bg-mint text-mint-ink', 'Entregados', 198)] %}
+                <div class="rounded-xl p-2.5 text-[11px] font-semibold {{ bg }}">{{ name }}<b class="block text-lg text-ink">{{ value }}</b></div>
+            {% endfor %}
+        </div>
+        <svg viewBox="0 0 400 110" class="w-full"><defs><linearGradient id="mg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--color-accent)" stop-opacity=".3"/><stop offset="1" stop-color="var(--color-accent)" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0,80 C60,70 90,50 140,52 S220,70 260,44 S340,26 400,18 L400,110 L0,110Z" fill="url(#mg)"/><path d="M0,80 C60,70 90,50 140,52 S220,70 260,44 S340,26 400,18" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round"/></svg>
+        <div>
+            {% for number, name, label, tone in [('DX-000214', 'Carolina Díaz', 'Con novedad', 'issue'), ('DX-000213', 'Sofía Mendoza', 'Entregado', 'delivered'), ('DX-000212', 'Laura Barrios', 'Recogido', 'picked_up')] %}
+                <div class="grid grid-cols-[1fr_1.2fr_auto] items-center gap-2 border-t border-line py-2 text-xs"><span class="font-bold">{{ number }}</span><span>{{ name }}</span>{{ pill(label, ui.status_tone[tone]) }}</div>
+            {% endfor %}
+        </div>
+    </div>
+</div></div></section>
 
-            <div class="testimonio-container-grid">
-                <div class="testimonio-card">
-                    <p class="testimonio-text">"DropX transformó nuestra operación de e-commerce. La
-                        integración con Shopify funciona a la perfección y redujo a la mitad las incidencias en
-                        entregas."</p>
-                    <div class="testimonio-author">
-                        <div>
-                            <strong>Juan David Gómez</strong>
-                            <span>CEO, Café Selecto</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonio-card">
-                    <p class="testimonio-text">"La transparencia del rastreo y compromiso de los aliados nos permite
-                        enfocarnos
-                        en producir más ventas, sabiendo que el despacho está resuelto."</p>
-                    <div class="testimonio-author">
-                        <div>
-                            <strong>Camila Restrepo</strong>
-                            <span>Gerente de Operaciones, Trendy Co.</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonio-card">
-                    <p class="testimonio-text">"Excelente servicio al cliente. En logistica es vital contar con un
-                        soporte
-                        humano real y DropX siempre está disponible cuando más se necesita."</p>
-                    <div class="testimonio-author">
-                        <div>
-                            <strong>Carlos Mendoza</strong>
-                            <span>Gerente, Distribuidores Unidos</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+{# ---------- Aliados ---------- #}
+<section class="pb-14 md:pb-20"><div class="{{ wrap }}"><div class="flex flex-wrap items-center justify-between gap-5 rounded-[28px] bg-linear-to-r from-peach to-lilac p-8 md:p-10">
+    <div><h2 class="text-[clamp(1.5rem,2.6vw,2rem)] font-extrabold tracking-tight">¿Tiene vehículo y quiere generar ingresos?</h2><p class="mt-1 text-ink2">Únase como aliado repartidor en Cartagena.</p></div>
+    <a class="{{ ui.btn }}{{ ui.lg }}" href="{{ url_for('public.ser_aliado') }}">Quiero ser aliado</a>
+</div></div></section>
 
-        <section class="seccion-llamado_a_la_accion">
-            <div class="cta-container">
-                <h2>Lleva tu logistica al siguiente nivel hoy mismo</h2>
-                <p>
-                    Únete a cientos de empresas que ya optimizan sus despachos,
-                    reducen costos y mejoran la experiencia de entrega para sus clientes.
-                </p>
-                <div class="cta-buttons">
-                    <a href="{{ url_for('public.ser_aliado') }}" class="btn-cta-orange">Crear mi cuenta ya</a>
-                    <a href="{{ url_for('public.contacto') }}" class="btn-cta-outline">Agendar demo</a>
-                </div>
+{# ---------- Contacto ---------- #}
+<section id="contacto" class="scroll-mt-24"><div class="{{ wrap }} grid gap-10 lg:grid-cols-2">
+    <div class="grid content-start justify-items-start gap-4">
+        <span class="{{ ui.eyebrow }}">Contacto</span><h2 class="{{ title }}">Hable con un asesor</h2>
+        <p class="text-lg text-ink2">Cotizaciones, soporte y dudas sobre el servicio en Cartagena de Indias.</p>
+        {% if chat_url %}
+            <a class="inline-flex items-center gap-2 rounded-xl bg-mint px-6 py-3.5 text-base font-bold text-mint-ink transition hover:brightness-95" href="{{ chat_url }}" target="_blank" rel="noopener">{{ icon('i-wa', 'size-5') }}Escribir por WhatsApp</a>
+        {% endif %}
+        <div><b>Horario de atención</b><ul class="mt-1 text-ink2"><li>Lunes a viernes: 8:00 a. m. – 6:00 p. m.</li><li>Sábados: 9:00 a. m. – 1:00 p. m.</li></ul></div>
+    </div>
+    <form method="post" action="{{ url_for('public.index', _anchor='contacto') }}" class="{{ ui.card }} grid gap-4 p-6 shadow-pop">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        {{ flashes() }}
+        <div class="grid gap-4 sm:grid-cols-2">
+            {{ input('name', 'Nombre', form.get('name', ''), required=true) }}
+            {{ input('phone', 'Teléfono', form.get('phone', ''), required=true) }}
+            {{ input('email', 'Correo electrónico', form.get('email', ''), type='email', required=true) }}
+            <div><label class="{{ ui.label }}" for="subject">Asunto</label>
+                <select class="{{ ui.input }}" id="subject" name="subject" required>
+                    <option value="">Seleccione…</option>
+                    {% for key, label in subjects.items() %}<option value="{{ key }}" {{ 'selected' if form.get('subject') == key }}>{{ label }}</option>{% endfor %}
+                </select>
             </div>
-        </section>
-    
+        </div>
+        <div><label class="{{ ui.label }}" for="message">Mensaje</label><textarea class="{{ ui.input }}" id="message" name="message" rows="4" required>{{ form.get('message', '') }}</textarea></div>
+        <button class="{{ ui.btn }}{{ ui.lg }}">{{ icon('i-wa', 'size-5') }}Enviar por WhatsApp</button>
+    </form>
+</div></section>
+
+{# ---------- Ventana del video institucional ---------- #}
+<div id="videoOverlay" data-overlay class="fixed inset-0 z-50 hidden items-center justify-center bg-ink/60 p-4" role="dialog" aria-modal="true" aria-labelledby="vt">
+    <div class="w-full max-w-3xl overflow-hidden rounded-[24px] bg-white shadow-pop">
+        <div class="flex items-center justify-between px-5 py-3"><span id="vt" class="font-extrabold">Video institucional DropX</span><button type="button" data-close class="{{ ui.icon_btn }}" aria-label="Cerrar">{{ icon('i-x') }}</button></div>
+        <video id="institutionalVideo" class="w-full bg-black" controls preload="none">
+            <source src="{{ url_for('static', filename='img/Video-DropX.mp4') }}" type="video/mp4">
+            Su navegador no puede reproducir este video.
+        </video>
+    </div>
+</div>
 {% endblock %}

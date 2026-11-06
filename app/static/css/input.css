@@ -1,0 +1,51 @@
+/*
+ * Archivo de origen de Tailwind CSS. Aquí solo están los colores, la tipografía y las medidas de DropX;
+ * el resto del diseño son clases de Tailwind escritas directamente en las plantillas.
+ * Después de cambiar este archivo o las clases de las plantillas, se compila con:  npm run css
+ */
+@import "tailwindcss";
+
+/* Dónde buscar las clases que se usan (plantillas y JavaScript) */
+@source "../../templates";
+@source "../js";
+
+/* Diseño claro: fondo azul grisáceo, tarjetas blancas y acentos pastel; el naranja DropX marca lo principal.
+   "static" hace que todos los colores queden como variables CSS (las usan las gráficas de dashboard.js). */
+@theme static {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --color-canvas: #f6f7fc;
+  --color-soft: #f3f4f9;
+  --color-line: #e8eaf2;
+  --color-ink: #1c1e2e;
+  --color-ink2: #4a4f66;
+  --color-muted: #8a8fa6;
+
+  --color-accent: #ff5722;
+  --color-accent-soft: #fff0ea;
+  --color-accent-text: #c23a0c;
+
+  --color-peach: #ffe8de;
+  --color-peach-ink: #9a2f0a;
+  --color-sky: #e3eeff;
+  --color-sky-ink: #1a479a;
+  --color-mint: #def6e8;
+  --color-mint-ink: #14663d;
+  --color-lilac: #eee8ff;
+  --color-lilac-ink: #4a30a0;
+  --color-amber: #fff3d6;
+  --color-amber-ink: #7a5008;
+  --color-rose: #ffe3e6;
+  --color-rose-ink: #9a1d31;
+
+  --shadow-card: 0 1px 2px rgba(28, 30, 46, 0.04), 0 8px 24px rgba(28, 30, 46, 0.05);
+  --shadow-pop: 0 1px 2px rgba(28, 30, 46, 0.04), 0 12px 32px rgba(28, 30, 46, 0.09);
+  --radius-card: 20px;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-canvas font-sans text-ink antialiased; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+}

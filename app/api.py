@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 
 from app import db, jwt
-from app.models import User
+from app.models import STATUSES, Package, User
 
 # Todas las rutas de este archivo empiezan con /api
 bp = Blueprint('api', __name__, url_prefix='/api')
@@ -38,7 +38,33 @@ def me():
     return jsonify(user=user.to_dict())
 
 
-# TO DO: Listado de guías del courier (GET /api/packages?status=...) y detalle.
+# ---------- Paquetes del repartidor ----------
+@bp.get('/packages')
+@jwt_required()
+def packages():
+    """Lista los paquetes asignados al repartidor del token (opcional: ?status=pending)."""
+    query = Package.query.filter_by(courier_id=int(get_jwt_identity()))
+
+    status = request.args.get('status')
+    if status:
+        if status not in STATUSES:
+            return jsonify(message='El estado no es válido'), 400
+        query = query.filter_by(status=status)
+
+    items = query.order_by(Package.is_urgent.desc(), Package.id.desc()).all()
+    return jsonify(packages=[item.to_dict() for item in items])
+
+
+@bp.get('/packages/<int:package_id>')
+@jwt_required()
+def package_detail(package_id):
+    """Devuelve un paquete, solo si está asignado al repartidor del token."""
+    item = Package.query.filter_by(id=package_id, courier_id=int(get_jwt_identity())).first()
+    if not item:
+        return jsonify(message='Paquete no encontrado'), 404
+    return jsonify(package=item.to_dict())
+
+
 # TO DO: Cambiar el estado de una guía desde la app.
 # TO DO: Habilitar CORS (flask-cors) si la app Flutter se prueba en Chrome.
 

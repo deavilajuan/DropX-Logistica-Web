@@ -1,225 +1,95 @@
-{% extends "public/base.html" %}
+{# Registro de aliados: al enviar, se abre WhatsApp con los datos (ver public.py) #}
+{% extends 'public/base.html' %}
+{% import '_ui.html' as ui %}
+{% from '_macros.html' import flashes, icon, input %}
+{% block title %}Ser aliado{% endblock %}
+{% block flashes %}{% endblock %}
 
-{% block title %}DropX - Únete a nuestra red de aliados{% endblock %}
+{% block content %}
+{% set wrap = 'mx-auto w-full max-w-[1180px] px-5' %}
 
-{% block content %}        <section class="seccion-hero hero-aliados">
-            <div class="hero-container">
-                <h1 class="hero-title">Únete a nuestra red de aliados</h1>
-                <p class="hero-desc"> Convierte tu vehiculo en un motor de ingresos estables. Trabaja a tu propio ritmo
-                    con el respaldo de la plataforma tecnológica líder en distribución de última milla.</p>
-            </div>
-        </section>
+{# ---------- Encabezado con degradado y manchas de color ---------- #}
+<section class="relative isolate overflow-hidden bg-linear-to-br from-peach via-white to-lilac px-5 pb-28 pt-14 text-center">
+    <div class="absolute -left-24 -top-24 -z-10 size-72 rounded-full bg-accent/10 blur-3xl"></div>
+    <div class="absolute -bottom-24 -right-16 -z-10 size-80 rounded-full bg-lilac blur-3xl"></div>
+    <span class="{{ ui.eyebrow }}">Aliados</span>
+    <h1 class="mx-auto mt-4 max-w-2xl text-[clamp(2rem,4.4vw,3.2rem)] font-extrabold leading-[1.1] tracking-tight">Reparta con DropX y genere ingresos en Cartagena</h1>
+    <p class="mx-auto mt-4 max-w-xl text-lg text-ink2">Use su propio vehículo, elija sus horarios y gestione sus entregas desde la app.</p>
+    <div class="mt-7 flex flex-wrap justify-center gap-3">
+        {% for ico, text in [('i-clip', 'Horarios flexibles'), ('i-check', 'Pagos claros por entrega'), ('i-truck', 'Con su propio vehículo')] %}
+            <span class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-bold text-ink2 shadow-card"><span class="text-accent">{{ icon(ico) }}</span>{{ text }}</span>
+        {% endfor %}
+    </div>
+</section>
 
-        <section class="seccion-beneficios">
-            <div class="section-header-center">
-                <span class="section-tag">BENEFICIOS DE SER SOCIO</span>
-                <h2>Ganancias y flexibilidad garantizadas</h2>
-            </div>
-            <div class="services-grid-4">
-                <div class="service-box">
-                    <div class="icono-escudo">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                            <path d="m9 12 2 2 4-4"></path>
-                        </svg>
-                    </div>
-                    <h3>Ingresos Competitivos</h3>
-                    <p>Pagos semanales puntuales
-                        directamente a tu cuenta bancaria
-                        o monedero preferido, con tarifas
-                        claras por cada entrega.</p>
+<div class="{{ wrap }} relative -mt-16 grid items-start gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
+    <div class="grid gap-6">
+        {# Beneficios #}
+        <div class="grid gap-4 sm:grid-cols-3">
+            {% for bg, ico, name, text in [
+                ('bg-peach text-peach-ink', 'i-clip', 'Horarios flexibles', 'Usted decide cuándo repartir.'),
+                ('bg-mint text-mint-ink', 'i-check', 'Pagos claros', 'Cada entrega tiene un pago definido.'),
+                ('bg-sky text-sky-ink', 'i-box', 'App DropX', 'Sus guías y su ruta en el celular.'),
+            ] %}
+                <div class="{{ ui.card }}">
+                    <span class="mb-3 grid size-11 place-items-center rounded-xl {{ bg }}">{{ icon(ico, 'size-5') }}</span>
+                    <h3 class="mb-1 font-extrabold">{{ name }}</h3><p class="text-sm text-ink2">{{ text }}</p>
                 </div>
-                <div class="service-box">
-                    <div class="icono-escudo">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                            <path d="m9 12 2 2 4-4"></path>
-                        </svg>
-                    </div>
-                    <h3>Flexibilidad Horaria</h3>
-                    <p>Decide tus propios turnos y rutas
-                        según tu disponibilidad ideal para
-                        optimizar tu tiempo y compaginar
-                        actividades.</p>
-                </div>
-                <div class="service-box">
-                    <div class="icono-escudo">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                            <path d="m9 12 2 2 4-4"></path>
-                        </svg>
-                    </div>
-                    <h3>Capacitación Continua</h3>
-                    <p>te brindamos las mejores práctivas
-                        y entretenimiento en el uso de
-                        nuestra app para que optmiices tus
-                        recorridos.</p>
-                </div>
-                <div class="service-box">
-                    <div class="icono-escudo">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                            <path d="m9 12 2 2 4-4"></path>
-                        </svg>
-                    </div>
-                    <h3>Soporte 24/7</h3>
-                    <p>Un equipo humano y técnico
-                        siempre listo para resolver dudas
-                        en ruta y solucionar contratiempos de inmediato.</p>
-                </div>
-            </div>
-        </section>
+            {% endfor %}
+        </div>
 
-        <section class="seccion-requisitos">
-            <div class="section-header-center">
-                <span class="section-tag">REQUISITOS MÍNIMOS</span>
-                <h2>Lo que necesitas para empezar</h2>
-                <span> Buscamos personas comprometidas, con vocación de servicio y ganas de crecer
-                    económicamente. Cumpliendo con estos simples requisitos, podrás activarte en
-                    menos de 48 horas.
-                </span>
-            </div>
-            <div class="step-item">
-                <div class="step-badge">1</div>
-                <div class="step-text">
-                    <span>Ser mayor de edad (18+ años) con cédula de ciudadanía o extranjería vigente.</span>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-badge">2</div>
-                <div class="step-text">
-                    <span>Contar con vehículo propio en óptimas condiciones mecánicas (Moto, Carro, Van o
-                        Camioneta).</span>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-badge">3</div>
-                <div class="step-text">
-                    <span>Licencia de conducción vigente según la categoría del vehículo registrado.</span>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-badge">4</div>
-                <div class="step-text">
-                    <span>Documentación reglamentaria al día: SOAT y Tecnomecánica.</span>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-badge">5</div>
-                <div class="step-text">
-                    <span>Dispositivo móvil Android (versión 8.0 o superior) con plan de datos activo.</span>
-                </div>
-            </div>
-            <div class="img-requisitos">
-                <img src="{{ url_for('static', filename='img/fotodashboard.png') }}"
-                    alt="Panel de control de la plataforma logística DropX">
-            </div>
-        </section>
+        {# Requisitos #}
+        <div class="{{ ui.card }} p-6">
+            <h2 class="mb-4 text-xl font-extrabold tracking-tight">Requisitos</h2>
+            <ul class="grid gap-3 text-ink2">
+                {% for item in [
+                    'Ser mayor de edad y residir en Cartagena.',
+                    'Documento de identidad vigente.',
+                    'Vehículo propio (moto, carro, van o camioneta) con documentos al día.',
+                    'Celular con WhatsApp y acceso a datos.',
+                ] %}
+                    <li class="flex items-start gap-3"><span class="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-mint text-mint-ink">{{ icon('i-check', 'size-3.5') }}</span>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </div>
 
-        <section class="seccion-solicitud">
-            <div class="section-header-center">
-                <span class="section-tag">REGISTRO EN LÍNEA</span>
-                <h2>Completa tu solicitud en 4 pasos</h2>
-            </div>
-            <div class="wizard-card">
+        {# Cómo empezar #}
+        <div class="rounded-card bg-linear-to-br from-accent-soft to-lilac p-6">
+            <h2 class="mb-4 text-xl font-extrabold tracking-tight">¿Cómo empezar?</h2>
+            <ol class="grid gap-4">
+                {% for n, name, text in [
+                    (1, 'Déjenos sus datos', 'Complete el formulario con su información y su tipo de vehículo.'),
+                    (2, 'Hable con un asesor', 'Se abre WhatsApp para continuar el proceso con el equipo DropX.'),
+                    (3, 'Empiece a repartir', 'Reciba sus guías en la app y comience a generar ingresos.'),
+                ] %}
+                    <li class="flex gap-3.5">
+                        <span class="grid size-9 shrink-0 place-items-center rounded-full bg-white font-extrabold text-accent shadow-card">{{ n }}</span>
+                        <div><b class="block">{{ name }}</b><span class="text-ink2">{{ text }}</span></div>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
 
-                <!-- 1. Barra de progreso de los 4 pasos -->
-                <div class="wizard-steps-header">
-                    <div class="wizard-step active">
-                        <span class="step-num">1</span>
-                        <span class="step-label">Datos Personales</span>
-                    </div>
-                    <div class="wizard-step">
-                        <span class="step-num">2</span>
-                        <span class="step-label">Vehículo</span>
-                    </div>
-                    <div class="wizard-step">
-                        <span class="step-num">3</span>
-                        <span class="step-label">Documentos</span>
-                    </div>
-                    <div class="wizard-step">
-                        <span class="step-num">4</span>
-                        <span class="step-label">Confirmación</span>
-                    </div>
-                </div>
-                <div class="wizard-divider"></div>
-                <!-- 2. Formulario Paso 1: Datos Personales -->
-                <form action="#" method="get" class="wizard-form">
-                    <div class="form-row-2">
-                        <div class="form-field">
-                            <label for="nombres">Nombres</label>
-                            <input type="text" id="nombres" name="nombres" placeholder="Ej: Juan Carlos" required>
-                        </div>
-                        <div class="form-field">
-                            <label for="apellidos">Apellidos</label>
-                            <input type="text" id="apellidos" name="apellidos" placeholder="Ej: Gómez Pérez" required>
-                        </div>
-                    </div>
-                    <div class="form-row-2">
-                        <div class="form-field">
-                            <label for="correo">Correo electrónico</label>
-                            <input type="email" id="correo" name="correo" placeholder="juan.gomez@example.com" required>
-                        </div>
-                        <div class="form-field">
-                            <label for="celular">Celular</label>
-                            <input type="tel" id="celular" name="celular" placeholder="Ej: 300 123 4567" required>
-                        </div>
-                    </div>
-                    <div class="form-field full-width">
-                        <label for="ciudad">Ciudad donde deseas operar</label>
-                        <div class="select-wrapper">
-                            <select id="ciudad" name="ciudad" required>
-                                <option value="" disabled selected>Selecciona una opción (Ej: Bogotá)</option>
-                                <option value="bogota">Bogotá D.C.</option>
-                                <option value="medellin">Medellín</option>
-                                <option value="cali">Cali</option>
-                                <option value="barranquilla">Barranquilla</option>
-                                <option value="bucaramanga">Bucaramanga</option>
-                                <option value="bucaramanga">Cartagena</option>
-                                <option value="bucaramanga">Santa Marta</option>
-                                <option value="bucaramanga">Cúcuta</option>
-                                <option value="bucaramanga">Monteria</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn-wizard-next">Siguiente Paso</button>
-                </form>
-        </section>
-
-        <section class="seccion-testimonios">
-            <div class="section-header-center">
-                <span class="section-tag">TESMONIAL DE ALIADO</span>
-                <h2>Ellos ya transformaron sus ingresos</h2>
+    {# Formulario #}
+    <form method="post" class="{{ ui.card }} grid gap-4 border-t-4 border-accent p-6 shadow-pop lg:sticky lg:top-24">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div><h2 class="text-xl font-extrabold tracking-tight">Déjenos sus datos</h2><p class="mt-1 text-muted">Un asesor lo contactará por WhatsApp.</p></div>
+        {{ flashes() }}
+        <div class="grid gap-4 sm:grid-cols-2">
+            {{ input('first_name', 'Nombres', form.get('first_name', ''), required=true) }}
+            {{ input('last_name', 'Apellidos', form.get('last_name', ''), required=true) }}
+            <div class="sm:col-span-2">{{ input('email', 'Correo electrónico', form.get('email', ''), type='email', required=true) }}</div>
+            {{ input('phone', 'Celular', form.get('phone', ''), required=true) }}
+            <div><label class="{{ ui.label }}" for="vehicle">Vehículo</label>
+                <select class="{{ ui.input }}" id="vehicle" name="vehicle" required>
+                    <option value="">Seleccione…</option>
+                    {% for v in vehicles %}<option value="{{ v }}" {{ 'selected' if form.get('vehicle') == v }}>{{ v }}</option>{% endfor %}
+                </select>
             </div>
-            <div class="testimonio-card">
-                <div class="section-header-center">
-                    <div class="icono-escudo">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5722" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                            <path d="m9 12 2 2 4-4"></path>
-                        </svg>
-                    </div>
-                    <p class="testimonio-text">"LLevo más de un año conduciendo con DropX en Medellín. Empecé entregando
-                        paquetes en moto para
-                        complementar mis ingresos de medio tiempo, y hoy en día, gracias a la estabilidad de rutas
-                        fijas, he
-                        podido cambiar a un vehículo más grande. Los pagos son puntuales y el soporte siempre está
-                        atento."</p>
-
-                    <div class="testimonio-author">
-                        <div>
-                            <strong>Andrés Felipe Alzate</strong>
-                            <span>Aliado Logístico, Medellín (Moto)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </div>
-        </section>
-    
+        </div>
+        <button class="{{ ui.btn }}{{ ui.lg }}">{{ icon('i-wa', 'size-5') }}Continuar por WhatsApp</button>
+        <p class="text-center text-xs text-muted">Sus datos solo se usan para contactarlo.</p>
+    </form>
+</div>
 {% endblock %}

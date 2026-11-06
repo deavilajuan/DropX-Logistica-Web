@@ -1,0 +1,33 @@
+{% extends 'suite/base.html' %}
+{% import '_ui.html' as ui %}
+{% from '_macros.html' import avatar, input, pill, page_head %}
+{% block title %}Mi perfil{% endblock %}
+
+{% block content %}
+{{ page_head('Mi perfil', 'Datos de su cuenta y cambio de contraseña') }}
+
+<div class="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+    <div class="{{ ui.card }} grid justify-items-center gap-1.5 px-5 py-7 text-center">
+        {{ avatar(current_user.name, 'size-[72px] text-2xl mb-2') }}
+        <h2 class="text-lg font-extrabold">{{ current_user.name }}</h2>
+        {{ pill('Administrador' if current_user.role == 'admin' else 'Manager', ui.status_tone.picked_up) }}
+        <p class="text-muted">{{ current_user.email }}</p>
+    </div>
+
+    <form method="post" class="{{ ui.card }} grid gap-4">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="{{ ui.card_title }} mb-0!">Datos personales</div>
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div class="sm:col-span-2">{{ input('name', 'Nombre', current_user.name, required=true) }}</div>
+            {{ input('email', 'Correo electrónico', current_user.email, type='email', required=true) }}
+            {{ input('phone', 'Teléfono', current_user.phone) }}
+        </div>
+        <div class="{{ ui.card_title }} mb-0! mt-2">Cambiar contraseña</div>
+        <div class="grid gap-4 sm:grid-cols-2">
+            {{ input('current_password', 'Contraseña actual', type='password', extra='autocomplete=current-password') }}
+            {{ input('new_password', 'Nueva contraseña', type='password', hint='Déjela vacía para conservar la actual.', extra='minlength=8 autocomplete=new-password') }}
+        </div>
+        <div><button class="{{ ui.btn }}">Guardar cambios</button></div>
+    </form>
+</div>
+{% endblock %}

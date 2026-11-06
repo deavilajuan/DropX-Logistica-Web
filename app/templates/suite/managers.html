@@ -1,0 +1,38 @@
+{% extends 'suite/base.html' %}
+{% import '_ui.html' as ui %}
+{% from '_macros.html' import avatar, icon, page_head %}
+{% from 'suite/_user_modals.html' import user_modal with context %}
+{% block title %}Managers{% endblock %}
+
+{% block content %}
+{% call page_head('Managers', 'Solo visible para el administrador') %}
+    <button type="button" class="{{ ui.btn }}" data-open="#newManager">{{ icon('i-plus') }}Crear manager</button>
+{% endcall %}
+
+<div class="{{ ui.card }}"><div class="overflow-x-auto"><table class="w-full">
+    <thead><tr><th class="{{ ui.th }}">Nombre</th><th class="{{ ui.th }}">Correo</th><th class="{{ ui.th }}">Creado</th><th class="{{ ui.th }} text-right!">Acciones</th></tr></thead>
+    <tbody>
+    {% for m in managers %}
+        <tr>
+            <td class="{{ ui.td }}"><div class="flex items-center gap-2.5">{{ avatar(m.name) }}<b>{{ m.name }}</b></div></td>
+            <td class="{{ ui.td }}">{{ m.email }}</td>
+            <td class="{{ ui.td }}">{{ m.created_at.strftime('%d/%m/%Y') if m.created_at else '—' }}</td>
+            <td class="{{ ui.td }}"><div class="flex justify-end gap-1.5">
+                <button type="button" class="{{ ui.icon_btn }}" aria-label="Editar" data-edit="#editManager"
+                        data-action="{{ url_for('suite.editar_manager', manager_id=m.id) }}"
+                        data-name="{{ m.name }}" data-email="{{ m.email }}" data-phone="{{ m.phone or '' }}">{{ icon('i-edit') }}</button>
+                <form method="post" action="{{ url_for('suite.eliminar_manager', manager_id=m.id) }}" onsubmit="return confirm('¿Eliminar a {{ m.name }}?');">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="{{ ui.icon_btn_danger }}" aria-label="Eliminar">{{ icon('i-trash') }}</button>
+                </form>
+            </div></td>
+        </tr>
+    {% else %}
+        <tr><td colspan="4" class="p-8 text-center text-muted">Aún no hay managers.</td></tr>
+    {% endfor %}
+    </tbody>
+</table></div></div>
+
+{{ user_modal('newManager', 'Crear manager', false) }}
+{{ user_modal('editManager', 'Editar manager', false, false) }}
+{% endblock %}

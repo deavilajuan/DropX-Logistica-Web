@@ -1,0 +1,15 @@
+{
+  "name": "dropx-web",
+  "private": true,
+  "scripts": {
+    "css": "tailwindcss -i ./app/static/css/input.css -o ./app/static/css/tailwind.css --minify",
+    "css:watch": "tailwindcss -i ./app/static/css/input.css -o ./app/static/css/tailwind.css --watch",
+    "chart": "node -e \"require('fs').copyFileSync('node_modules/chart.js/dist/chart.umd.js', 'app/static/js/vendor/chart.umd.js')\"",
+    "build": "npm run css && npm run chart"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "chart.js": "^4.4.7",
+    "tailwindcss": "^4.1.0"
+  }
+}
